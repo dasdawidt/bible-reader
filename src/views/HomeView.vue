@@ -2,7 +2,7 @@
 import BookDialogue from '@/components/inputs/BookDialogue.vue';
 import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
 import VerseDialogue from '@/components/inputs/VerseDialogue.vue';
-import { translation } from '@/logic/StubTranslationProvider';
+import { translation } from '@/logic/StubTranslation';
 import { Book } from '@/types/bible/book';
 import { Translation } from '@/types/bible/translation';
 import { TranslationList } from '@/types/bible/translationList';
