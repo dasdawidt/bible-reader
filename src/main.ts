@@ -6,7 +6,6 @@ import ToastService from 'primevue/toastservice';
 import Router from './router';
 
 import './style.css';
-import 'primevue/resources/themes/lara-light-amber/theme.css';
 import '@mdi/font/css/materialdesignicons.css'
 
 createApp(App)
