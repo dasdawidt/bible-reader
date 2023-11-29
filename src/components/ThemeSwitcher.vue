@@ -26,6 +26,10 @@ function updateDarkTheme() {
         : primeVue.changeTheme('dark', 'light', 'theme-link');
 }
 
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    darkMode.value = true;
+}
+
 </script>
 
 <template>
