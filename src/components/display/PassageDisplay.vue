@@ -8,23 +8,37 @@ import { computed } from 'vue';
 const props = defineProps<{
     passages?: Passage[],
     translation?: Translation,
+    placeholder?: string,
 }>();
 
-const visible = computed(() => props.passages != null && props.translation != null && props.passages.length > 0);
+const visible = computed(() =>
+    props.placeholder != null
+    || valuesPresent.value
+);
+const valuesPresent = computed(() =>
+    props.passages != null
+    && props.translation != null
+    && props.passages.length > 0
+);
 </script>
 
 <template>
-    <Card v-if="visible">
+    <Card v-if="visible" :pt="{ content: { class: 'p-0' } }">
         <template #content>
-            <div class="flex flex-col gap-2 -my-4">
-                <div>
-                    <span v-for="passage of passages">
-                        {{ getPassage(translation, passage).text + ' ' }}
-                    </span>
-                </div>
-                <div class="opacity-50">
-                    {{ formatPassages(translation, passages) }}
-                </div>
+            <div class="flex flex-col gap-2">
+                <template v-if="valuesPresent">
+                    <div>
+                        <span v-for="passage of passages">
+                            {{ getPassage(translation, passage).text + ' ' }}
+                        </span>
+                    </div>
+                    <div class="opacity-50">
+                        {{ formatPassages(translation, passages) }}
+                    </div>
+                </template>
+                <span v-else class="opacity-50">
+                    {{ props.placeholder }}
+                </span>
             </div>
         </template>
     </Card>
