@@ -12,6 +12,7 @@ import { BookType } from "@/types/bible/bookType";
 import { Translation } from "@/types/bible/translation";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import { formatPassages, getBook, toPassageVerseList } from "@/logic/util/BibleUtils";
+import DialogueSelectButton from "./DialogueSelectButton.vue";
 
 const props = defineProps<{
     /**
@@ -67,17 +68,14 @@ function confirm() {
 </script>
 
 <template>
-    <Button class="w-full" @click="open" text severity="secondary" :disabled="disabled">
+    <DialogueSelectButton @click="open" :disabled="disabled">
         <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
             {{ formatPassages(translation, selectedPassages) }}
         </div>
         <div v-else>
             Select Verses...
         </div>
-        <div class="flex-grow" />
-        <i class="mdi mdi-chevron-right p-0" />
-    </Button>
-
+    </DialogueSelectButton>
     <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container">
         <template #header>
@@ -97,7 +95,7 @@ function confirm() {
             </div>
         </template>
         <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
-            option-group-children="passages" class="w-full" multiple>
+            option-group-children="passages" class="w-full" multiple :meta-key-selection="false">
             <template #optiongroup="slotProps">
                 <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
                     <span class="text-xl font-bold">{{ getBook(translation, book).name }} {{ slotProps.option?.chapter

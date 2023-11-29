@@ -39,7 +39,8 @@ const selectedPassages = ref<Passage[] | []>([]);
         <div class="flex-grow" />
         <div class="flex align-items-center gap-2">
             <Button label="Cancel" severity="secondary" text class="w-full" />
-            <Button label="Ok" severity="primary" text class="w-full" :disabled="selectedPassages?.length < 1" />
+            <Button label="Ok" severity="primary" text class="w-full"
+                :disabled="selectedPassages?.length < 1 && selectedTranslation != null" />
         </div>
     </div>
 </template>

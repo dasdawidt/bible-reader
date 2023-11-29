@@ -6,6 +6,7 @@ import Listbox from "primevue/listbox";
 import { Translation } from "@/types/bible/translation";
 import { TranslationList } from "@/types/bible/translationList";
 import { useOnMobile } from "@/logic/util/MobileDetection";
+import DialogueSelectButton from "./DialogueSelectButton.vue";
 
 const props = defineProps<{
     /**
@@ -33,17 +34,15 @@ const visible = ref(false);
 </script>
 
 <template>
-    <Button class="w-full" @click="visible = true" text severity="secondary">
-        <div v-if="selectedTranslation" class="flex align-items-center">
+    <DialogueSelectButton @click="visible = true">
+        <div v-if="selectedTranslation" class="flex flex-row">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
         </div>
         <div v-else>
             Select Translation...
         </div>
-        <div class="flex-grow" />
-        <i class="mdi mdi-chevron-right p-0" />
-    </Button>
+    </DialogueSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Translation"
         :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
         <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"

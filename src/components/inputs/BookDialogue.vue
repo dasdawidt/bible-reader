@@ -5,6 +5,7 @@ import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
+import DialogueSelectButton from "./DialogueSelectButton.vue";
 
 const props = defineProps<{
     /**
@@ -32,7 +33,7 @@ const disabled = computed(() => props.books == null);
 </script>
 
 <template>
-    <Button class="w-full" @click="visible = true" text severity="secondary" :disabled="disabled">
+    <DialogueSelectButton @click="visible = true" :disabled="disabled">
         <div v-if="selectedBook && !disabled" class="flex align-items-center">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
@@ -40,9 +41,7 @@ const disabled = computed(() => props.books == null);
         <div v-else>
             Select Book...
         </div>
-        <div class="flex-grow" />
-        <i class="mdi mdi-chevron-right p-0" />
-    </Button>
+    </DialogueSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Book"
         :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
         <Listbox v-model="selectedBook" :options="books" optionLabel="name" class="w-full" @change="visible = false"
