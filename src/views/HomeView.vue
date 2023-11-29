@@ -28,7 +28,7 @@ const selectedPassages = ref<Passage[] | []>([]);
 </script>
 
 <template>
-    <h1>Select Verses</h1>
+    <h1>Select</h1>
     <div class="flex flex-col gap-6">
         <div class="flex flex-col md:flex-row gap-2">
             <TranslationDialogue v-model="selectedTranslation" :translations="translationLost" />
@@ -40,7 +40,7 @@ const selectedPassages = ref<Passage[] | []>([]);
         <div class="flex align-items-center gap-2">
             <Button label="Cancel" severity="secondary" text class="w-full" />
             <Button label="Ok" severity="primary" text class="w-full"
-                :disabled="selectedPassages?.length < 1 && selectedTranslation != null" />
+                :disabled="selectedPassages?.length < 1 || selectedTranslation == null" />
         </div>
     </div>
 </template>
