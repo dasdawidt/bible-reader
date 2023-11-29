@@ -47,7 +47,7 @@ const visible = ref(false);
         :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
         <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
             optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
-            filterPlaceholder="Filter...">
+            filterPlaceholder="Filter..." :pt="{ itemGroup: { class: 'bg-transparent' } }">
             <template #option="slotProps">
                 <div class="flex align-items-center">
                     <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.id?.toUpperCase() }}</div>

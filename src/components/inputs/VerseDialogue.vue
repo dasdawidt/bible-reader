@@ -95,7 +95,8 @@ function confirm() {
             </div>
         </template>
         <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
-            option-group-children="passages" class="w-full" multiple :meta-key-selection="false">
+            option-group-children="passages" class="w-full" multiple :meta-key-selection="false"
+            :pt="{ itemGroup: { class: 'bg-transparent' } }">
             <template #optiongroup="slotProps">
                 <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
                     <span class="text-xl font-bold">{{ getBook(translation, book).name }} {{ slotProps.option?.chapter
