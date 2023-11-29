@@ -46,7 +46,7 @@ const pendingSelectedPassages = ref<Passage[]>([]);
 
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
-const disabled = computed(() => props.translation === undefined || props.book === undefined);
+const disabled = computed(() => props.translation == null || props.book == null);
 
 function open() {
     pendingSelectedPassages.value = selectedPassages.value;
@@ -68,7 +68,7 @@ function confirm() {
 
 <template>
     <Button class="w-full" @click="open" text severity="secondary" :disabled="disabled">
-        <div v-if="selectedPassages?.length > 0" class="flex align-items-center">
+        <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
             {{ formatPassages(translation, selectedPassages) }}
         </div>
         <div v-else>
@@ -78,8 +78,8 @@ function confirm() {
         <i class="mdi mdi-chevron-right p-0" />
     </Button>
 
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" :position="isOnMobile ? 'bottom' : 'top'"
-        dismissable-mask modal class="w-full max-w-container">
+    <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
+        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container">
         <template #header>
             <div class="flex flex-col w-full gap-4 -mb-5">
                 <span class="text-xl font-bold">

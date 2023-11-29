@@ -28,12 +28,12 @@ const selectedBook = computed({
 
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
-const disabled = computed(() => !props.books);
+const disabled = computed(() => props.books == null);
 </script>
 
 <template>
     <Button class="w-full" @click="visible = true" text severity="secondary" :disabled="disabled">
-        <div v-if="selectedBook" class="flex align-items-center">
+        <div v-if="selectedBook && !disabled" class="flex align-items-center">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
         </div>
