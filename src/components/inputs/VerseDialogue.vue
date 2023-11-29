@@ -99,8 +99,10 @@ function confirm() {
             :pt="{ itemGroup: { class: 'bg-transparent' } }">
             <template #optiongroup="slotProps">
                 <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
-                    <span class="text-xl font-bold">{{ getBook(translation, book).name }} {{ slotProps.option?.chapter
-                    }}</span>
+                    <span class="text-xl font-bold">
+                        {{ getBook(translation, book).name }}
+                        {{ slotProps.option?.chapter }}
+                    </span>
                 </Divider>
             </template>
             <template #option="slotProps">
