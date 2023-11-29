@@ -16,7 +16,7 @@ const visible = computed(() => props.passages != null && props.translation != nu
 <template>
     <Card v-if="visible">
         <template #content>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 -my-4">
                 <div>
                     <span v-for="passage of passages">
                         {{ getPassage(translation, passage).text + ' ' }}
