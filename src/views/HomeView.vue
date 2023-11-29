@@ -35,8 +35,8 @@ const selectedPassages = ref<Passage[] | []>([]);
             <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
             <VerseDialogue v-model="selectedPassages" :translation="selectedTranslation" :book="selectedBook?.type" />
         </div>
-        <PassageDisplay :passages="selectedPassages" :translation="selectedTranslation" />
-        <div class="flex-grow" />
+        <PassageDisplay :passages="selectedPassages" :translation="selectedTranslation"
+            placeholder="Select verses to preview." />
         <div class="flex align-items-center gap-2">
             <Button label="Cancel" severity="secondary" text class="w-full" />
             <Button label="Ok" severity="primary" text class="w-full"
