@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import InputSwitch from 'primevue/inputswitch';
 import { usePrimeVue } from 'primevue/config';
 
 const primeVue = usePrimeVue();
-const darkModeValue = ref(false);
+const darkModeValue = ref(true);
 const darkMode = computed({
     get: () => darkModeValue.value,
     set: newValue => {
@@ -26,9 +26,13 @@ function updateDarkTheme() {
         : primeVue.changeTheme('dark', 'light', 'theme-link');
 }
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    darkMode.value = true;
-}
+onBeforeMount(() => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        darkMode.value = true;
+    } else {
+        darkMode.value = false;
+    }
+});
 
 </script>
 
