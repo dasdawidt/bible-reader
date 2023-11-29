@@ -4,7 +4,9 @@ import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 </script>
 
 <template>
-    <!-- <ThemeSwitcher /> -->
+    <ThemeSwitcher />
     <Snackbar />
-    <RouterView />
+    <main class="max-w-container m-auto">
+        <RouterView />
+    </main>
 </template>
