@@ -26,7 +26,7 @@ const selectedBook = ref<Book | undefined>(undefined);
 
 <template>
     <h1>Select</h1>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6 sticky top-0 py-3 z-10">
         <div class="flex flex-col md:flex-row gap-2">
             <TranslationDialogue v-model="selectedTranslation" :translations="translationLost" />
             <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
@@ -34,11 +34,13 @@ const selectedBook = ref<Book | undefined>(undefined);
     </div>
     <div v-if="selectedBook != null" class="text-lg">
         <div v-for="chapter of selectedBook?.chapters">
-            <Divider :id="`verse-dialogue-chapter-${chapter?.number}`">
-                <span class="text-xl font-bold">
+            <div class="flex flex-row w-full items-center py-12">
+                <Divider />
+                <span class="text-xl font-bold whitespace-nowrap px-3">
                     {{ getBook(translation, selectedBook?.type).name }} {{ chapter?.number }}
                 </span>
-            </Divider>
+                <Divider />
+            </div>
             <div v-for="verse of chapter?.verses" class="flex flex-row items-baseline">
                 <span class="opacity-50 text-sm w-8 flex-shrink-0">{{ verse.number }}</span>
                 <span class="text-justify">{{ verse.text }}</span>
