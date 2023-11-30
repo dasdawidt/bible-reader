@@ -1,5 +1,5 @@
 export enum BookTypeOldTestament {
-    GENESIS,
+    GENESIS = 1,
     EXODUS,
     LEVITICUS,
     NUMBERS,
@@ -37,5 +37,5 @@ export enum BookTypeOldTestament {
     ZEPHANIAH,
     HAGGAI,
     ZECHARIAH,
-    MALACHI
+    MALACHI,
 }
