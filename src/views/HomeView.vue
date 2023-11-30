@@ -4,22 +4,13 @@ import BookDialogue from '@/components/inputs/BookDialogue.vue';
 import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
 import VerseDialogue from '@/components/inputs/VerseDialogue.vue';
 import Button from 'primevue/button';
-import { translation } from '@/logic/StubTranslation';
+import { supportedTranslations } from '@/logic/translations/provider';
 import { Book } from '@/types/bible/book';
 import { Translation } from '@/types/bible/translation';
-import { TranslationList } from '@/types/bible/translationList';
 import { Passage } from '@/types/plans/passage';
 import { ref } from 'vue';
 
-const translationLost: TranslationList = [
-    {
-        id: 'de',
-        name: 'German',
-        translations: [
-            translation
-        ]
-    }
-];
+const translationList = supportedTranslations;
 
 const selectedTranslation = ref<Translation | undefined>(undefined);
 const selectedBook = ref<Book | undefined>(undefined);
@@ -31,7 +22,7 @@ const selectedPassages = ref<Passage[] | []>([]);
     <h1>Select</h1>
     <div class="flex flex-col gap-6">
         <div class="flex flex-col md:flex-row gap-2">
-            <TranslationDialogue v-model="selectedTranslation" :translations="translationLost" />
+            <TranslationDialogue v-model="selectedTranslation" :translations="translationList" />
             <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
             <VerseDialogue v-model="selectedPassages" :translation="selectedTranslation" :book="selectedBook?.type" />
         </div>
