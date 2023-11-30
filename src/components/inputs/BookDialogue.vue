@@ -6,6 +6,8 @@ import Listbox from "primevue/listbox";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import DialogueSelectButton from "./DialogueSelectButton.vue";
+// import { BookTypeOldTestament } from "@/types/bible/bookTypeOldTestament";
+// import { BookTypeNewTestament } from "@/types/bible/bookTypeNewTestament";
 
 const props = defineProps<{
     /**
@@ -17,6 +19,19 @@ const props = defineProps<{
      */
     modelValue?: Book
 }>();
+
+// const bookList = computed(() => [
+//     {
+//         name: 'Old Testament',
+//         type: BookTypeOldTestament,
+//         books: props.books.filter(b => Object.values<number>(BookTypeOldTestament).),
+//     },
+//     {
+//         name: 'New Testament',
+//         type: BookTypeNewTestament,
+//         books: Book[],
+//     }
+// ])
 
 const emits = defineEmits<{
     (event: 'update:modelValue', value: Book): void
@@ -34,8 +49,8 @@ const disabled = computed(() => props.books == null);
 
 <template>
     <DialogueSelectButton @click="visible = true" :disabled="disabled">
-        <div v-if="selectedBook && !disabled" class="flex align-items-center">
-            <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
+        <div v-if="selectedBook && !disabled" class="flex align-items-center gap-2">
+            <div class="flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
         </div>
         <div v-else>
@@ -47,8 +62,9 @@ const disabled = computed(() => props.books == null);
         <Listbox v-model="selectedBook" :options="books" optionLabel="name" class="w-full" @change="visible = false"
             filterPlaceholder="Filter...">
             <template #option="slotProps">
-                <div class="flex align-items-center">
-                    <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.abbreviation?.toUpperCase() }}</div>
+                <div class="flex align-items-center gap-2">
+                    <div class="w-12 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">{{
+                        slotProps.option.abbreviation?.toUpperCase() }}</div>
                     <div>{{ slotProps.option.name }}</div>
                 </div>
             </template>
