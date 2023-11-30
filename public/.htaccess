@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /bible-trainer/
+RewriteCond %{ENV:HTTPS} !on [NC]
+#RewriteRule ^(.*)$ https://myURL.com/$1 [R,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.html [L]

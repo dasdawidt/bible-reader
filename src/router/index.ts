@@ -4,7 +4,7 @@ import HomeView from '@/views/HomeView.vue';
 import ReaderView from '@/views/ReaderView.vue';
 
 export default createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
