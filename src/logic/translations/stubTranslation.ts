@@ -1,10 +1,12 @@
 import { Translation } from '../../types/bible/translation';
 import { BookTypeOldTestament } from '../../types/bible/bookTypeOldTestament';
+import { TranslationProvider } from '../../types/logic/TranslationProvider';
+import { getBook, getChapter, getVerse } from '../util/BibleUtils';
 
 export const stubTranslation: Translation = {
-    id: 'glo',
+    id: 'stb',
     language: 'de',
-    name: 'German Luther Original',
+    name: 'Stub Translation',
     books: [
         {
             type: BookTypeOldTestament.GENESIS,
@@ -1212,4 +1214,29 @@ export const stubTranslation: Translation = {
             ],
         },
     ],
+};
+
+export const stubProvider: TranslationProvider = {
+    get info() {
+        return {
+            id: stubTranslation.id,
+            language: stubTranslation.language,
+            name: stubTranslation.name,
+            localizedName: stubTranslation.localizedName,
+        };
+    },
+    get supportedBooks() {
+        return stubTranslation.books?.map((b) => b);
+    },
+    getBook(type) {
+        return new Promise(() => getBook(stubTranslation, type));
+    },
+    async getChapter(book, chapter) {
+        return new Promise(() => getChapter(stubTranslation, book, chapter));
+    },
+    async getVerse(book, chapter, verse) {
+        return new Promise(() =>
+            getVerse(stubTranslation, book, chapter, verse)
+        );
+    },
 };
