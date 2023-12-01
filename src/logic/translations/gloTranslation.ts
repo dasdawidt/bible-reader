@@ -1,7 +1,7 @@
 import { Translation } from '../../types/bible/translation';
 import { TranslationProvider } from '../../types/logic/TranslationProvider';
 import { getBook, getChapter, getVerse } from '../util/BibleUtils';
-import json from '@/assets/translations/bible.json';
+import json from '@/assets/translations/glo.json';
 
 export const gloTranslation: Translation = json as Translation;
 
