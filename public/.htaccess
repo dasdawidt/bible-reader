@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /bible-trainer/
+RewriteBase /bible-reader/
 RewriteCond %{ENV:HTTPS} !on [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$
 RewriteRule ^(.*)$ https://%1/$1 [R,L]
