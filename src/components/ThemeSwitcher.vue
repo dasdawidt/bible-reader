@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue';
+import { changeTheme } from '@/logic/util/Theme';
 import InputSwitch from 'primevue/inputswitch';
-import { usePrimeVue } from 'primevue/config';
 
-const primeVue = usePrimeVue();
 const darkModeValue = ref(true);
 const darkMode = computed({
     get: () => darkModeValue.value,
@@ -22,8 +21,8 @@ document.addEventListener('keyup', e => {
 
 function updateDarkTheme() {
     darkMode.value
-        ? primeVue.changeTheme('light', 'dark', 'theme-link')
-        : primeVue.changeTheme('dark', 'light', 'theme-link');
+        ? changeTheme('light', 'dark', 'theme-link')
+        : changeTheme('dark', 'light', 'theme-link');
 }
 
 onBeforeMount(() => {
