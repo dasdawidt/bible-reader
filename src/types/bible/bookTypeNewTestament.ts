@@ -1,5 +1,5 @@
 export enum BookTypeNewTestament {
-    MATTHEW = 101,
+    MATTHEW = 40,
     MARK,
     LUKE,
     JOHN,

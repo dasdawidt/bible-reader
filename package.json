@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@mdi/font": "^7.3.67",
+        "@vueuse/core": "^10.6.1",
         "primevue": "^3.42.0",
         "vue": "^3.3.9",
         "vue-query": "^1.26.0",

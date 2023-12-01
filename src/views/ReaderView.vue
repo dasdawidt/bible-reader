@@ -14,6 +14,9 @@ import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
+import { onKeyStroke } from '@vueuse/core';
+
+document.title = "Bible Reader";
 
 const translationList = supportedTranslations;
 
@@ -58,26 +61,27 @@ const highligtedVerses = fromQuery<number[]>(
 
 const { isOnMobile } = useOnMobile();
 
-const previousPossible = computed(() => canNavigate(-1));
-const nextPossible = computed(() => canNavigate(+1));
+const previousPossible = computed(() => canNavigate('previous'));
+const nextPossible = computed(() => canNavigate('next'));
 
-function canNavigate(diff: 1 | -1): { book: Book, chapter: Chapter } | undefined {
+function canNavigate(direction: 'next' | 'previous'): { book: Book, chapter: Chapter } | undefined {
     if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
+    const diff = direction === 'next' ? 1 : -1;
     const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
     if (toChapter != null) return { chapter: toChapter, book: selectedBook.value };
     const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
     if (toBook != null) {
-        const toChapterIndex = ((toBook.chapters?.length + diff) % toBook.chapters?.length) - (diff > 0 ? 1 : 0);
+        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
         return { chapter: toBook.chapters?.[toChapterIndex], book: toBook };
     }
     return undefined;
 }
 
-const navigatePrevious = () => navigate(-1);
-const navigateNext = () => navigate(+1);
+const navigatePrevious = () => navigate('previous');
+const navigateNext = () => navigate('next');
 
-function navigate(diff: 1 | -1) {
-    const canNavig = canNavigate(diff);
+function navigate(direction: 'next' | 'previous') {
+    const canNavig = canNavigate(direction);
     if (canNavig != null) {
         selectedBook.value = canNavig.book;
         selectedChapter.value = canNavig.chapter;
@@ -121,6 +125,9 @@ const menuClass = computed(() => {
     );
     return classes;
 });
+
+onKeyStroke('ArrowRight', navigateNext);
+onKeyStroke('ArrowLeft', navigatePrevious);
 
 </script>
 
