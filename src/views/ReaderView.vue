@@ -13,6 +13,7 @@ import { supportedTranslations } from '@/logic/translations/provider';
 import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
+import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 
 const translationList = supportedTranslations;
 
@@ -26,9 +27,18 @@ const selectedBook = fromQuery<Book>(
     'b',
     (id: string) => {
         if (selectedTranslation.value)
-            return getBook(selectedTranslation.value, BookTypeOldTestament[id?.toUpperCase()]);
+            return getBook(
+                selectedTranslation.value,
+                (
+                    BookTypeOldTestament[id?.toUpperCase()]
+                    ?? BookTypeNewTestament[id?.toUpperCase()]
+                )
+            );
     },
-    (book: Book) => BookTypeOldTestament[book?.type]?.toLowerCase()
+    (book: Book) => (
+        BookTypeOldTestament[book?.type]
+        ?? BookTypeNewTestament[book?.type]
+    )?.toLowerCase()
 );
 
 const selectedChapter = fromQuery<Chapter>(
