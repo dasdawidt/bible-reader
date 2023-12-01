@@ -7,7 +7,11 @@ export default createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
+            redirect: (to) => ({ ...to, name: 'reader' }),
+        },
+        {
+            path: '/reader',
+            name: 'reader',
             component: ReaderView,
         },
     ],
