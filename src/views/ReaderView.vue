@@ -63,13 +63,16 @@ const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" />
+        v-model:chapter="selectedChapter"
+        @update:translation="selectedBook = undefined; selectedChapter = undefined; highligtedVerses = undefined"
+        @update:book="selectedChapter = undefined; highligtedVerses = undefined"
+        @update:chapter="highligtedVerses = undefined" />
     <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh]">
         <div>
             <div class="flex flex-row w-full items-center py-12">
                 <Divider />
                 <span class="text-2xl font-bold whitespace-nowrap px-3">
-                    {{ getBook(selectedTranslation, selectedBook?.type).name }} {{ selectedChapter?.number }}
+                    {{ getBook(selectedTranslation, selectedBook?.type)?.name }} {{ selectedChapter?.number }}
                 </span>
                 <Divider />
             </div>

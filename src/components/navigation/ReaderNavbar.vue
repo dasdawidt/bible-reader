@@ -14,10 +14,10 @@ import { TranslationList } from '@/types/bible/translationList';
 const { isOnMobile } = useOnMobile();
 
 const props = defineProps<{
-    translations: TranslationList,
-    chapter: Chapter,
-    book: Book,
-    translation: Translation
+    translations?: TranslationList,
+    chapter?: Chapter,
+    book?: Book,
+    translation?: Translation
 }>();
 
 const emits = defineEmits<{
