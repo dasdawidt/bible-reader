@@ -14,14 +14,17 @@ const translationList = supportedTranslations;
 
 const selectedTranslation = fromQuery<Translation>(
     't',
-    (id: string) => findTranslation(translationList, id),
+    (id: string) => {
+        if (translationList != null)
+            return findTranslation(translationList, id);
+    },
     (translation: Translation) => translation?.id?.toLowerCase()
 );
 
 const selectedBook = fromQuery<Book>(
     'b',
     (id: string) => {
-        if (selectedTranslation.value)
+        if (selectedTranslation.value != null)
             return getBook(
                 selectedTranslation.value,
                 (
@@ -39,7 +42,7 @@ const selectedBook = fromQuery<Book>(
 const selectedChapter = fromQuery<Chapter>(
     'c',
     (id: string) => {
-        if (selectedTranslation.value && selectedBook.value)
+        if (selectedTranslation.value != null && selectedBook.value != null)
             return getChapter(selectedTranslation.value, selectedBook.value?.type, Number.parseInt(id));
     },
     (chapter: Chapter) => chapter?.number?.toString()
@@ -61,10 +64,7 @@ const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter"
-        @update:translation="selectedBook = undefined; selectedChapter = undefined; highligtedVerses = undefined"
-        @update:book="selectedChapter = undefined; highligtedVerses = undefined"
-        @update:chapter="highligtedVerses = undefined" />
+        v-model:chapter="selectedChapter" />
     <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh]">
         <div>
             <div class="flex flex-row w-full items-center py-12">
