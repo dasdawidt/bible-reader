@@ -10,8 +10,6 @@ import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 
-document.title = "Bible Reader";
-
 const translationList = supportedTranslations;
 
 const selectedTranslation = fromQuery<Translation>(
