@@ -14,5 +14,13 @@ export default createRouter({
             name: 'reader',
             component: ReaderView,
         },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: (to) => ({
+                ...to,
+                name: 'reader',
+                // query: { ...to.query, e: 404 },
+            }),
+        },
     ],
 });
