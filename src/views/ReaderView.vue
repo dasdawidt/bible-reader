@@ -9,7 +9,8 @@ import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useTitle } from '@vueuse/core';
 
 const translationList = supportedTranslations;
 
@@ -61,19 +62,20 @@ const highlightedStyle = {
 };
 const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(number) ? highlightedStyle : undefined;
 
-const updateTitle = () => {
-    document.title = selectedChapter.value != null
-        ? `${selectedBook.value?.name} ${selectedChapter.value?.number} (${selectedTranslation.value?.id?.toUpperCase()}) | Bible Reader`
-        : 'Bible Reader';
-}
 
-onMounted(updateTitle);
+const initialTitle = document.title;
+useTitle(
+    computed(() => selectedChapter.value != null
+        ? `${selectedBook.value?.name} ${selectedChapter.value?.number} (${selectedTranslation.value?.id?.toUpperCase()}) | ${initialTitle}`
+        : initialTitle
+    )
+);
 
 </script>
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" @update:chapter="updateTitle" class="print:hidden" />
+        v-model:chapter="selectedChapter" class="print:hidden" />
     <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh] print:m-0">
         <div>
             <div class="flex flex-row w-full items-center py-12">
