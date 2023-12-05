@@ -64,8 +64,8 @@ const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" />
-    <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh]">
+        v-model:chapter="selectedChapter" class="print:hidden" />
+    <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh] print:m-0">
         <div>
             <div class="flex flex-row w-full items-center py-12">
                 <Divider />
