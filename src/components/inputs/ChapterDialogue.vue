@@ -15,7 +15,11 @@ const props = defineProps<{
     /**
      * The selected `Chapter`.
      */
-    modelValue?: Chapter
+    modelValue?: Chapter,
+    /**
+     * The name of the currently selected `Book`.
+     */
+    bookName?: string
 }>();
 
 const emits = defineEmits<{
@@ -35,7 +39,7 @@ const disabled = computed(() => props.chapters == null);
 <template>
     <DialogueSelectButton @click="visible = true" :disabled="disabled">
         <div v-if="selectedChapter && !disabled" class="flex align-items-center">
-            <div>Chapter {{ selectedChapter?.number }}</div>
+            <div>{{ bookName ?? 'Chapter' }} {{ selectedChapter?.number }}</div>
         </div>
         <div v-else>
             Select Chapter...
@@ -47,7 +51,7 @@ const disabled = computed(() => props.chapters == null);
             filterPlaceholder="Filter...">
             <template #option="slotProps">
                 <div class="flex align-items-center">
-                    <div>Chapter {{ slotProps.option.number }}</div>
+                    <div>{{ bookName ?? 'Chapter' }} {{ slotProps.option.number }}</div>
                 </div>
             </template>
         </Listbox>

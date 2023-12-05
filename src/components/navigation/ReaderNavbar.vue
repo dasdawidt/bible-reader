@@ -119,7 +119,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <div class="flex flex-col w-full md:flex-row gap-2">
             <TranslationDialogue v-model="selectedTranslation" :translations="translations" />
             <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
-            <ChapterDialogue v-model="selectedChapter" :chapters="selectedBook?.chapters" />
+            <ChapterDialogue v-model="selectedChapter" :chapters="selectedBook?.chapters" :book-name="selectedBook?.name" />
         </div>
     </div>
 </template>
