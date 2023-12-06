@@ -3,6 +3,7 @@ import Button from 'primevue/button';
 import BookDialogue from '@/components/inputs/BookDialogue.vue';
 import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
 import ChapterDialogue from '@/components/inputs/ChapterDialogue.vue';
+import Divider from 'primevue/divider';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
@@ -171,9 +172,8 @@ function cut(text: string) {
         </div>
 
         <!-- Toggleable menu -->
-        <div class="flex w-full gap-2 items-center" :class="isOnMobile ? 'flex-col-reverse pb-2.5' : 'flex-col pt-2.5'"
-            ref="menuElement">
-            <!-- <Button icon="mdi mdi-cog" text severity="secondary" /> -->
+        <div class="flex w-full gap-2 items-center"
+            :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
             <div class="flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialogue v-model="selectedTranslation" :translations="translations" />
                 <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
