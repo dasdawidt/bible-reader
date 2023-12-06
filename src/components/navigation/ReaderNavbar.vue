@@ -155,8 +155,8 @@ function cut(text: string) {
 </script>
 
 <template>
-    <div class="flex flex-col z-10 p-2 gap-2 w-full fixed shadow-md left-0 border border-solid" :class="menuClass"
-        style="background-color: var(--surface-b); border-color: var(--surface-border)" :style="menuStyle">
+    <div class="flex flex-col z-10 p-2 gap-2 w-full fixed shadow-md -left-[0.5px] border border-solid" :class="menuClass"
+        style="background-color: var(--surface-b); border-color: var(--surface-border);" :style="menuStyle">
 
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row w-full justify-between gap-2">
