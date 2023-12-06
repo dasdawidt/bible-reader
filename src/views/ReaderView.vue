@@ -11,6 +11,7 @@ import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import { computed, onMounted } from 'vue';
 import { useTitle } from '@vueuse/core';
+import Footer from '@/components/Footer.vue';
 
 const translationList = supportedTranslations;
 
@@ -76,8 +77,8 @@ useTitle(
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
         v-model:chapter="selectedChapter" class="print:hidden" />
-    <div v-if="selectedChapter != null" class="p-4 mb-[40vh] mt-[20vh] print:m-0">
-        <div>
+    <div class="px-4 pb-[40vh] pt-[20vh] print:m-0 flex flex-col min-h-screen">
+        <div v-if="selectedChapter != null">
             <div class="flex flex-row w-full items-center py-12">
                 <Divider />
                 <span class="text-2xl font-bold whitespace-nowrap px-3">
@@ -96,6 +97,9 @@ useTitle(
                 </div>
                 <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
             </div>
+            <Divider class="py-6" />
         </div>
+        <div class="flex-grow" />
+        <Footer />
     </div>
 </template>
