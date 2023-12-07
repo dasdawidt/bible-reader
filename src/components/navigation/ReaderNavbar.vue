@@ -200,7 +200,6 @@ function cut(text: string) {
                 <BookDialogue v-model="selectedBook" :books="books" />
                 <ChapterDialogue v-model="selectedChapter" :chapters="chapters" :book-name="selectedBook?.name" />
             </div>
-            {{ nextLoading }}
         </div>
     </div>
 </template>
