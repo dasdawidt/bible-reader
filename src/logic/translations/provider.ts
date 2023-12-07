@@ -1,16 +1,21 @@
 import { TranslationList } from '@/types/bible/translationList';
-import { gloTranslation } from './gloTranslation';
-import { kjvTranslation } from './kjvTranslation';
+import { gloProvider } from './gloTranslation';
+import { kjvProvider } from './kjvTranslation';
 
 export const supportedTranslations: TranslationList = [
     {
         id: 'de',
         name: 'German',
-        translations: [gloTranslation],
+        translations: [gloProvider.info],
     },
     {
         id: 'en',
         name: 'English',
-        translations: [kjvTranslation],
+        translations: [kjvProvider.info],
     },
 ];
+
+const translations = [gloProvider, kjvProvider];
+
+export const findTranslation = (id: string) =>
+    translations.find((t) => t.info.id === id);

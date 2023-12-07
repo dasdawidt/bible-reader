@@ -3,38 +3,23 @@ import { ref, computed } from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
-import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import DialogueSelectButton from "./DialogueSelectButton.vue";
-// import { BookTypeOldTestament } from "@/types/bible/bookTypeOldTestament";
-// import { BookTypeNewTestament } from "@/types/bible/bookTypeNewTestament";
+import { BookInfo } from "@/types/bible/bookInfo";
 
 const props = defineProps<{
     /**
      * A list of `Book`s from which to choose one.
      */
-    books?: Book[],
+    books?: BookInfo[],
     /**
      * The selected `Book`.
      */
-    modelValue?: Book
+    modelValue?: BookInfo
 }>();
 
-// const bookList = computed(() => [
-//     {
-//         name: 'Old Testament',
-//         type: BookTypeOldTestament,
-//         books: props.books.filter(b => Object.values<number>(BookTypeOldTestament).),
-//     },
-//     {
-//         name: 'New Testament',
-//         type: BookTypeNewTestament,
-//         books: Book[],
-//     }
-// ])
-
 const emits = defineEmits<{
-    (event: 'update:modelValue', value: Book): void
+    (event: 'update:modelValue', value: BookInfo): void
 }>();
 
 const selectedBook = computed({

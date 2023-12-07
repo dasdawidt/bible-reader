@@ -3,10 +3,10 @@ import { computed, ref } from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
-import { Translation } from "@/types/bible/translation";
 import { TranslationList } from "@/types/bible/translationList";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import DialogueSelectButton from "./DialogueSelectButton.vue";
+import { TranslationInfo } from "@/types/bible/translationInfo";
 
 const props = defineProps<{
     /**
@@ -16,14 +16,14 @@ const props = defineProps<{
     /**
      * The selected `Translation`.
      */
-    modelValue?: Translation;
+    modelValue?: TranslationInfo;
 }>();
 
 const emits = defineEmits<{
-    (event: 'update:modelValue', value: Translation): void
+    (event: 'update:modelValue', value: TranslationInfo): void
 }>();
 
-const selectedTranslation = computed<Translation>({
+const selectedTranslation = computed<TranslationInfo>({
     get: () => props.modelValue,
     set: v => emits('update:modelValue', v),
 });

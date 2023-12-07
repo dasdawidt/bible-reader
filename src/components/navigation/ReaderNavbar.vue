@@ -3,14 +3,13 @@ import Button from 'primevue/button';
 import BookDialogue from '@/components/inputs/BookDialogue.vue';
 import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
 import ChapterDialogue from '@/components/inputs/ChapterDialogue.vue';
-import Divider from 'primevue/divider';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Book } from '@/types/bible/book';
-import { Chapter } from '@/types/bible/chapter';
-import { Translation } from '@/types/bible/translation';
 import { computed, ref } from 'vue';
 import { computedWithControl, onKeyStroke, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
+import { TranslationInfo } from '@/types/bible/translationInfo';
+import { BookInfo } from '@/types/bible/bookInfo';
+import { ChapterInfo } from '@/types/bible/chapterInfo';
 
 
 
@@ -23,16 +22,18 @@ const { isOnMobile } = useOnMobile();
 // Props and emits
 
 const props = defineProps<{
-    translations?: TranslationList,
-    chapter?: Chapter,
-    book?: Book,
-    translation?: Translation
+    translations?: TranslationList;
+    translation?: TranslationInfo;
+    books?: BookInfo[];
+    book?: BookInfo;
+    chapters?: ChapterInfo[];
+    chapter?: ChapterInfo;
 }>();
 
 const emits = defineEmits<{
-    (e: 'update:chapter', v: Chapter): void;
-    (e: 'update:book', v: Book): void;
-    (e: 'update:translation', v: Translation): void;
+    (e: 'update:chapter', v: ChapterInfo): void;
+    (e: 'update:book', v: BookInfo): void;
+    (e: 'update:translation', v: TranslationInfo): void;
 }>();
 
 const selectedChapter = computed({
@@ -57,15 +58,15 @@ const selectedTranslation = computed({
 const previousPossible = computed(() => canNavigate('previous'));
 const nextPossible = computed(() => canNavigate('next'));
 
-function canNavigate(direction: 'next' | 'previous'): { book: Book, chapter: Chapter } | undefined {
+function canNavigate(direction: 'next' | 'previous'): { bookInfo: BookInfo, chapterInfo: ChapterInfo } | undefined {
     if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
     const diff = direction === 'next' ? 1 : -1;
-    const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
-    if (toChapter != null) return { chapter: toChapter, book: selectedBook.value };
-    const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
+    const toChapter = props.chapters?.find(c => c?.number === selectedChapter.value?.number + diff);
+    if (toChapter != null) return { chapterInfo: toChapter, bookInfo: selectedBook.value };
+    const toBook = props.books?.find(b => b.type === selectedBook.value?.type + diff);
     if (toBook != null) {
-        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
-        return { chapter: toBook.chapters?.[toChapterIndex], book: toBook };
+        const toChapterIndex = direction === 'next' ? 0 : props.chapters?.length - 1;
+        return { chapterInfo: props.chapters?.[toChapterIndex], bookInfo: toBook };
     }
     return undefined;
 }
@@ -76,8 +77,8 @@ const navigateNext = () => navigate('next');
 function navigate(direction: 'next' | 'previous') {
     const canNavig = canNavigate(direction);
     if (canNavig != null) {
-        selectedBook.value = canNavig.book;
-        selectedChapter.value = canNavig.chapter;
+        selectedBook.value = canNavig.bookInfo;
+        selectedChapter.value = canNavig.chapterInfo;
         window.scroll({ top: 0 });
     }
 }
@@ -162,12 +163,12 @@ function cut(text: string) {
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row w-full justify-between gap-2">
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-left" rounded text
-                :label="previousPossible ? `${cut(previousPossible.book?.name)} ${previousPossible.chapter?.number}` : 'Eternity'"
+                :label="previousPossible ? `${cut(previousPossible.bookInfo?.name)} ${previousPossible.chapterInfo}` : 'Eternity'"
                 :disabled="previousPossible == null" @click="navigatePrevious" />
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
-                :label="nextPossible ? `${cut(nextPossible.book?.name)} ${nextPossible.chapter?.number}` : 'Eternity'"
+                :label="nextPossible ? `${cut(nextPossible.bookInfo?.name)} ${nextPossible.chapterInfo}` : 'Eternity'"
                 :disabled="nextPossible == null" @click="navigateNext" />
         </div>
 
@@ -176,9 +177,8 @@ function cut(text: string) {
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
             <div class="flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialogue v-model="selectedTranslation" :translations="translations" />
-                <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
-                <ChapterDialogue v-model="selectedChapter" :chapters="selectedBook?.chapters"
-                    :book-name="selectedBook?.name" />
+                <BookDialogue v-model="selectedBook" :books="books" />
+                <ChapterDialogue v-model="selectedChapter" :chapters="chapters" :book-name="selectedBook?.name" />
             </div>
         </div>
     </div>

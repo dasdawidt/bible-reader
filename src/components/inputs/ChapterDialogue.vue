@@ -5,17 +5,17 @@ import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import DialogueSelectButton from "./DialogueSelectButton.vue";
-import { Chapter } from "@/types/bible/chapter";
+import { ChapterInfo } from "@/types/bible/chapterInfo";
 
 const props = defineProps<{
     /**
      * A list of `Chapters`s from which to choose one.
      */
-    chapters?: Chapter[],
+    chapters?: ChapterInfo[],
     /**
      * The selected `Chapter`.
      */
-    modelValue?: Chapter,
+    modelValue?: ChapterInfo,
     /**
      * The name of the currently selected `Book`.
      */
@@ -23,7 +23,7 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits<{
-    (event: 'update:modelValue', value: Chapter): void
+    (event: 'update:modelValue', value: ChapterInfo): void
 }>();
 
 const selectedChapter = computed({
@@ -39,7 +39,7 @@ const disabled = computed(() => props.chapters == null);
 <template>
     <DialogueSelectButton @click="visible = true" :disabled="disabled">
         <div v-if="selectedChapter && !disabled" class="flex align-items-center">
-            <div>{{ bookName ?? 'Chapter' }} {{ selectedChapter?.number }}</div>
+            <div>{{ bookName ?? 'Chapter' }} {{ selectedChapter }}</div>
         </div>
         <div v-else>
             Select Chapter...
@@ -51,7 +51,7 @@ const disabled = computed(() => props.chapters == null);
             filterPlaceholder="Filter...">
             <template #option="slotProps">
                 <div class="flex align-items-center">
-                    <div>{{ bookName ?? 'Chapter' }} {{ slotProps.option.number }}</div>
+                    <div>{{ bookName ?? 'Chapter' }} {{ slotProps.option }}</div>
                 </div>
             </template>
         </Listbox>

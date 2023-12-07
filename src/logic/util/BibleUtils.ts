@@ -5,7 +5,7 @@ import { TranslationList } from '@/types/bible/translationList';
 import { Verse } from '@/types/bible/verse';
 import { Passage } from '@/types/plans/passage';
 
-export function findTranslation(list: TranslationList, id: string) {
+export function findTranslationInfo(list: TranslationList, id: string) {
     return list
         .flatMap((l) => l.translations)
         .find((t) => t.id.toLowerCase() === id?.toLowerCase());
