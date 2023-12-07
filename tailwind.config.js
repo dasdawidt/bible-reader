@@ -6,6 +6,9 @@ export default {
             maxWidth: {
                 container: '800px',
             },
+            maxHeight: {
+                'bottom-sheet': '65vh',
+            },
         },
     },
     plugins: [],

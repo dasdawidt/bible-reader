@@ -44,7 +44,8 @@ const visible = ref(false);
         </div>
     </DialogueSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Translation"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
+        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
+        :class="[!isOnMobile || 'max-h-bottom-sheet']">
         <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
             optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
             filterPlaceholder="Filter..." :pt="{ itemGroup: { class: 'bg-transparent' } }">
