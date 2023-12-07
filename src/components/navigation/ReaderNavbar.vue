@@ -10,6 +10,8 @@ import { TranslationList } from '@/types/bible/translationList';
 import { TranslationInfo } from '@/types/bible/translationInfo';
 import { BookInfo } from '@/types/bible/bookInfo';
 import { ChapterInfo } from '@/types/bible/chapterInfo';
+import { TranslationProvider } from '@/types/logic/TranslationProvider';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 
 
 
@@ -24,6 +26,7 @@ const { isOnMobile } = useOnMobile();
 const props = defineProps<{
     translations?: TranslationList;
     translation?: TranslationInfo;
+    translationProvider?: TranslationProvider;
     books?: BookInfo[];
     book?: BookInfo;
     chapters?: ChapterInfo[];
@@ -55,15 +58,24 @@ const selectedTranslation = computed({
 
 // Navigation
 
-const previousPossible = computed(() => canNavigate('previous'));
-const nextPossible = computed(() => canNavigate('next'));
+const { data: previousPossible } = useQuery({
+    queryKey: ['previous-possible', props],
+    queryFn: async () => await canNavigate('previous'),
+});
+const { data: nextPossible } = useQuery({
+    queryKey: ['next-possible', props],
+    queryFn: async () => await canNavigate('next'),
+});
 
-function canNavigate(direction: 'next' | 'previous'): { bookInfo: BookInfo, chapterInfo: ChapterInfo } | undefined {
+// const previousPossible = computed(() => canNavigate('previous'));
+// const nextPossible = computed(() => canNavigate('next'));
+
+async function canNavigate(direction: 'next' | 'previous'): Promise<{ bookInfo: BookInfo, chapterInfo: ChapterInfo } | undefined> {
     if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
     const diff = direction === 'next' ? 1 : -1;
-    const toChapter = props.chapters?.find(c => c?.number === selectedChapter.value?.number + diff);
+    const toChapter = await props.translationProvider?.getChapter(selectedBook.value?.type, selectedChapter.value?.number + diff);
     if (toChapter != null) return { chapterInfo: toChapter, bookInfo: selectedBook.value };
-    const toBook = props.books?.find(b => b.type === selectedBook.value?.type + diff);
+    const toBook = await props.translationProvider?.getBook(selectedBook.value?.type + diff);
     if (toBook != null) {
         const toChapterIndex = direction === 'next' ? 0 : props.chapters?.length - 1;
         return { chapterInfo: props.chapters?.[toChapterIndex], bookInfo: toBook };
@@ -71,11 +83,19 @@ function canNavigate(direction: 'next' | 'previous'): { bookInfo: BookInfo, chap
     return undefined;
 }
 
-const navigatePrevious = () => navigate('previous');
-const navigateNext = () => navigate('next');
+const { mutateAsync: navigatePrevious, isPending: previousLoading } = useMutation({
+    mutationKey: ['navigate-previous', props],
+    mutationFn: () => navigate('previous'),
+});
+const { mutateAsync: navigateNext, isPending: nextLoading } = useMutation({
+    mutationKey: ['navigate-next', props],
+    mutationFn: () => navigate('next'),
+});
+// const navigatePrevious = () => navigate('previous');
+// const navigateNext = () => navigate('next');
 
-function navigate(direction: 'next' | 'previous') {
-    const canNavig = canNavigate(direction);
+async function navigate(direction: 'next' | 'previous') {
+    const canNavig = await canNavigate(direction);
     if (canNavig != null) {
         selectedBook.value = canNavig.bookInfo;
         selectedChapter.value = canNavig.chapterInfo;
@@ -83,8 +103,8 @@ function navigate(direction: 'next' | 'previous') {
     }
 }
 
-onKeyStroke('ArrowRight', navigateNext);
-onKeyStroke('ArrowLeft', navigatePrevious);
+onKeyStroke('ArrowRight', () => navigateNext());
+onKeyStroke('ArrowLeft', () => navigatePrevious());
 
 
 
@@ -164,12 +184,12 @@ function cut(text: string) {
         <div class="flex flex-row w-full justify-between gap-2">
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-left" rounded text
                 :label="previousPossible ? `${cut(previousPossible.bookInfo?.name)} ${previousPossible.chapterInfo?.number}` : 'Eternity'"
-                :disabled="previousPossible == null" @click="navigatePrevious" />
+                :disabled="previousPossible == null" @click="() => navigatePrevious()" :loading="previousLoading" />
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
                 :label="nextPossible ? `${cut(nextPossible.bookInfo?.name)} ${nextPossible.chapterInfo?.number}` : 'Eternity'"
-                :disabled="nextPossible == null" @click="navigateNext" />
+                :disabled="nextPossible == null" @click="() => navigateNext()" :loading="nextLoading" />
         </div>
 
         <!-- Toggleable menu -->
@@ -180,6 +200,7 @@ function cut(text: string) {
                 <BookDialogue v-model="selectedBook" :books="books" />
                 <ChapterDialogue v-model="selectedChapter" :chapters="chapters" :book-name="selectedBook?.name" />
             </div>
+            {{ nextLoading }}
         </div>
     </div>
 </template>

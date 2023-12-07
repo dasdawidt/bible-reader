@@ -100,8 +100,9 @@ useTitle(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslationInfo"
-        :books="selectedTranslationProvider?.supportedBooks" v-model:book="selectedBookInfo"
-        :chapters="selectedBook?.chapters" v-model:chapter="selectedChapterInfo" class="print:hidden" />
+        :translation-provider="selectedTranslationProvider" :books="selectedTranslationProvider?.supportedBooks"
+        v-model:book="selectedBookInfo" :chapters="selectedBook?.chapters" v-model:chapter="selectedChapterInfo"
+        class="print:hidden" />
     <div class="px-4 pb-[40vh] pt-[20vh] print:m-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
             <div class="flex flex-row w-full items-center py-12">
