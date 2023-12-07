@@ -10,10 +10,10 @@
     },
     "dependencies": {
         "@mdi/font": "^7.3.67",
+        "@tanstack/vue-query": "^5.12.2",
         "@vueuse/core": "^10.7.0",
         "primevue": "^3.43.0",
         "vue": "^3.3.10",
-        "vue-query": "^1.26.0",
         "vue-router": "^4.2.5"
     },
     "devDependencies": {
