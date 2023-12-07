@@ -1,8 +1,9 @@
-@layer tailwind-base, primevue, tailwind-utilities;
+@import url('primevue/resources/themes/lara-light-green/theme.css');
+@import url('primevue/resources/themes/lara-dark-green/theme.css') (prefers-color-scheme: dark);
 
-@layer trailwind-base {}
+@layer primevue, tailwind;
 
-@layer tailwind-utilities {
+@layer tailwind {
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
