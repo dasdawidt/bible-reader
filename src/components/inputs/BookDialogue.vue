@@ -58,7 +58,8 @@ const disabled = computed(() => props.books == null);
         </div>
     </DialogueSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Book"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
+        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
+        :class="[!isOnMobile || 'max-h-bottom-sheet']">
         <Listbox v-model="selectedBook" :options="books" optionLabel="name" class="w-full" @change="visible = false"
             filterPlaceholder="Filter...">
             <template #option="slotProps">

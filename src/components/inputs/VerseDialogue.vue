@@ -77,7 +77,8 @@ function confirm() {
         </div>
     </DialogueSelectButton>
     <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container">
+        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container"
+        :class="[!isOnMobile || 'max-h-bottom-sheet']">
         <template #header>
             <div class="flex flex-col w-full gap-4 -mb-5">
                 <span class="text-xl font-bold">

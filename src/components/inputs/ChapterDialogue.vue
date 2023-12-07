@@ -46,7 +46,8 @@ const disabled = computed(() => props.chapters == null);
         </div>
     </DialogueSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Chapter"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
+        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
+        :class="[!isOnMobile || 'max-h-bottom-sheet']">
         <Listbox v-model="selectedChapter" :options="chapters" class="w-full" @change="visible = false"
             filterPlaceholder="Filter...">
             <template #option="slotProps">
