@@ -18,4 +18,4 @@ export const supportedTranslations: TranslationList = [
 const translations = [gloProvider, kjvProvider];
 
 export const findTranslation = (id: string) =>
-    translations.find((t) => t.info.id === id);
+    translations.find((t) => t.info.id.toLowerCase() === id.toLowerCase());
