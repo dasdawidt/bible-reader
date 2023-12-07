@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import Divider from 'primevue/divider';
+import Footer from '@/components/Footer.vue';
+import { TranslationInfo } from '@/types/bible/translationInfo';
 import { Book } from '@/types/bible/book';
+import { BookInfo } from '@/types/bible/bookInfo';
 import { BookTypeOldTestament } from '@/types/bible/bookTypeOldTestament';
+import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
+import { Chapter } from '@/types/bible/chapter';
+import { ChapterInfo } from '@/types/bible/chapterInfo';
 import { findTranslation, supportedTranslations } from '@/logic/translations/provider';
 import { findTranslationInfo } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
-import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
-import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import { computed } from 'vue';
 import { useTitle } from '@vueuse/core';
-import Footer from '@/components/Footer.vue';
-import { TranslationInfo } from '@/types/bible/translationInfo';
-import { BookInfo } from '@/types/bible/bookInfo';
 import { useQuery } from '@tanstack/vue-query';
-import { Chapter } from '@/types/bible/chapter';
-import { ChapterInfo } from '@/types/bible/chapterInfo';
 
 const translationList = supportedTranslations;
 
@@ -33,7 +33,7 @@ const selectedBookInfo = fromQuery<BookInfo>(
     'b',
     (id: string) => {
         if (selectedTranslationInfo.value != null)
-            return selectedTranslationProvider.value.supportedBooks
+            return selectedTranslationProvider.value?.supportedBooks
                 .find(b =>
                     b.type === (
                         BookTypeOldTestament[id?.toUpperCase()]
@@ -47,10 +47,10 @@ const selectedBookInfo = fromQuery<BookInfo>(
     )?.toLowerCase()
 );
 
-const { data: selectedBook } = useQuery<Book, Error>({
-    queryKey: [selectedBookInfo.value],
+const { data: selectedBook, refetch } = useQuery<Book, Error>({
+    queryKey: ['book', selectedTranslationInfo, selectedBookInfo],
     queryFn: async () => {
-        const data = await selectedTranslationProvider.value.getBook(selectedBookInfo.value.type)
+        const data = await selectedTranslationProvider.value?.getBook(selectedBookInfo.value?.type);
         if (data == null) throw new Error(`Cannot find Book ${selectedBookInfo.value?.type} of Translation ${selectedTranslationInfo.value?.id}.`);
         return data;
     }
@@ -58,12 +58,16 @@ const { data: selectedBook } = useQuery<Book, Error>({
 
 const selectedChapterInfo = fromQuery<ChapterInfo>(
     'c',
-    (id: string) => selectedBook.value?.chapters?.find(c => c?.number === Number.parseInt(id)),
-    (chapterInfo: ChapterInfo) => chapterInfo.toString()
+    (number: string) => {
+        if (selectedBook.value != null)
+            return selectedBook.value?.chapters
+                .find(c => c.number === Number.parseInt(number));
+    },
+    (chapterInfo: ChapterInfo) => chapterInfo.number.toString()
 );
 
 const { data: selectedChapter } = useQuery<Chapter, Error>({
-    queryKey: [selectedBookInfo.value, selectedChapterInfo.value],
+    queryKey: ['chapter', selectedTranslationInfo, selectedBookInfo, selectedChapterInfo],
     queryFn: async () => {
         const data = await selectedTranslationProvider.value?.getChapter(selectedBookInfo.value?.type, selectedChapterInfo.value?.number)
         if (data == null) throw new Error(`Cannot find Chapter ${selectedChapter.value} in Book ${selectedBookInfo.value?.type} of Translation ${selectedTranslationInfo.value?.id}.`);

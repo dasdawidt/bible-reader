@@ -163,12 +163,12 @@ function cut(text: string) {
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row w-full justify-between gap-2">
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-left" rounded text
-                :label="previousPossible ? `${cut(previousPossible.bookInfo?.name)} ${previousPossible.chapterInfo}` : 'Eternity'"
+                :label="previousPossible ? `${cut(previousPossible.bookInfo?.name)} ${previousPossible.chapterInfo?.number}` : 'Eternity'"
                 :disabled="previousPossible == null" @click="navigatePrevious" />
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
             <Button class="w-full max-w-xs" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
-                :label="nextPossible ? `${cut(nextPossible.bookInfo?.name)} ${nextPossible.chapterInfo}` : 'Eternity'"
+                :label="nextPossible ? `${cut(nextPossible.bookInfo?.name)} ${nextPossible.chapterInfo?.number}` : 'Eternity'"
                 :disabled="nextPossible == null" @click="navigateNext" />
         </div>
 
