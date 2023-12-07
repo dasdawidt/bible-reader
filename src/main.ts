@@ -6,7 +6,7 @@ import ToastService from 'primevue/toastservice';
 import Router from './router';
 
 import './style.css';
-import '@mdi/font/css/materialdesignicons.css'
+import '@mdi/font/css/materialdesignicons.css';
 
 createApp(App)
     .use(PrimeVue, {
