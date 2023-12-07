@@ -1,3 +1,4 @@
+import { BookType } from '@/types/bible/bookType';
 import { Translation } from '../../types/bible/translation';
 import { TranslationProvider } from '../../types/logic/TranslationProvider';
 import { getBook, getChapter, getVerse } from '../util/BibleUtils';
@@ -17,15 +18,19 @@ export const kjvProvider: TranslationProvider = {
     get supportedBooks() {
         return kjvTranslation.books?.map((b) => b);
     },
-    getBook(type) {
-        return new Promise(() => getBook(kjvTranslation, type));
+    async getBook(type: BookType) {
+        return getBook(kjvTranslation, type);
     },
-    async getChapter(book, chapter) {
-        return new Promise(() => getChapter(kjvTranslation, book, chapter));
+    async supportedChapters(type: BookType) {
+        return getBook(kjvTranslation, type).chapters;
     },
-    async getVerse(book, chapter, verse) {
-        return new Promise(() =>
-            getVerse(kjvTranslation, book, chapter, verse)
-        );
+    async getChapter(book: BookType, chapter: number) {
+        return getChapter(kjvTranslation, book, chapter);
+    },
+    async supportedVerses(book: BookType, chapter: number) {
+        return getChapter(kjvTranslation, book, chapter).verses;
+    },
+    async getVerse(book: BookType, chapter: number, verse: number) {
+        return getVerse(kjvTranslation, book, chapter, verse);
     },
 };

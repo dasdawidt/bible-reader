@@ -1,3 +1,4 @@
+import { BookType } from '@/types/bible/bookType';
 import { Translation } from '../../types/bible/translation';
 import { TranslationProvider } from '../../types/logic/TranslationProvider';
 import { getBook, getChapter, getVerse } from '../util/BibleUtils';
@@ -17,15 +18,20 @@ export const gloProvider: TranslationProvider = {
     get supportedBooks() {
         return gloTranslation.books?.map((b) => b);
     },
-    getBook(type) {
-        return new Promise(() => getBook(gloTranslation, type));
+    async getBook(type: BookType) {
+        return getBook(gloTranslation, type);
+        // return gloTranslation.books.find((b) => b.type === type);
     },
-    async getChapter(book, chapter) {
-        return new Promise(() => getChapter(gloTranslation, book, chapter));
+    async supportedChapters(type: BookType) {
+        return getBook(gloTranslation, type).chapters;
     },
-    async getVerse(book, chapter, verse) {
-        return new Promise(() =>
-            getVerse(gloTranslation, book, chapter, verse)
-        );
+    async getChapter(book: BookType, chapter: number) {
+        return getChapter(gloTranslation, book, chapter);
+    },
+    async supportedVerses(book: BookType, chapter: number) {
+        return getChapter(gloTranslation, book, chapter).verses;
+    },
+    async getVerse(book: BookType, chapter: number, verse: number) {
+        return getVerse(gloTranslation, book, chapter, verse);
     },
 };
