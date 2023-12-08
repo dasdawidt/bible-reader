@@ -3,7 +3,6 @@ import Button from 'primevue/button';
 import BookDialogue from '@/components/inputs/BookDialogue.vue';
 import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
 import ChapterDialogue from '@/components/inputs/ChapterDialogue.vue';
-import Divider from 'primevue/divider';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
