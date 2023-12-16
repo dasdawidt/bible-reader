@@ -9,7 +9,7 @@ import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
 
