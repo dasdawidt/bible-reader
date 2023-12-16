@@ -10,6 +10,7 @@ import { Translation } from '@/types/bible/translation';
 import { computed, ref } from 'vue';
 import { computedWithControl, onKeyStroke, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
+import ThemeSwitcher from '../ThemeSwitcher.vue';
 
 
 
@@ -173,6 +174,7 @@ function cut(text: string) {
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
+            <ThemeSwitcher />
             <div class="flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialogue v-model="selectedTranslation" :translations="translations" />
                 <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />

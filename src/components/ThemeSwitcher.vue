@@ -1,40 +1,29 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
-import { changeTheme } from '@/logic/util/Theme';
-import InputSwitch from 'primevue/inputswitch';
+import SelectButton from 'primevue/selectbutton';
+import { useTheme } from '@/plugins/ThemePlugin';
+import { ColorSchemeType } from '@vueuse/core';
 
-const darkModeValue = ref(true);
-const darkMode = computed({
-    get: () => darkModeValue.value,
-    set: newValue => {
-        darkModeValue.value = newValue;
-        updateDarkTheme();
-    }
-});
-
-document.addEventListener('keyup', e => {
-    if (e.altKey && e.key == 't') {
-        e.preventDefault();
-        darkMode.value = !darkMode.value;
-    }
-});
-
-function updateDarkTheme() {
-    darkMode.value
-        ? changeTheme('light', 'dark', 'theme-link')
-        : changeTheme('dark', 'light', 'theme-link');
-}
-
-onBeforeMount(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        darkMode.value = true;
-    } else {
-        darkMode.value = false;
-    }
-});
+const colorScheme = useTheme();
+const options: {
+    label: string,
+    value: ColorSchemeType
+}[] = [
+        {
+            label: 'Light',
+            value: 'light',
+        },
+        {
+            label: 'System',
+            value: 'no-preference',
+        },
+        {
+            label: 'Dark',
+            value: 'dark',
+        }
+    ];
 
 </script>
 
 <template>
-    <InputSwitch v-model="darkMode" v-if="false" />
+    <SelectButton v-model="colorScheme" :options="options" :option-value="o => o.value" :option-label="o => o.label" />
 </template>

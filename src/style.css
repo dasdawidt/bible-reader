@@ -1,6 +1,3 @@
-@import url('primevue/resources/themes/lara-light-green/theme.css');
-@import url('primevue/resources/themes/lara-dark-green/theme.css') (prefers-color-scheme: dark);
-
 @layer primevue, tailwind;
 
 @layer tailwind {
