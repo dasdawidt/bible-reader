@@ -9,14 +9,11 @@ import { UseQueryReturnType } from 'vue-query';
 export type TranslationProvider = {
     info: TranslationInfo;
     supportedBooks: BookInfo[];
-    getBook(type: BookType): UseQueryReturnType<Book, string>;
-    getChapter(
-        book: BookType,
-        chapter: number
-    ): UseQueryReturnType<Chapter, string>;
+    getBook(type: BookType): Promise<Book, string>;
+    getChapter(book: BookType, chapter: number): Promise<Chapter, string>;
     getVerse(
         book: BookType,
         chapter: number,
         verse: number
-    ): UseQueryReturnType<Verse, string>;
+    ): Promise<Verse, string>;
 };
