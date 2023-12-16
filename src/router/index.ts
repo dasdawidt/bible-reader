@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import ReaderView from '@/views/ReaderView.vue';
+import DisplayView from '@/views/DisplayView.vue';
 
 export default createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,11 @@ export default createRouter({
             path: '/reader',
             name: 'reader',
             component: ReaderView,
+        },
+        {
+            path: '/view',
+            name: 'view',
+            component: DisplayView,
         },
         {
             path: '/:pathMatch(.*)*',
