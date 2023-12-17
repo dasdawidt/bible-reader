@@ -1,6 +1,6 @@
 {
     "theme_color": "#f9fafb",
-    "background_color": "#ffffff",
+    "background_color": "#f9fafb",
     "display": "standalone",
     "scope": "/bible-reader/",
     "start_url": "/bible-reader/",
