@@ -174,13 +174,12 @@ function cut(text: string) {
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
-
+            <SettingsDialog />
             <div class="flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialog v-model="selectedTranslation" :translations="translations" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
                 <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
                     :book-name="selectedBook?.name" />
-                <SettingsDialog />
             </div>
         </div>
     </div>
