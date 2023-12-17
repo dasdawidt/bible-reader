@@ -1,0 +1,4 @@
+.p-divider.p-divider-horizontal:before {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
