@@ -1,2 +1,10 @@
 @import url('primevue/resources/themes/lara-dark-green/theme.css');
 @import url('./fixes.css');
+
+:root {
+    --surface-underground: hsl(221, 39%, 6%);
+}
+
+body {
+    background-color: var(--surface-underground);
+}
