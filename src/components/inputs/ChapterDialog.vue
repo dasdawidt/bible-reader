@@ -4,7 +4,7 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import { useOnMobile } from "@/logic/util/MobileDetection";
-import DialogueSelectButton from "./DialogueSelectButton.vue";
+import DialogueSelectButton from "./DialogSelectButton.vue";
 import { Chapter } from "@/types/bible/chapter";
 
 const props = defineProps<{
