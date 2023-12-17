@@ -3,7 +3,7 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import Divider from "primevue/divider";
-import DialogueSelectButton from "./DialogueSelectButton.vue";
+import DialogueSelectButton from "./DialogSelectButton.vue";
 import { ref, computed } from "vue";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";

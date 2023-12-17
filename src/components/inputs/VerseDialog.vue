@@ -12,7 +12,7 @@ import { BookType } from "@/types/bible/bookType";
 import { Translation } from "@/types/bible/translation";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import { formatPassages, getBook, toPassageVerseList } from "@/logic/util/BibleUtils";
-import DialogueSelectButton from "./DialogueSelectButton.vue";
+import DialogueSelectButton from "./DialogSelectButton.vue";
 
 const props = defineProps<{
     /**
