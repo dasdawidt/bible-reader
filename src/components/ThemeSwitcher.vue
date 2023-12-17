@@ -1,40 +1,43 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
-import { changeTheme } from '@/logic/util/Theme';
-import InputSwitch from 'primevue/inputswitch';
+import SelectButton from 'primevue/selectbutton';
+import { useTheme } from '@/plugins/ThemePlugin';
+import { ColorSchemeType } from '@vueuse/core';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 
-const darkModeValue = ref(true);
-const darkMode = computed({
-    get: () => darkModeValue.value,
-    set: newValue => {
-        darkModeValue.value = newValue;
-        updateDarkTheme();
-    }
-});
-
-document.addEventListener('keyup', e => {
-    if (e.altKey && e.key == 't') {
-        e.preventDefault();
-        darkMode.value = !darkMode.value;
-    }
-});
-
-function updateDarkTheme() {
-    darkMode.value
-        ? changeTheme('light', 'dark', 'theme-link')
-        : changeTheme('dark', 'light', 'theme-link');
-}
-
-onBeforeMount(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        darkMode.value = true;
-    } else {
-        darkMode.value = false;
-    }
-});
+const { isOnMobile } = useOnMobile();
+const colorScheme = useTheme();
+const options: {
+    label: string,
+    value: ColorSchemeType,
+    icon: string,
+}[] = [
+        {
+            label: 'Light',
+            value: 'light',
+            icon: 'mdi-white-balance-sunny',
+        },
+        {
+            label: 'System',
+            value: 'no-preference',
+            icon: isOnMobile.value ? 'mdi-cellphone' : 'mdi-laptop',
+        },
+        {
+            label: 'Dark',
+            value: 'dark',
+            icon: 'mdi-brightness-2',
+        }
+    ];
 
 </script>
 
 <template>
-    <InputSwitch v-model="darkMode" v-if="false" />
+    <SelectButton class="flex w-full flex-row" v-model="colorScheme" :options="options" :option-value="o => o.value"
+        :pt="{ button: { class: 'w-full' } }">
+        <template #option="slotProps">
+            <div class="flex flex-row flex-nowrap gap-3">
+                <i class="mdi" :class="slotProps.option.icon" />
+                <span>{{ slotProps.option.label }}</span>
+            </div>
+        </template>
+    </SelectButton>
 </template>
