@@ -6,7 +6,7 @@ import Listbox from "primevue/listbox";
 import { Translation } from "@/types/bible/translation";
 import { TranslationList } from "@/types/bible/translationList";
 import { useOnMobile } from "@/logic/util/MobileDetection";
-import DialogueSelectButton from "./DialogueSelectButton.vue";
+import DialogueSelectButton from "./DialogSelectButton.vue";
 
 const props = defineProps<{
     /**

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
-import BookDialogue from '@/components/inputs/BookDialogue.vue';
-import TranslationDialogue from '@/components/inputs/TranslationDialogue.vue';
-import ChapterDialogue from '@/components/inputs/ChapterDialogue.vue';
+import BookDialog from '@/components/inputs/BookDialog.vue';
+import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
+import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
+import SettingsDialog from './SettingsDialog.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
@@ -173,10 +174,11 @@ function cut(text: string) {
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
+            <SettingsDialog />
             <div class="flex flex-col w-full md:flex-row gap-2">
-                <TranslationDialogue v-model="selectedTranslation" :translations="translations" />
-                <BookDialogue v-model="selectedBook" :books="selectedTranslation?.books" />
-                <ChapterDialogue v-model="selectedChapter" :chapters="selectedBook?.chapters"
+                <TranslationDialog v-model="selectedTranslation" :translations="translations" />
+                <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
+                <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
                     :book-name="selectedBook?.name" />
             </div>
         </div>
