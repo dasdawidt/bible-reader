@@ -6,7 +6,8 @@ import Listbox from "primevue/listbox";
 import { Translation } from "@/types/bible/translation";
 import { TranslationList } from "@/types/bible/translationList";
 import { useOnMobile } from "@/logic/util/MobileDetection";
-import DialogueSelectButton from "./DialogSelectButton.vue";
+import DialogSelectButton from "./DialogSelectButton.vue";
+import ScrollContainer from "../containment/ScrollContainer.vue";
 
 const props = defineProps<{
     /**
@@ -34,7 +35,7 @@ const visible = ref(false);
 </script>
 
 <template>
-    <DialogueSelectButton @click="visible = true">
+    <DialogSelectButton @click="visible = true">
         <div v-if="selectedTranslation" class="flex flex-row">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
@@ -42,25 +43,27 @@ const visible = ref(false);
         <div v-else>
             Select Translation...
         </div>
-    </DialogueSelectButton>
+    </DialogSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Translation"
         :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
-        :class="[!isOnMobile || 'max-h-bottom-sheet']">
-        <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
-            optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
-            filterPlaceholder="Filter..." :pt="{ itemGroup: { class: 'bg-transparent' } }">
-            <template #option="slotProps">
-                <div class="flex align-items-center">
-                    <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.id?.toUpperCase() }}</div>
-                    <div>{{ slotProps.option.name }}</div>
-                </div>
-            </template>
-            <template #optiongroup="slotProps">
-                <div class="flex align-items-center">
-                    <div>{{ slotProps.option.name }}</div>
-                </div>
-            </template>
-        </Listbox>
+        :pt="{ content: { class: 'overflow-hidden' } }">
+        <ScrollContainer class="max-h-bottom-sheet">
+            <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
+                optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
+                filterPlaceholder="Filter..." :pt="{ itemGroup: { class: 'bg-transparent' } }">
+                <template #option="slotProps">
+                    <div class="flex align-items-center">
+                        <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.id?.toUpperCase() }}</div>
+                        <div>{{ slotProps.option.name }}</div>
+                    </div>
+                </template>
+                <template #optiongroup="slotProps">
+                    <div class="flex align-items-center">
+                        <div>{{ slotProps.option.name }}</div>
+                    </div>
+                </template>
+            </Listbox>
+        </ScrollContainer>
         <template #footer>
             <Button label="Cancel" @click="visible = false" severity="secondary" text class="w-full" />
         </template>

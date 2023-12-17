@@ -13,6 +13,7 @@ import { Translation } from "@/types/bible/translation";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import { formatPassages, getBook, toPassageVerseList } from "@/logic/util/BibleUtils";
 import DialogueSelectButton from "./DialogSelectButton.vue";
+import ScrollContainer from "../containment/ScrollContainer.vue";
 
 const props = defineProps<{
     /**
@@ -78,7 +79,7 @@ function confirm() {
     </DialogueSelectButton>
     <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container"
-        :class="[!isOnMobile || 'max-h-bottom-sheet']">
+        :pt="{ content: { class: 'overflow-hidden' } }">
         <template #header>
             <div class="flex flex-col w-full gap-4 -mb-5">
                 <span class="text-xl font-bold">
@@ -95,24 +96,26 @@ function confirm() {
                 </Accordion>
             </div>
         </template>
-        <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
-            option-group-children="passages" class="w-full" multiple :meta-key-selection="false"
-            :pt="{ itemGroup: { class: 'bg-transparent' } }">
-            <template #optiongroup="slotProps">
-                <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
-                    <span class="text-xl font-bold">
-                        {{ getBook(translation, book).name }}
-                        {{ slotProps.option?.chapter }}
-                    </span>
-                </Divider>
-            </template>
-            <template #option="slotProps">
-                <div class="flex align-items-center">
-                    <div class="w-8 flex-shrink-0 opacity-50">{{ slotProps.option?.verse }}</div>
-                    <div>{{ slotProps.option?.text }}</div>
-                </div>
-            </template>
-        </Listbox>
+        <ScrollContainer class="max-h-bottom-sheet">
+            <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
+                option-group-children="passages" class="w-full" multiple :meta-key-selection="false"
+                :pt="{ itemGroup: { class: 'bg-transparent' }, content: { class: 'overflow-hidden' } }">
+                <template #optiongroup="slotProps">
+                    <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
+                        <span class="text-xl font-bold">
+                            {{ getBook(translation, book).name }}
+                            {{ slotProps.option?.chapter }}
+                        </span>
+                    </Divider>
+                </template>
+                <template #option="slotProps">
+                    <div class="flex align-items-center">
+                        <div class="w-8 flex-shrink-0 opacity-50">{{ slotProps.option?.verse }}</div>
+                        <div>{{ slotProps.option?.text }}</div>
+                    </div>
+                </template>
+            </Listbox>
+        </ScrollContainer>
         <template #footer>
             <div class="flex align-items-center gap-2 mt-4">
                 <Button label="Cancel" @click="abort" severity="secondary" text class="w-full" />

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import Snackbar from '@/components/Snackbar.vue';
-import ScrollPanel from 'primevue/scrollpanel';
+import ScrollContainer from '@/components/containment/ScrollContainer.vue';
 </script>
 
 <template>
     <Snackbar />
-    <ScrollPanel class="w-full h-screen"
-        :pt="{ barY: { class: 'transition-opacity bg-slate-500 opacity-20 w-2 hover:opacity-50' } }">
+    <ScrollContainer class="w-full h-screen">
         <main class="max-w-container m-auto">
             <RouterView />
         </main>
-    </ScrollPanel>
+    </ScrollContainer>
 </template>
