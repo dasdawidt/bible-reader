@@ -1,5 +1,5 @@
 {
-    "theme_color": "#10b981",
+    "theme_color": "#f9fafb",
     "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/bible-reader/",
@@ -7,7 +7,12 @@
     "name": "Bible Reader",
     "short_name": "Bible Reader",
     "description": "A simple and convenient app to read the bible.",
-    "icons": {
-        "name": "/favicon.svg"
-    }
+    "icons": [
+        {
+            "src": "/bible-reader/favicon.svg",
+            "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
 }
