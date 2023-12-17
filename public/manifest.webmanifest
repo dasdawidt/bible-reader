@@ -1,0 +1,13 @@
+{
+    "theme_color": "#10b981",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/bible-reader/",
+    "start_url": "/bible-reader/",
+    "name": "Bible Reader",
+    "short_name": "Bible Reader",
+    "description": "A simple and convenient app to read the bible.",
+    "icons": {
+        "name": "/favicon.svg"
+    }
+}
