@@ -1,10 +1,21 @@
 <script setup lang="ts">
+import Avatar from 'primevue/avatar';
 import { Verse } from '@/types/bible/verse';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
     verse: Verse,
-    isHighlighted: boolean
+    isHighlighted?: boolean
 }>();
+
+const emit = defineEmits<{
+    (event: 'update:isHighlighted', value: boolean): void,
+}>();
+
+const highligted = computed({
+    get: () => props.isHighlighted,
+    set: v => emit('update:isHighlighted', v),
+});
 
 const highlightedStyle = {
     backgroundColor: 'var(--highlight-bg)',
@@ -13,13 +24,16 @@ const highlightedStyle = {
 </script>
 
 <template>
-    <span class="opacity-50 text-sm w-8 flex-shrink-0">
-        {{ verse.number }}
-    </span>
-    <div class="text-lg text-justify">
-        <span :style="isHighlighted ? highlightedStyle : undefined">
-            {{ verse.text }}
-        </span>
+    <div class="flex flex-row flex-nowrap items-baseline gap-1.5" @click="highligted = !highligted">
+        <div class="opacity-50 text-sm flex-shrink-0">
+            <Avatar class="bg-transparent text-black" :label="(verse.number?.toString())"
+                :style="highligted ? highlightedStyle : undefined" shape="circle" />
+        </div>
+        <div class="text-lg text-justify">
+            <span class="py-0.5" :style="highligted ? highlightedStyle : undefined">
+                {{ verse.text }}
+            </span>
+        </div>
+        <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
     </div>
-    <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
 </template>
