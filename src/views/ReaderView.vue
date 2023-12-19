@@ -54,18 +54,15 @@ const selectedChapter = fromQuery<Chapter>(
 
 const highligtedVerses = fromQuery<number[]>(
     'v',
-    (string: string) => string.split(',').map(s => Number.parseInt(s)),
-    (numbers: number[]) => numbers?.join(',')
+    (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
+    (numbers: number[]) => numbers?.length > 0 ? numbers?.join(',') : null,
+    []
 );
 
-const highlightedVersesMap = ref(
-    selectedChapter.value?.verses
-        .map(v => v.number)
-        .reduce(
-            (map, num) => map.set(num, highligtedVerses.value?.includes(num)),
-            new Map<number, boolean>()
-        )
-);
+const getIsHighlighted = (number: number) => highligtedVerses.value?.includes(number);
+const setIsHighlighted = (number: number, value: boolean) => value
+    ? highligtedVerses.value = highligtedVerses.value?.concat(number)
+    : highligtedVerses.value = highligtedVerses.value?.filter(n => n != number);
 
 const initialTitle = document.title;
 useTitle(
@@ -89,9 +86,9 @@ useTitle(
                 </span>
                 <Divider />
             </div>
-            <InlineVerse v-for="verse of selectedChapter?.verses" :verse="verse"
-                :is-highlighted="highlightedVersesMap.get(verse.number)"
-                @update:is-highlighted="v => highlightedVersesMap.set(verse.number, v)" />
+            <InlineVerse v-for="verse of  selectedChapter?.verses " :verse="verse"
+                :is-highlighted="getIsHighlighted(verse.number)"
+                @update:is-highlighted="v => setIsHighlighted(verse.number, v)" />
             <Divider class="py-6" />
         </div>
         <div class="flex-grow" />
