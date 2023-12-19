@@ -26,10 +26,10 @@ const highlightedStyle = {
 <template>
     <div class="flex flex-row flex-nowrap items-baseline gap-1.5" @click="highligted = !highligted">
         <div class="opacity-50 text-sm flex-shrink-0">
-            <Avatar class="bg-transparent text-black" :label="(verse.number?.toString())"
+            <Avatar class="bg-transparent text-sm" :label="(verse.number?.toString())"
                 :style="highligted ? highlightedStyle : undefined" shape="circle" />
         </div>
-        <div class="text-lg text-justify">
+        <div class="text-lg text-justify leading-loose">
             <span class="py-0.5" :style="highligted ? highlightedStyle : undefined">
                 {{ verse.text }}
             </span>
