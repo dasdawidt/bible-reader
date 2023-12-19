@@ -9,7 +9,7 @@ import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
@@ -58,7 +58,14 @@ const highligtedVerses = fromQuery<number[]>(
     (numbers: number[]) => numbers?.join(',')
 );
 
-const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(number);
+const highlightedVersesMap = ref(
+    selectedChapter.value?.verses
+        .map(v => v.number)
+        .reduce(
+            (map, num) => map.set(num, highligtedVerses.value?.includes(num)),
+            new Map<number, boolean>()
+        )
+);
 
 const initialTitle = document.title;
 useTitle(
@@ -82,9 +89,9 @@ useTitle(
                 </span>
                 <Divider />
             </div>
-            <div v-for=" verse  of  selectedChapter?.verses " class="flex flex-row items-baseline">
-                <InlineVerse :verse="verse" :is-highlighted="isVerseHighlighted(verse.number)" />
-            </div>
+            <InlineVerse v-for="verse of selectedChapter?.verses" :verse="verse"
+                :is-highlighted="highlightedVersesMap.get(verse.number)"
+                @update:is-highlighted="v => highlightedVersesMap.set(verse.number, v)" />
             <Divider class="py-6" />
         </div>
         <div class="flex-grow" />
