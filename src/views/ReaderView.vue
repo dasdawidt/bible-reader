@@ -12,6 +12,7 @@ import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import { computed } from 'vue';
 import { useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
+import InlineVerse from '@/components/display/InlineVerse.vue';
 
 const translationList = supportedTranslations;
 
@@ -57,12 +58,7 @@ const highligtedVerses = fromQuery<number[]>(
     (numbers: number[]) => numbers?.join(',')
 );
 
-const highlightedStyle = {
-    backgroundColor: 'var(--highlight-bg)',
-    color: 'var(--highlight-text-color)'
-};
-const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(number) ? highlightedStyle : undefined;
-
+const isVerseHighlighted = (number: number) => highligtedVerses.value?.includes(number);
 
 const initialTitle = document.title;
 useTitle(
@@ -87,15 +83,7 @@ useTitle(
                 <Divider />
             </div>
             <div v-for=" verse  of  selectedChapter?.verses " class="flex flex-row items-baseline">
-                <span class="opacity-50 text-sm w-8 flex-shrink-0">
-                    {{ verse.number }}
-                </span>
-                <div class="text-lg text-justify">
-                    <span :style="isVerseHighlighted(verse.number)">
-                        {{ verse.text }}
-                    </span>
-                </div>
-                <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
+                <InlineVerse :verse="verse" :is-highlighted="isVerseHighlighted(verse.number)" />
             </div>
             <Divider class="py-6" />
         </div>
