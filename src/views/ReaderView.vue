@@ -55,7 +55,7 @@ const selectedChapter = fromQuery<Chapter>(
 const highligtedVerses = fromQuery<number[]>(
     'v',
     (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
-    (numbers: number[]) => numbers?.length > 0 ? numbers?.join(',') : null,
+    (numbers: number[]) => numbers?.length == 0 ? null : numbers?.sort((a, b) => a - b)?.join(','),
     []
 );
 
