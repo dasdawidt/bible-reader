@@ -4,12 +4,14 @@ import { useRouter, useRoute } from 'vue-router';
 export function fromQuery<Y>(
     queryName: string,
     stringToType: QFunction<string, Y>,
-    typeToString: QFunction<Y, string>
+    typeToString: QFunction<Y, string>,
+    fallbackValue?: Y
 ) {
     const router = useRouter();
     const route = useRoute();
     const refValue = ref<Y | undefined>();
     const queryValue = route.query[queryName];
+    refValue.value = fallbackValue;
     if (typeof queryValue === 'string') {
         refValue.value = stringToType(queryValue);
     }
