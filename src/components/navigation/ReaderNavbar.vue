@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
-import Divider from 'primevue/divider';
 import BookDialog from '@/components/inputs/BookDialog.vue';
 import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
-import SettingsDialog from './SettingsDialog.vue';
+import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';

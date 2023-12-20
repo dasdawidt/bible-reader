@@ -11,9 +11,9 @@ import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import { computed, onMounted } from 'vue';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
-import Footer from '@/components/Footer.vue';
+import Footer from '@/components/display/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
-import ShareButtons from '@/components/ShareButtons.vue';
+import ShareButtons from '@/components/navigation/ShareButtons.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const translationList = supportedTranslations;
