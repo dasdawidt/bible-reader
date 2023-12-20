@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
-import Divider from 'primevue/divider';
 import BookDialog from '@/components/inputs/BookDialog.vue';
 import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
-import SettingsDialog from './SettingsDialog.vue';
+import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
@@ -170,6 +169,13 @@ onKeyStroke('ArrowLeft', navigatePrevious);
     <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
         :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
         :style="menuStyle">
+
+        <div class="absolute w-full h-0 z-20">
+            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
+                :class="{ 'top-auto bottom-28': isOnMobile }">
+                <slot name="toast-stack" />
+            </div>
+        </div>
 
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
