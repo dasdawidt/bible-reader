@@ -9,7 +9,7 @@ import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { computed, ref } from 'vue';
-import { computedWithControl, onKeyStroke, useResizeObserver } from '@vueuse/core';
+import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
 
 
@@ -49,41 +49,6 @@ const selectedTranslation = computed({
     get: () => props.translation,
     set: (v) => emits('update:translation', v)
 });
-
-
-
-// Navigation
-
-const previousPossible = computed(() => canNavigate('previous'));
-const nextPossible = computed(() => canNavigate('next'));
-
-function canNavigate(direction: 'next' | 'previous'): { book: Book, chapter: Chapter } | undefined {
-    if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
-    const diff = direction === 'next' ? 1 : -1;
-    const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
-    if (toChapter != null) return { chapter: toChapter, book: selectedBook.value };
-    const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
-    if (toBook != null) {
-        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
-        return { chapter: toBook.chapters?.[toChapterIndex], book: toBook };
-    }
-    return undefined;
-}
-
-const navigatePrevious = () => navigate('previous');
-const navigateNext = () => navigate('next');
-
-function navigate(direction: 'next' | 'previous') {
-    const canNavig = canNavigate(direction);
-    if (canNavig != null) {
-        selectedBook.value = canNavig.book;
-        selectedChapter.value = canNavig.chapter;
-        window.scroll({ top: 0 });
-    }
-}
-
-onKeyStroke('ArrowRight', navigateNext);
-onKeyStroke('ArrowLeft', navigatePrevious);
 
 
 
@@ -145,6 +110,56 @@ const menuClass = computed(() => {
 
 
 
+// Navigation
+
+const navigationTargetPrevious = computed(() => getNavigationTarget('previous'));
+const navigationTargetNext = computed(() => getNavigationTarget('next'));
+
+function getNavigationTarget(direction: 'next' | 'previous'): { book: Book, chapter: Chapter } | undefined {
+    if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
+    const diff = direction === 'next' ? 1 : -1;
+    const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
+    if (toChapter != null) return { chapter: toChapter, book: selectedBook.value };
+    const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
+    if (toBook != null) {
+        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
+        return { chapter: toBook.chapters?.[toChapterIndex], book: toBook };
+    }
+    return undefined;
+}
+
+const canNavigatePrevious = computed(() => navigationTargetPrevious.value != null);
+const canNavigateNext = computed(() => navigationTargetNext.value != null);
+
+const navigationLabelPrevious = computed(() => navButtonLabel(navigationTargetPrevious.value));
+const navigationLabelNext = computed(() => navButtonLabel(navigationTargetPrevious.value));
+
+const { width: menuWidth } = useElementSize(menuElement);
+
+function navButtonLabel(navigationTarget: { book: Book, chapter: Chapter }) {
+    return navigationTarget == null
+        ? 'Eternity'
+        : menuWidth.value < 350
+            ? ''
+            : `${cut(navigationTarget.book?.name)} ${navigationTarget.chapter?.number}`;
+}
+
+const navigatePrevious = () => navigate(navigationTargetPrevious.value);
+const navigateNext = () => navigate(navigationTargetNext.value);
+
+function navigate(navigationTarget: { book: Book, chapter: Chapter }) {
+    if (navigationTarget != null) {
+        selectedBook.value = navigationTarget.book;
+        selectedChapter.value = navigationTarget.chapter;
+        window.scroll({ top: 0 });
+    }
+}
+
+onKeyStroke('ArrowRight', navigateNext);
+onKeyStroke('ArrowLeft', navigatePrevious);
+
+
+
 // Util
 
 function cut(text: string) {
@@ -156,25 +171,26 @@ function cut(text: string) {
 </script>
 
 <template>
-    <div class="flex flex-col z-10 p-2 gap-2 w-full fixed shadow-md -left-[0.5px] border border-solid" :class="menuClass"
-        style="background-color: var(--surface-b); border-color: var(--surface-border);" :style="menuStyle">
+    <div class="flex flex-col items-center z-10 p-2 gap-2 w-full fixed shadow-md -left-[0.5px] border border-solid"
+        :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
+        :style="menuStyle">
 
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row w-full justify-between gap-2">
-            <Button class="w-full max-w-xs" icon="mdi mdi-arrow-left" rounded text
-                :label="previousPossible ? `${cut(previousPossible.book?.name)} ${previousPossible.chapter?.number}` : 'Eternity'"
-                :disabled="previousPossible == null" @click="navigatePrevious" />
+            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" rounded text :label="navigationLabelPrevious"
+                :disabled="!canNavigatePrevious" @click="navigatePrevious" />
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
-            <Button class="w-full max-w-xs" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
-                :label="nextPossible ? `${cut(nextPossible.book?.name)} ${nextPossible.chapter?.number}` : 'Eternity'"
-                :disabled="nextPossible == null" @click="navigateNext" />
+            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
+                :label="navigationLabelNext" :disabled="!canNavigateNext" @click="navigateNext" />
         </div>
 
         <!-- Toggleable menu -->
-        <div class="flex w-full gap-2 items-center"
+        <div class="flex w-full gap-2 items-center max-w-container"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
-            <SettingsDialog />
+            <div class="w-full flex flex-row justify-start items">
+                <SettingsDialog />
+            </div>
             <div class="flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialog v-model="selectedTranslation" :translations="translations" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
