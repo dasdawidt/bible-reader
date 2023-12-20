@@ -171,6 +171,13 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
         :style="menuStyle">
 
+        <div class="absolute w-full h-0 z-20">
+            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
+                :class="{ 'top-auto bottom-28': isOnMobile }">
+                <slot name="toast-stack" />
+            </div>
+        </div>
+
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
             :class="{ '!max-w-container': showMenu }">
