@@ -34,6 +34,7 @@ const emits = defineEmits<{
     (e: 'update:chapter', v: Chapter): void;
     (e: 'update:book', v: Book): void;
     (e: 'update:translation', v: Translation): void;
+    (e: 'navigate', v: NavigationTarget): void;
 }>();
 
 const selectedChapter = computed({
@@ -113,18 +114,20 @@ const menuClass = computed(() => {
 
 // Navigation
 
+type NavigationTarget = { direction: 'previous' | 'next', book: Book, chapter: Chapter };
+
 const navigationTargetPrevious = computed(() => getNavigationTarget('previous'));
 const navigationTargetNext = computed(() => getNavigationTarget('next'));
 
-function getNavigationTarget(direction: 'next' | 'previous'): { book: Book, chapter: Chapter } | undefined {
+function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget | undefined {
     if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null) return undefined;
     const diff = direction === 'next' ? 1 : -1;
     const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
-    if (toChapter != null) return { chapter: toChapter, book: selectedBook.value };
+    if (toChapter != null) return { direction, chapter: toChapter, book: selectedBook.value };
     const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
     if (toBook != null) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
-        return { chapter: toBook.chapters?.[toChapterIndex], book: toBook };
+        return { direction, chapter: toBook.chapters?.[toChapterIndex], book: toBook };
     }
     return undefined;
 }
@@ -137,7 +140,7 @@ const navigationLabelNext = computed(() => navButtonLabel(navigationTargetNext.v
 
 const { width: menuWidth } = useElementSize(menuElement);
 
-function navButtonLabel(navigationTarget: { book: Book, chapter: Chapter }) {
+function navButtonLabel(navigationTarget: NavigationTarget) {
     return navigationTarget == null
         ? 'Eternity'
         : menuWidth.value < 280
@@ -150,11 +153,11 @@ function navButtonLabel(navigationTarget: { book: Book, chapter: Chapter }) {
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
 const navigateNext = () => navigate(navigationTargetNext.value);
 
-function navigate(navigationTarget: { book: Book, chapter: Chapter }) {
+function navigate(navigationTarget: NavigationTarget) {
     if (navigationTarget != null) {
         selectedBook.value = navigationTarget.book;
         selectedChapter.value = navigationTarget.chapter;
-        window.scroll({ top: 0 });
+        emits('navigate', navigationTarget);
     }
 }
 
