@@ -79,12 +79,12 @@ useTitle(
         v-model:chapter="selectedChapter" class="print:hidden" />
     <div class="px-4 pb-[40vh] pt-[20vh] print:m-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
-            <div class="flex flex-row w-full items-center py-12">
-                <Divider />
-                <span class="text-2xl font-bold whitespace-nowrap px-3">
+            <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
+                <Divider class="flex-shrink" />
+                <span class="text-2xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
                     {{ getBook(selectedTranslation, selectedBook?.type)?.name }} {{ selectedChapter?.number }}
                 </span>
-                <Divider />
+                <Divider class="flex-shrink" />
             </div>
             <InlineVerse v-for="verse of  selectedChapter?.verses " :verse="verse"
                 :is-highlighted="getIsHighlighted(verse.number)"
