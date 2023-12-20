@@ -5,7 +5,7 @@ import ScrollContainer from '@/components/containment/ScrollContainer.vue';
 
 <template>
     <Snackbar />
-    <ScrollContainer class="w-full h-screen">
+    <ScrollContainer class="w-full h-screen print:contents">
         <main class="max-w-container m-auto">
             <RouterView />
         </main>
