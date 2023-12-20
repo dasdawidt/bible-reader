@@ -5,14 +5,15 @@ import { BookTypeOldTestament } from '@/types/bible/bookTypeOldTestament';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { supportedTranslations } from '@/logic/translations/provider';
-import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
+import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { computed, onMounted, ref } from 'vue';
-import { useTitle } from '@vueuse/core';
+import { computed, onMounted } from 'vue';
+import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
+import ShareButtons from '@/components/ShareButtons.vue';
 
 const translationList = supportedTranslations;
 
@@ -52,19 +53,30 @@ const selectedChapter = fromQuery<Chapter>(
     (chapter: Chapter) => chapter?.number?.toString()
 );
 
-const highligtedVerses = fromQuery<number[]>(
+const highligtedVerseNumbers = fromQuery<number[]>(
     'v',
     (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
     (numbers: number[]) => numbers?.length == 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')
 );
 
-const onNavigation = () => {
-    highligtedVerses.value = [];
+const removeHighlight = () => {
+    highligtedVerseNumbers.value = [];
 }
-const getIsHighlighted = (number: number) => highligtedVerses.value?.includes(number);
+const getIsHighlighted = (number: number) => highligtedVerseNumbers.value?.includes(number);
 const setIsHighlighted = (number: number, value: boolean) => value
-    ? highligtedVerses.value = highligtedVerses.value?.concat(number)
-    : highligtedVerses.value = highligtedVerses.value?.filter(n => n != number);
+    ? highligtedVerseNumbers.value = highligtedVerseNumbers.value?.concat(number)
+    : highligtedVerseNumbers.value = highligtedVerseNumbers.value?.filter(n => n != number);
+
+const highlightedVerses = computed(() => selectedChapter.value?.verses?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
+
+const shareUrl = computed(() => useBrowserLocation().value.href)
+const shareText = computed(() => highlightedVerses.value?.map(v => v.text)?.join(' '));
+const shareTitle = computed(() => formatPassages(selectedTranslation.value, highlightedVerses.value?.map(v => ({
+    translationId: selectedTranslation.value?.id,
+    bookType: selectedBook.value?.type,
+    chapter: selectedChapter.value?.number,
+    verse: v.number,
+}))));
 
 const initialTitle = document.title;
 useTitle(
@@ -75,8 +87,8 @@ useTitle(
 );
 
 onMounted(() => {
-    if (highligtedVerses.value?.length > 0) {
-        document.querySelector(`#verse-${highligtedVerses.value[0]}`)
+    if (highligtedVerseNumbers.value?.length > 0) {
+        document.querySelector(`#verse-${highligtedVerseNumbers.value[0]}`)
             .scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });
@@ -85,8 +97,13 @@ onMounted(() => {
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" @navigate="onNavigation" class="print:hidden" />
-    <div class="px-4 pb-[40vh] pt-[20vh] print:m-0 flex flex-col min-h-screen">
+        v-model:chapter="selectedChapter" @navigate="removeHighlight" class="print:hidden">
+        <template #toast-stack>
+            <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="highligtedVerseNumbers.length > 0"
+                @update:visible="removeHighlight" />
+        </template>
+    </ReaderNavbar>
+    <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
             <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
                 <Divider class="flex-shrink" />
@@ -96,11 +113,11 @@ onMounted(() => {
                 <Divider class="flex-shrink" />
             </div>
             <InlineVerse v-for="(verse, i) of selectedChapter?.verses" :id="`verse-${verse.number}`" :key="i" :verse="verse"
-                :is-highlighted="getIsHighlighted(verse.number)" @load=""
+                :is-highlighted="getIsHighlighted(verse.number)"
                 @update:is-highlighted="v => setIsHighlighted(verse.number, v)" />
             <Divider class="py-6" />
         </div>
         <div class="flex-grow" />
-        <Footer />
+        <Footer class="print:hidden" />
     </div>
 </template>
