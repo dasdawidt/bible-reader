@@ -9,7 +9,7 @@ import { findTranslation, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { BookTypeNewTestament } from '@/types/bible/bookTypeNewTestament';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
@@ -74,6 +74,13 @@ useTitle(
     )
 );
 
+onMounted(() => {
+    if (highligtedVerses.value?.length > 0) {
+        document.querySelector(`#verse-${highligtedVerses.value[0]}`)
+            .scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+
 </script>
 
 <template>
@@ -88,8 +95,8 @@ useTitle(
                 </span>
                 <Divider class="flex-shrink" />
             </div>
-            <InlineVerse v-for="verse of  selectedChapter?.verses " :verse="verse"
-                :is-highlighted="getIsHighlighted(verse.number)"
+            <InlineVerse v-for="(verse, i) of selectedChapter?.verses" :id="`verse-${verse.number}`" :key="i" :verse="verse"
+                :is-highlighted="getIsHighlighted(verse.number)" @load=""
                 @update:is-highlighted="v => setIsHighlighted(verse.number, v)" />
             <Divider class="py-6" />
         </div>
