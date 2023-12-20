@@ -55,10 +55,12 @@ const selectedChapter = fromQuery<Chapter>(
 const highligtedVerses = fromQuery<number[]>(
     'v',
     (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
-    (numbers: number[]) => numbers?.length == 0 ? null : numbers?.sort((a, b) => a - b)?.join(','),
-    []
+    (numbers: number[]) => numbers?.length == 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')
 );
 
+const onNavigation = () => {
+    highligtedVerses.value = [];
+}
 const getIsHighlighted = (number: number) => highligtedVerses.value?.includes(number);
 const setIsHighlighted = (number: number, value: boolean) => value
     ? highligtedVerses.value = highligtedVerses.value?.concat(number)
@@ -76,7 +78,7 @@ useTitle(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" class="print:hidden" />
+        v-model:chapter="selectedChapter" @navigate="onNavigation" class="print:hidden" />
     <div class="px-4 pb-[40vh] pt-[20vh] print:m-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
             <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
