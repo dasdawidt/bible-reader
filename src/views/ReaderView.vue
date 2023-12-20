@@ -74,7 +74,7 @@ const route = useRoute();
 const router = useRouter();
 const browserLocation = useBrowserLocation();
 const shareUrl = computed(() => new URL(router.resolve(route).href, browserLocation.value.href).href);
-const shareText = computed(() => highlightedVerses.value?.map(v => v.text)?.join(' '));
+const shareText = computed(() => highlightedVerses.value?.map(v => v.text)?.join(' ') + '\n' + shareTitle.value + '\n');
 const shareTitle = computed(() =>
     highlightedVerses.value?.length > 0
         ? formatPassages(selectedTranslation.value, highlightedVerses.value?.map(v => ({
