@@ -1,5 +1,5 @@
-import { computed, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouteQuery } from '@vueuse/router';
+import { computed } from 'vue';
 
 export function fromQuery<Y>(
     queryName: string,
@@ -7,28 +7,13 @@ export function fromQuery<Y>(
     typeToString: QFunction<Y, string>,
     fallbackValue?: Y
 ) {
-    const router = useRouter();
-    const route = useRoute();
-    const refValue = ref<Y | undefined>();
-    const queryValue = route.query[queryName];
-    refValue.value = fallbackValue;
-    if (typeof queryValue === 'string') {
-        refValue.value = stringToType(queryValue);
-    }
-    const computedValue = computed<Y | undefined>({
-        get: () => refValue.value,
-        set: (v) => {
-            router.replace({
-                ...route,
-                query: {
-                    ...route.query,
-                    [queryName]: typeToString(v),
-                },
-            });
-            refValue.value = v;
-        },
+    const fallbackValueString = typeToString(fallbackValue);
+    const query = useRouteQuery(queryName, fallbackValueString);
+    const reference = computed({
+        get: () => stringToType(query.value),
+        set: (v) => (query.value = typeToString(v)),
     });
-    return computedValue;
+    return reference;
 }
 
 export type QFunction<T, R> = {
