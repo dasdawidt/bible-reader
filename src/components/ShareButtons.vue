@@ -20,16 +20,15 @@ const visibleValue = computed({
     set: v => emit('update:visible', v),
 });
 
+const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
-
+const { share: pushShare } = useShare();
 onKeyStroke('Escape', () => visibleValue.value = false, { passive: true });
 
 // Share
 
-const { share } = useShare();
-
 function shareNow() {
-    share({
+    share: pushShare({
         title: props.title,
         text: props.text,
         url: props.url,
@@ -38,12 +37,23 @@ function shareNow() {
 
 
 
-// Clipboard
+// Copy Link
 
-const { copy } = useClipboard({ legacy: true });
+function copyLinkNow() {
+    copyToClipboard(props.url);
+    pushToast({
+        severity: 'success',
+        summary: 'URL copied!',
+        life: 3000
+    });
+}
+
+
+
+// Copy Text
 
 function copyNow() {
-    copy(props.text);
+    copyToClipboard(props.text);
     pushToast({
         severity: 'success',
         summary: 'Text copied!',
@@ -68,6 +78,7 @@ function printNow() {
                 border border-solid border-green-500 border-opacity-10 bg-green-500 bg-opacity-5
             ">
             <Button icon="mdi mdi-share text-2xl leading-none" rounded text @click="shareNow" />
+            <Button icon="mdi mdi-link-variant text-2xl leading-none" rounded text @click="copyLinkNow" />
             <Button icon="mdi mdi-content-copy text-2xl leading-none" rounded text @click="copyNow" />
             <Button icon="mdi mdi-printer text-2xl leading-none" rounded text @click="printNow" />
             <Button icon="mdi mdi-selection-ellipse-remove text-3xl leading-none" severity="secondary" rounded text
