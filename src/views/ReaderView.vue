@@ -67,6 +67,7 @@ const getIsHighlighted = (number: number) => highligtedVerseNumbers.value?.inclu
 const setIsHighlighted = (number: number, value: boolean) => value
     ? highligtedVerseNumbers.value = highligtedVerseNumbers.value?.concat(number)
     : highligtedVerseNumbers.value = highligtedVerseNumbers.value?.filter(n => n != number);
+const getHiddenForPrint = (number: number) => highligtedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
 const highlightedVerses = computed(() => selectedChapter.value?.verses?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
 
@@ -122,7 +123,8 @@ onMounted(() => {
             </div>
             <InlineVerse v-for="(verse, i) of selectedChapter?.verses" :id="`verse-${verse.number}`" :key="i" :verse="verse"
                 :is-highlighted="getIsHighlighted(verse.number)"
-                @update:is-highlighted="v => setIsHighlighted(verse.number, v)" />
+                @update:is-highlighted="v => setIsHighlighted(verse.number, v)"
+                :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
             <Divider class="py-6" />
         </div>
         <div class="flex-grow" />
