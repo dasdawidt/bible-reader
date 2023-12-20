@@ -14,6 +14,7 @@ import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Footer from '@/components/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
 import ShareButtons from '@/components/ShareButtons.vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const translationList = supportedTranslations;
 
@@ -69,14 +70,21 @@ const setIsHighlighted = (number: number, value: boolean) => value
 
 const highlightedVerses = computed(() => selectedChapter.value?.verses?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
 
-const shareUrl = computed(() => useBrowserLocation().value.href)
+const route = useRoute();
+const router = useRouter();
+const browserLocation = useBrowserLocation();
+const shareUrl = computed(() => new URL(router.resolve(route).href, browserLocation.value.href).href);
 const shareText = computed(() => highlightedVerses.value?.map(v => v.text)?.join(' '));
-const shareTitle = computed(() => formatPassages(selectedTranslation.value, highlightedVerses.value?.map(v => ({
-    translationId: selectedTranslation.value?.id,
-    bookType: selectedBook.value?.type,
-    chapter: selectedChapter.value?.number,
-    verse: v.number,
-}))));
+const shareTitle = computed(() =>
+    highlightedVerses.value?.length > 0
+        ? formatPassages(selectedTranslation.value, highlightedVerses.value?.map(v => ({
+            translationId: selectedTranslation.value?.id,
+            bookType: selectedBook.value?.type,
+            chapter: selectedChapter.value?.number,
+            verse: v.number,
+        })))
+        : undefined
+);
 
 const initialTitle = document.title;
 useTitle(
