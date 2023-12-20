@@ -4,6 +4,10 @@ import { useTheme } from '@/plugins/ThemePlugin';
 import { ColorSchemeType } from '@vueuse/core';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 
+const props = defineProps<{
+    condensed?: boolean;
+}>();
+
 const { isOnMobile } = useOnMobile();
 const colorScheme = useTheme();
 const options: {
@@ -34,9 +38,9 @@ const options: {
     <SelectButton class="flex w-full flex-row" v-model="colorScheme" :options="options" :option-value="o => o.value"
         :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
-            <div class="flex flex-row flex-nowrap gap-3">
+            <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
                 <i class="mdi" :class="slotProps.option.icon" />
-                <span>{{ slotProps.option.label }}</span>
+                <span v-if="condensed != true" class="text-ellipsis overflow-hidden">{{ slotProps.option.label }}</span>
             </div>
         </template>
     </SelectButton>
