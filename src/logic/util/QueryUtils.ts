@@ -3,8 +3,8 @@ import { computed } from 'vue';
 
 export function fromQuery<Y>(
     queryName: string,
-    stringToType: QFunction<string, Y>,
-    typeToString: QFunction<Y, string>,
+    stringToType: (v: string) => Y,
+    typeToString: (v: Y) => string,
     fallbackValue?: Y
 ) {
     const fallbackValueString = typeToString(fallbackValue);
@@ -15,7 +15,3 @@ export function fromQuery<Y>(
     });
     return reference;
 }
-
-export type QFunction<T, R> = {
-    (value: T): R;
-};
