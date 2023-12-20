@@ -30,7 +30,7 @@ const highlightedStyle = {
                 :style="highligted ? highlightedStyle : undefined" shape="circle" />
         </div>
         <div class="text-lg text-justify leading-loose">
-            <span class="py-0.5" :style="highligted ? highlightedStyle : undefined">
+            <span class="py-0.5 rounded" :style="highligted ? highlightedStyle : undefined">
                 {{ verse.text }}
             </span>
         </div>
