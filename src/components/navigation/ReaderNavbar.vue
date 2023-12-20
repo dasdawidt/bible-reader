@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
+import Divider from 'primevue/divider';
 import BookDialog from '@/components/inputs/BookDialog.vue';
 import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
@@ -132,16 +133,18 @@ const canNavigatePrevious = computed(() => navigationTargetPrevious.value != nul
 const canNavigateNext = computed(() => navigationTargetNext.value != null);
 
 const navigationLabelPrevious = computed(() => navButtonLabel(navigationTargetPrevious.value));
-const navigationLabelNext = computed(() => navButtonLabel(navigationTargetPrevious.value));
+const navigationLabelNext = computed(() => navButtonLabel(navigationTargetNext.value));
 
 const { width: menuWidth } = useElementSize(menuElement);
 
 function navButtonLabel(navigationTarget: { book: Book, chapter: Chapter }) {
     return navigationTarget == null
         ? 'Eternity'
-        : menuWidth.value < 350
+        : menuWidth.value < 280
             ? ''
-            : `${cut(navigationTarget.book?.name)} ${navigationTarget.chapter?.number}`;
+            : menuWidth.value < 500
+                ? `${navigationTarget.book?.abbreviation?.toUpperCase()} ${navigationTarget.chapter?.number}`
+                : `${navigationTarget.book?.name} ${navigationTarget.chapter?.number}`;
 }
 
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
@@ -158,40 +161,33 @@ function navigate(navigationTarget: { book: Book, chapter: Chapter }) {
 onKeyStroke('ArrowRight', navigateNext);
 onKeyStroke('ArrowLeft', navigatePrevious);
 
-
-
-// Util
-
-function cut(text: string) {
-    return text.length > 10
-        ? text.substring(0, 9) + '.'
-        : text;
-}
-
 </script>
 
 <template>
-    <div class="flex flex-col items-center z-10 p-2 gap-2 w-full fixed shadow-md -left-[0.5px] border border-solid"
+    <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
         :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
         :style="menuStyle">
 
         <!-- Navigation bar (always visible) -->
-        <div class="flex flex-row w-full justify-between gap-2">
-            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" rounded text :label="navigationLabelPrevious"
-                :disabled="!canNavigatePrevious" @click="navigatePrevious" />
+        <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
+            :class="{ '!max-w-container': showMenu }">
+            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" :label="navigationLabelPrevious"
+                :disabled="!canNavigatePrevious" @click="navigatePrevious" rounded text
+                :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
-            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" rounded text
-                :label="navigationLabelNext" :disabled="!canNavigateNext" @click="navigateNext" />
+            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" :label="navigationLabelNext"
+                :disabled="!canNavigateNext" @click="navigateNext" rounded text
+                :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
         </div>
 
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center max-w-container"
-            :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-1' : 'flex-col pt-2.5 pb-1'" ref="menuElement">
-            <div class="w-full flex flex-row justify-start items">
-                <SettingsDialog />
+            :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'" ref="menuElement">
+            <div class="w-full flex flex-row justify-between">
+                <SettingsDialog class="max-md:w-full" />
             </div>
-            <div class="flex flex-col w-full md:flex-row gap-2">
+            <div class=" flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialog v-model="selectedTranslation" :translations="translations" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
                 <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
