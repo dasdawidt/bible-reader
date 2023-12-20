@@ -116,6 +116,10 @@ export function formatPassages(
          * Whether the book's abbreviation should be used.
          */
         short?: boolean;
+        /**
+         * Whether the translation's id should be included.
+         */
+        includeTranslation?: boolean;
     }
 ) {
     // const germanOptions = {
@@ -133,6 +137,7 @@ export function formatPassages(
         verseSpan: '–',
         verseGap: ', ',
         short: false,
+        includeTranslation: false,
     };
     options = {
         ...defaultOptions,
@@ -152,7 +157,7 @@ export function formatPassages(
         new Map()
     );
 
-    const formatted = Array.from(groupedByBook.entries())
+    let formatted = Array.from(groupedByBook.entries())
         .map((entry) =>
             formatPassagesSameBook(
                 getBook(translation, entry[0]),
@@ -165,6 +170,10 @@ export function formatPassages(
             )
         )
         .join(options.booksDelimiter);
+
+    if (options.includeTranslation == true) {
+        formatted += ` (${translation.id.toUpperCase()})`;
+    }
 
     return formatted;
 }
