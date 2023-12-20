@@ -171,14 +171,18 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
             :class="{ '!max-w-container': showMenu }">
-            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" :label="navigationLabelPrevious"
-                :disabled="!canNavigatePrevious" @click="navigatePrevious" rounded text
-                :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+            <div class="w-full flex flex-row justify-start">
+                <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" :label="navigationLabelPrevious"
+                    :disabled="!canNavigatePrevious" @click="navigatePrevious" rounded text
+                    :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+            </div>
             <!-- Menu toggle button -->
             <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
-            <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" :label="navigationLabelNext"
-                :disabled="!canNavigateNext" @click="navigateNext" rounded text
-                :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+            <div class="w-full flex flex-row justify-end">
+                <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" :label="navigationLabelNext"
+                    :disabled="!canNavigateNext" @click="navigateNext" rounded text
+                    :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+            </div>
         </div>
 
         <!-- Toggleable menu -->
