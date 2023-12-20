@@ -11,6 +11,7 @@
     "dependencies": {
         "@mdi/font": "^7.3.67",
         "@vueuse/core": "^10.7.0",
+        "@vueuse/router": "^10.7.0",
         "primevue": "^3.43.0",
         "vue": "^3.3.10",
         "vue-query": "^1.26.0",
