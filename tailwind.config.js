@@ -9,6 +9,10 @@ export default {
             maxHeight: {
                 'bottom-sheet': '65vh',
             },
+            transitionProperty: {
+                'max-width': 'max-width',
+                'max-height': 'max-height',
+            },
         },
     },
     plugins: [],
