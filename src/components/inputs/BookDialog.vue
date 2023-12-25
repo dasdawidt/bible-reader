@@ -46,7 +46,7 @@ const disabled = computed(() => props.books == null);
 </script>
 
 <template>
-    <DialogSelectButton @click="visible = true" :disabled="disabled">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled">
         <div v-if="selectedBook && !disabled" class="flex align-items-center gap-2">
             <div class="flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
