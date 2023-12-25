@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
@@ -8,6 +8,7 @@ import { TranslationList } from "@/types/bible/translationList";
 import { useOnMobile } from "@/logic/util/MobileDetection";
 import DialogSelectButton from "./DialogSelectButton.vue";
 import ScrollContainer from "../containment/ScrollContainer.vue";
+import { useFocus } from "@vueuse/core";
 
 const props = defineProps<{
     /**
@@ -44,8 +45,8 @@ const visible = ref(false);
             Select Translation...
         </div>
     </DialogSelectButton>
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Translation"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
+        header="Select Translation" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
         :pt="{ content: { class: 'overflow-hidden' } }">
         <ScrollContainer class="max-h-bottom-sheet">
             <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
