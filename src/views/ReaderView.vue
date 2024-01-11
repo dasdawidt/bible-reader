@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import Divider from 'primevue/divider';
+import Footer from '@/components/display/Footer.vue';
+import InlineVerse from '@/components/display/InlineVerse.vue';
+import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
+import ShareButtons from '@/components/navigation/ShareButtons.vue';
+import { supportedTranslations } from '@/logic/translations/provider';
+import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/util/BibleUtils';
+import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
+import { fromQuery } from '@/logic/util/QueryUtils';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
-import { supportedTranslations } from '@/logic/translations/provider';
-import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/util/BibleUtils';
-import { fromQuery } from '@/logic/util/QueryUtils';
-import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
-import { computed, onMounted } from 'vue';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
-import Footer from '@/components/display/Footer.vue';
-import InlineVerse from '@/components/display/InlineVerse.vue';
-import ShareButtons from '@/components/navigation/ShareButtons.vue';
+import Divider from 'primevue/divider';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
 
 const translationList = supportedTranslations;
 
