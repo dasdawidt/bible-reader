@@ -3,7 +3,6 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import DialogSelectButton from "./DialogSelectButton.vue";
-import ScrollPanel from "primevue/scrollpanel";
 import { ref, computed } from "vue";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
