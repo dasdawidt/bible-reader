@@ -1,10 +1,10 @@
-import { BookInfo } from '../bible/bookInfo';
-import { TranslationInfo } from '../bible/translationInfo';
-import { BookType } from '../bible/bookType';
-import { Book } from '../bible/book';
-import { Chapter } from '../bible/chapter';
-import { Verse } from '../bible/verse';
 import { UseQueryReturnType } from 'vue-query';
+import { Book } from '../bible/book';
+import { BookInfo } from '../bible/bookInfo';
+import { BookType } from '../bible/bookType';
+import { Chapter } from '../bible/chapter';
+import { TranslationInfo } from '../bible/translationInfo';
+import { Verse } from '../bible/verse';
 
 export type TranslationProvider = {
     info: TranslationInfo;
