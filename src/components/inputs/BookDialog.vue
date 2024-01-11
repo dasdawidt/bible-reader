@@ -3,7 +3,6 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import DialogSelectButton from "./DialogSelectButton.vue";
-import ScrollPanel from "primevue/scrollpanel";
 import { ref, computed } from "vue";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
@@ -32,7 +31,7 @@ const selectedBook = computed({
 
 const groupedBooks = computed(() => props.books.reduce<[{ name: string, books: Book[] }, { name: string, books: Book[] }]>(
     (obj, b) => {
-        Object.keys(BookTypeOldTestament).includes(b.type.toString())
+        Object.keys(BookTypeOldTestament).includes(b.type)
             ? obj[0].books = [...obj[0].books, b]
             : obj[1].books = [...obj[1].books, b];
         return obj;

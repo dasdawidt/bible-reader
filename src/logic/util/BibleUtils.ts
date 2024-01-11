@@ -66,12 +66,12 @@ export function toPassageVerseList(
                             verse: v.number,
                             number: v.number,
                             text: v.text,
-                        } as Passage & Verse)
+                        }) as Passage & Verse
                 ),
-            } as {
+            }) as {
                 chapter: number;
                 passages: Array<Passage & Verse>;
-            })
+            }
     );
 }
 

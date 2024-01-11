@@ -11,6 +11,7 @@ import { Translation } from '@/types/bible/translation';
 import { computed, ref } from 'vue';
 import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
+import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
 
 
 
@@ -123,7 +124,7 @@ function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget |
     const diff = direction === 'next' ? 1 : -1;
     const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
     if (toChapter != null) return { direction, chapter: toChapter, book: selectedBook.value };
-    const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
+    const toBook = selectedTranslation.value?.books?.find(b => bookTypeToNumber(b.type) === bookTypeToNumber(selectedBook.value?.type) + diff);
     if (toBook != null) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
         return { direction, chapter: toBook.chapters?.[toChapterIndex], book: toBook };
