@@ -27,3 +27,5 @@ export enum BookTypeNewTestament {
     JUDE = 'JUDE',
     REVELATION = 'REVELATION',
 }
+
+export const KeysNewTestament = Object.keys(BookTypeNewTestament);

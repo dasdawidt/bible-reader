@@ -39,3 +39,5 @@ export enum BookTypeOldTestament {
     ZECHARIAH = 'ZECHARIAH',
     MALACHI = 'MALACHI',
 }
+
+export const KeysOldTestament = Object.keys(BookTypeOldTestament);
