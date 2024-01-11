@@ -20,7 +20,10 @@ export function bookTypeToString(type: BookType) {
 }
 
 export function numberToBookType(type: number) {
-    return KeysOldTestament[type] ?? KeysNewTestament[type];
+    return (
+        KeysOldTestament[type] ??
+        KeysNewTestament[type - KeysOldTestament.length]
+    );
 }
 
 export function bookTypeToNumber(type: BookType) {
