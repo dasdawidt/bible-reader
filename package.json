@@ -9,25 +9,25 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@mdi/font": "^7.3.67",
+        "@mdi/font": "^7.4.47",
         "@vueuse/core": "^10.7.0",
         "@vueuse/router": "^10.7.0",
-        "primevue": "^3.43.0",
-        "vue": "^3.3.10",
+        "primevue": "^3.46.0",
+        "vue": "^3.4.15",
         "vue-query": "^1.26.0",
         "vue-router": "^4.2.5"
     },
     "devDependencies": {
-        "@types/node": "^20.10.4",
-        "@vitejs/plugin-vue": "^4.5.1",
+        "@types/node": "^20.11.5",
+        "@vitejs/plugin-vue": "^5.0.3",
         "autoprefixer": "^10.4.16",
         "postcss": "^8.4.32",
-        "prettier-eslint": "^16.2.0",
+        "prettier-eslint": "^16.3.0",
         "prettier-plugin-organize-imports": "^3.2.4",
-        "sass": "^1.69.5",
-        "tailwindcss": "^3.3.6",
+        "sass": "^1.70.0",
+        "tailwindcss": "^3.4.1",
         "typescript": "^5.3.3",
-        "vite": "^5.0.6",
+        "vite": "^5.0.12",
         "vue-tsc": "^1.8.25"
     }
 }
