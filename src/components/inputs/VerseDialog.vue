@@ -69,7 +69,7 @@ function confirm() {
 </script>
 
 <template>
-    <DialogueSelectButton @click="open" :disabled="disabled">
+    <DialogueSelectButton @click="open" @keyup.enter="visible = true" :disabled="disabled">
         <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
             {{ formatPassages(translation, selectedPassages) }}
         </div>

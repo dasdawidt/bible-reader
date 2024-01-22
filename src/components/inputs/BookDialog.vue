@@ -3,7 +3,6 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Listbox from "primevue/listbox";
 import DialogSelectButton from "./DialogSelectButton.vue";
-import ScrollPanel from "primevue/scrollpanel";
 import { ref, computed } from "vue";
 import { Book } from "@/types/bible/book";
 import { useOnMobile } from "@/logic/util/MobileDetection";
@@ -32,7 +31,7 @@ const selectedBook = computed({
 
 const groupedBooks = computed(() => props.books.reduce<[{ name: string, books: Book[] }, { name: string, books: Book[] }]>(
     (obj, b) => {
-        Object.keys(BookTypeOldTestament).includes(b.type.toString())
+        Object.keys(BookTypeOldTestament).includes(b.type)
             ? obj[0].books = [...obj[0].books, b]
             : obj[1].books = [...obj[1].books, b];
         return obj;
@@ -46,7 +45,7 @@ const disabled = computed(() => props.books == null);
 </script>
 
 <template>
-    <DialogSelectButton @click="visible = true" :disabled="disabled">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled">
         <div v-if="selectedBook && !disabled" class="flex align-items-center gap-2">
             <div class="flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
@@ -55,8 +54,8 @@ const disabled = computed(() => props.books == null);
             Select Book...
         </div>
     </DialogSelectButton>
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Book"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container"
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask header="Select Book"
+        :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
         :pt="{ content: { class: 'overflow-hidden' } }">
         <ScrollContainer class="max-h-bottom-sheet">
             <Listbox v-model="selectedBook" :options="groupedBooks" optionLabel="name" option-group-children="books"

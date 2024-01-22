@@ -20,7 +20,7 @@ const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
 <template>
     <Button icon="mdi mdi-cog" severity="secondary" @click="visible = true" v-bind="$attrs" :label="label" text />
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Settings"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container">
+        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
             <div class="flex flex-col gap-2 pt-1">
                 <ThemeSwitcher :condensed="condensedThemeSwitcher" />

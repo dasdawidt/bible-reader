@@ -38,7 +38,7 @@ const disabled = computed(() => props.chapters == null);
 </script>
 
 <template>
-    <DialogSelectButton @click="visible = true" :disabled="disabled">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled">
         <div v-if="selectedChapter && !disabled" class="flex align-items-center">
             <div>{{ bookName ?? 'Chapter' }} {{ selectedChapter?.number }}</div>
         </div>
@@ -46,8 +46,8 @@ const disabled = computed(() => props.chapters == null);
             Select Chapter...
         </div>
     </DialogSelectButton>
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Select Chapter"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissableMask class="w-full max-w-container"
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask header="Select Chapter"
+        :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
         :pt="{ content: { class: 'overflow-hidden' } }">
         <ScrollContainer class="max-h-bottom-sheet">
             <Listbox v-model="selectedChapter" :options="chapters" class="w-full" @change="visible = false"
