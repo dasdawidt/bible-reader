@@ -5,6 +5,7 @@ import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
 import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
 import { useWindowSize } from '@vueuse/core';
+import SaveSettingsSwitch from './SaveSettingsSwitch.vue';
 const visible = ref(false);
 const { isOnMobile } = useOnMobile();
 const { width: screenWidth } = useWindowSize();
@@ -15,6 +16,7 @@ const props = defineProps<{
 const label = computed(() => props.showLabel ? 'Settings' : null);
 const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
 
+const clear = () => localStorage.clear();
 </script>
 
 <template>
@@ -24,6 +26,8 @@ const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
         <template #default>
             <div class="flex flex-col gap-2 pt-1">
                 <ThemeSwitcher :condensed="condensedThemeSwitcher" />
+                <SaveSettingsSwitch />
+                <Button label="Clear Cache" @click="clear" />
             </div>
         </template>
         <template #footer>
