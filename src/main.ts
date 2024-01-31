@@ -14,7 +14,9 @@ createApp(App)
     .use(
         createI18n({
             legacy: false,
-            locale: 'de',
+            availableLocales: ['en', 'de'],
+            locale: 'en',
+            fallbackLocale: 'en',
             messages: {
                 en: {
                     prompts: {
