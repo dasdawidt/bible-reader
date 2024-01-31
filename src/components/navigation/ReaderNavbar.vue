@@ -1,23 +1,25 @@
 <script setup lang="ts">
-import Button from 'primevue/button';
 import BookDialog from '@/components/inputs/BookDialog.vue';
-import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
 import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
+import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
+import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
-import { computed, ref } from 'vue';
-import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
-import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
+import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
+import Button from 'primevue/button';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 
 
 // General variables
 
 const { isOnMobile } = useOnMobile();
+const { t } = useI18n();
 
 
 
@@ -142,7 +144,7 @@ const { width: menuWidth } = useElementSize(menuElement);
 
 function navButtonLabel(navigationTarget: NavigationTarget) {
     return navigationTarget == null
-        ? 'Eternity'
+        ? t('bible.eternity')
         : menuWidth.value < 280
             ? ''
             : menuWidth.value < 500

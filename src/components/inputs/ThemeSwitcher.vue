@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import SelectButton from 'primevue/selectbutton';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 import { useTheme } from '@/plugins/ThemePlugin';
 import { ColorSchemeType } from '@vueuse/core';
-import { useOnMobile } from '@/logic/util/MobileDetection';
+import SelectButton from 'primevue/selectbutton';
 
-const props = defineProps<{
+defineProps<{
     condensed?: boolean;
 }>();
 
 const { isOnMobile } = useOnMobile();
 const colorScheme = useTheme();
 const options: {
-    label: string,
+    messageCode: string,
     value: ColorSchemeType,
     icon: string,
 }[] = [
         {
-            label: 'Light',
+            messageCode: 'prompts.light_theme',
             value: 'light',
             icon: 'mdi-white-balance-sunny',
         },
         {
-            label: 'System',
+            messageCode: 'prompts.device_theme',
             value: 'no-preference',
             icon: isOnMobile.value ? 'mdi-cellphone' : 'mdi-laptop',
         },
         {
-            label: 'Dark',
+            messageCode: 'prompts.dark_theme',
             value: 'dark',
             icon: 'mdi-brightness-2',
         }
@@ -40,7 +40,9 @@ const options: {
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
                 <i class="mdi" :class="slotProps.option.icon" />
-                <span v-if="condensed != true" class="text-ellipsis overflow-hidden">{{ slotProps.option.label }}</span>
+                <span v-if="condensed != true" class="text-ellipsis overflow-hidden">
+                    {{ $t(slotProps.option.messageCode) }}
+                </span>
             </div>
         </template>
     </SelectButton>
