@@ -170,7 +170,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 
 <template>
     <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
-        :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
+        :class="menuClass" style="background-color: var(--surface-ground); border-color: var(--surface-border);"
         :style="menuStyle">
 
         <div class="absolute w-full h-0 z-20">

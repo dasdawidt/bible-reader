@@ -12,7 +12,7 @@
         "@mdi/font": "^7.4.47",
         "@vueuse/core": "^10.7.0",
         "@vueuse/router": "^10.7.0",
-        "primevue": "^3.46.0",
+        "primevue": "^3.47.2",
         "vue": "^3.4.15",
         "vue-i18n": "^9.9.1",
         "vue-query": "^1.26.0",
