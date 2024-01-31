@@ -44,6 +44,10 @@ createApp(App)
                         cookie_policy:
                             'This website does not collect any personal data and only uses technical cookies.',
                     },
+                    locales: {
+                        en: 'English',
+                        de: 'German',
+                    },
                 },
                 de: {
                     prompts: {
@@ -70,6 +74,10 @@ createApp(App)
                         created_by: 'Ein Projekt von {creator}.',
                         cookie_policy:
                             'Diese Website sammelt keinerlei personenbezogene Daten und nutzt ausschließlich technisch notwendige Cookies.',
+                    },
+                    locales: {
+                        en: 'Englisch',
+                        de: 'Deutsch',
                     },
                 },
             },

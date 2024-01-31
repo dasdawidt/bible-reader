@@ -5,6 +5,8 @@ import { useWindowSize } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
+import LocaleSwitcher from './LocaleSwitcher.vue';
+
 const visible = ref(false);
 const { isOnMobile } = useOnMobile();
 const { width: screenWidth } = useWindowSize();
@@ -22,8 +24,9 @@ const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal :header="$t('prompts.settings')"
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
-            <div class="flex flex-col gap-2 pt-1">
+            <div class="flex flex-col gap-4 pt-1">
                 <ThemeSwitcher :condensed="condensedThemeSwitcher" />
+                <LocaleSwitcher :condensed="condensedThemeSwitcher" />
             </div>
         </template>
         <template #footer>
