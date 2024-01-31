@@ -14,7 +14,7 @@ createApp(App)
     .use(
         createI18n({
             legacy: false,
-            locale: 'en',
+            locale: 'de',
             messages: {
                 en: {
                     prompts: {
@@ -41,6 +41,33 @@ createApp(App)
                         created_by: 'A project by {creator}.',
                         cookie_policy:
                             'This website does not collect any personal data and only uses technical cookies.',
+                    },
+                },
+                de: {
+                    prompts: {
+                        cancel: 'Abbrechen',
+                        close: 'Schließen',
+                        settings: 'Einstellungen',
+                        select_translation: 'Übersetzung auswählen',
+                        select_book: 'Buch auswählen',
+                        select_chapter: 'Kapitel auswählen',
+                        dark_theme: 'Dunkel',
+                        light_theme: 'Hell',
+                        device_theme: 'Gerät',
+                        copy_url_success: 'URL kopiert!',
+                        copy_text_success: 'Text kopiert!',
+                    },
+                    bible: {
+                        chapter: 'Kapitel',
+                        eternity: 'Ewigkeit',
+                        old_testament: 'Altes Testament',
+                        new_testament: 'Neues Testament',
+                    },
+                    legal: {
+                        imprint: 'Impressum',
+                        created_by: 'Ein Projekt von {creator}.',
+                        cookie_policy:
+                            'Diese Website sammelt keinerlei personenbezogene Daten und nutzt ausschließlich technisch notwendige Cookies.',
                     },
                 },
             },
