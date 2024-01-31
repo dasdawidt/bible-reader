@@ -17,4 +17,4 @@ A live version of this app is running on [dasdawidt.com](https://www.dasdawidt.c
 
 ## License
 
-The project is provided under the MIT License, see [LICENSE.md](/LICENSE.md).
+No license is provided.
