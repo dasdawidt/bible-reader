@@ -59,7 +59,7 @@ const visible = ref(false);
                 </template>
                 <template #optiongroup="slotProps">
                     <div class="flex align-items-center">
-                        <div>{{ slotProps.option.name }}</div>
+                        <div>{{ $t(`locales.${slotProps.option.id}`) }}</div>
                     </div>
                 </template>
             </Listbox>
