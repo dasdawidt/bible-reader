@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Card from 'primevue/card';
-import { Passage } from '@/types/plans/passage';
-import { Translation } from '@/types/bible/translation';
 import { formatPassages, getPassage } from '@/logic/util/BibleUtils';
+import { Translation } from '@/types/bible/translation';
+import { Passage } from '@/types/plans/passage';
+import Card from 'primevue/card';
 import { computed } from 'vue';
 
 const props = defineProps<{

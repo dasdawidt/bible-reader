@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
-import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     title?: string;
@@ -45,7 +48,7 @@ function copyLinkNow() {
     copyToClipboard(props.url);
     pushToast({
         severity: 'success',
-        summary: 'URL copied!',
+        summary: t('prompts.copy_url_success'),
         life: 3000
     });
 }
@@ -58,7 +61,7 @@ function copyNow() {
     copyToClipboard(props.text);
     pushToast({
         severity: 'success',
-        summary: 'Text copied!',
+        summary: t('prompts.copy_text_success'),
         life: 3000
     });
 }
