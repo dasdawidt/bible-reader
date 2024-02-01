@@ -1,15 +1,40 @@
 <script setup lang="ts">
 import { useSettings } from '@/plugins/SettingsPlugin';
-import InputSwitch from 'primevue/inputswitch';
-import { computed, ref } from 'vue';
+import SelectButton from 'primevue/selectbutton';
+
+defineProps<{
+    condensed?: boolean;
+}>();
+
 const { persistenceEnabled } = useSettings();
-const value = computed({
-    get: () => persistenceEnabled.value,
-    set: v => persistenceEnabled.value = v
-});
+const options: {
+    messageCode: string,
+    value: boolean,
+    icon: string,
+}[] = [
+        {
+            messageCode: 'prompts.persistence_enabled',
+            value: true,
+            icon: 'mdi-cookie',
+        },
+        {
+            messageCode: 'prompts.persistence_disabled',
+            value: false,
+            icon: 'mdi-cookie-off',
+        }
+    ];
 </script>
 
 <template>
-    <InputSwitch v-model="value" binary />
-    {{ value }}
+    <SelectButton class="flex w-full flex-row" v-model="persistenceEnabled" :options="options" :option-value="o => o.value"
+        :allow-empty="false" :pt="{ button: { class: 'w-full' } }">
+        <template #option="slotProps">
+            <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
+                <i class="mdi" :class="slotProps.option.icon" />
+                <span v-if="condensed != true" class="text-ellipsis overflow-hidden">
+                    {{ $t(slotProps.option.messageCode) }}
+                </span>
+            </div>
+        </template>
+    </SelectButton>
 </template>

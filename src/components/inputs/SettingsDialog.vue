@@ -16,9 +16,8 @@ const props = defineProps<{
 }>();
 
 const label = computed(() => props.showLabel ? 'Settings' : null);
-const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
+const condensed = computed(() => screenWidth.value < 400);
 
-const clear = () => localStorage.clear();
 </script>
 
 <template>
@@ -27,10 +26,9 @@ const clear = () => localStorage.clear();
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
             <div class="flex flex-col gap-4 pt-1">
-                <ThemeSwitcher :condensed="condensedThemeSwitcher" />
-                <LocaleSwitcher :condensed="condensedThemeSwitcher" />
-                <SaveSettingsSwitch />
-                <Button label="Clear Cache" @click="clear" />
+                <SaveSettingsSwitch :condensed="condensed" />
+                <ThemeSwitcher :condensed="condensed" />
+                <LocaleSwitcher :condensed="condensed" />
             </div>
         </template>
         <template #footer>

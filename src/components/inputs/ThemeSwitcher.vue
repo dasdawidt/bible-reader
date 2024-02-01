@@ -3,7 +3,6 @@ import { useOnMobile } from '@/logic/util/MobileDetection';
 import { useSettings } from '@/plugins/SettingsPlugin';
 import { ColorSchemeType } from '@vueuse/core';
 import SelectButton from 'primevue/selectbutton';
-import { computed } from 'vue';
 
 defineProps<{
     condensed?: boolean;
