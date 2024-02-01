@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
-import Dialog from "primevue/dialog";
-import Button from "primevue/button";
-import Listbox from "primevue/listbox";
+import { useOnMobile } from "@/logic/util/MobileDetection";
 import { Translation } from "@/types/bible/translation";
 import { TranslationList } from "@/types/bible/translationList";
-import { useOnMobile } from "@/logic/util/MobileDetection";
-import DialogSelectButton from "./DialogSelectButton.vue";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import Listbox from "primevue/listbox";
+import { computed, ref } from "vue";
 import ScrollContainer from "../containment/ScrollContainer.vue";
-import { useFocus } from "@vueuse/core";
+import DialogSelectButton from "./DialogSelectButton.vue";
 
 const props = defineProps<{
     /**
@@ -42,16 +41,16 @@ const visible = ref(false);
             <div>{{ selectedTranslation?.name }}</div>
         </div>
         <div v-else>
-            Select Translation...
+            {{ $t('prompts.select_translation') }}...
         </div>
     </DialogSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
-        header="Select Translation" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
+        :header="$t('prompts.select_translation')" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
         :pt="{ content: { class: 'overflow-hidden' } }">
         <ScrollContainer class="max-h-bottom-sheet">
             <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
                 optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
-                filterPlaceholder="Filter..." :pt="{ itemGroup: { class: 'bg-transparent' } }">
+                :pt="{ itemGroup: { class: 'bg-transparent' } }">
                 <template #option="slotProps">
                     <div class="flex align-items-center">
                         <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.id?.toUpperCase() }}</div>
@@ -60,13 +59,13 @@ const visible = ref(false);
                 </template>
                 <template #optiongroup="slotProps">
                     <div class="flex align-items-center">
-                        <div>{{ slotProps.option.name }}</div>
+                        <div>{{ $t(`locales.${slotProps.option.id}`) }}</div>
                     </div>
                 </template>
             </Listbox>
         </ScrollContainer>
         <template #footer>
-            <Button label="Cancel" @click="visible = false" severity="secondary" text class="w-full" />
+            <Button :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>

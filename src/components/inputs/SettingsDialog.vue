@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
+import { useWindowSize } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
-import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
-import { useWindowSize } from '@vueuse/core';
+import LocaleSwitcher from './LocaleSwitcher.vue';
 import SaveSettingsSwitch from './SaveSettingsSwitch.vue';
+
 const visible = ref(false);
 const { isOnMobile } = useOnMobile();
 const { width: screenWidth } = useWindowSize();
@@ -21,17 +23,18 @@ const clear = () => localStorage.clear();
 
 <template>
     <Button icon="mdi mdi-cog" severity="secondary" @click="visible = true" v-bind="$attrs" :label="label" text />
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal header="Settings"
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal :header="$t('prompts.settings')"
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
-            <div class="flex flex-col gap-2 pt-1">
+            <div class="flex flex-col gap-4 pt-1">
                 <ThemeSwitcher :condensed="condensedThemeSwitcher" />
+                <LocaleSwitcher :condensed="condensedThemeSwitcher" />
                 <SaveSettingsSwitch />
                 <Button label="Clear Cache" @click="clear" />
             </div>
         </template>
         <template #footer>
-            <Button label="Close" @click="visible = false" severity="secondary" text class="w-full" />
+            <Button :label="$t('prompts.close')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>
