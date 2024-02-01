@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSettings } from '@/plugins/SettingsPlugin';
 import SelectButton from 'primevue/selectbutton';
 import { useI18n } from 'vue-i18n';
 
@@ -6,12 +7,13 @@ defineProps<{
     condensed?: boolean;
 }>();
 
-const { locale, availableLocales } = useI18n();
+const { availableLocales } = useI18n();
+const { settings } = useSettings();
 
 </script>
 
 <template>
-    <SelectButton class="flex w-full flex-row" v-model="locale" :options="availableLocales"
+    <SelectButton class="flex w-full flex-row" v-model="settings.language" :options="availableLocales" :allow-empty="false"
         :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
