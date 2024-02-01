@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { useTheme } from '@/plugins/ThemePlugin';
+import { useSettings } from '@/plugins/SettingsPlugin';
 import { ColorSchemeType } from '@vueuse/core';
 import SelectButton from 'primevue/selectbutton';
+import { computed } from 'vue';
 
 defineProps<{
     condensed?: boolean;
 }>();
 
 const { isOnMobile } = useOnMobile();
-const colorScheme = useTheme();
+const { settings } = useSettings();
 const options: {
     messageCode: string,
     value: ColorSchemeType,
@@ -35,8 +36,8 @@ const options: {
 </script>
 
 <template>
-    <SelectButton class="flex w-full flex-row" v-model="colorScheme" :options="options" :option-value="o => o.value"
-        :pt="{ button: { class: 'w-full' } }">
+    <SelectButton class="flex w-full flex-row" v-model="settings.theme" :options="options" :option-value="o => o.value"
+        :allow-empty="false" :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
                 <i class="mdi" :class="slotProps.option.icon" />
