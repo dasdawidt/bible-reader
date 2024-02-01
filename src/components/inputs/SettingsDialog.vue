@@ -6,6 +6,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
 import LocaleSwitcher from './LocaleSwitcher.vue';
+import SaveSettingsSwitch from './SaveSettingsSwitch.vue';
 
 const visible = ref(false);
 const { isOnMobile } = useOnMobile();
@@ -15,7 +16,7 @@ const props = defineProps<{
 }>();
 
 const label = computed(() => props.showLabel ? 'Settings' : null);
-const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
+const condensed = computed(() => screenWidth.value < 400);
 
 </script>
 
@@ -25,8 +26,9 @@ const condensedThemeSwitcher = computed(() => screenWidth.value < 400);
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
             <div class="flex flex-col gap-4 pt-1">
-                <ThemeSwitcher :condensed="condensedThemeSwitcher" />
-                <LocaleSwitcher :condensed="condensedThemeSwitcher" />
+                <SaveSettingsSwitch :condensed="condensed" />
+                <ThemeSwitcher :condensed="condensed" />
+                <LocaleSwitcher :condensed="condensed" />
             </div>
         </template>
         <template #footer>

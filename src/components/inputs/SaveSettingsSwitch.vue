@@ -1,41 +1,32 @@
 <script setup lang="ts">
-import { useOnMobile } from '@/logic/util/MobileDetection';
 import { useSettings } from '@/plugins/SettingsPlugin';
-import { ColorSchemeType } from '@vueuse/core';
 import SelectButton from 'primevue/selectbutton';
 
 defineProps<{
     condensed?: boolean;
 }>();
 
-const { isOnMobile } = useOnMobile();
-const { settings } = useSettings();
+const { persistenceEnabled } = useSettings();
 const options: {
     messageCode: string,
-    value: ColorSchemeType,
+    value: boolean,
     icon: string,
 }[] = [
         {
-            messageCode: 'prompts.light_theme',
-            value: 'light',
-            icon: 'mdi-white-balance-sunny',
+            messageCode: 'prompts.persistence_enabled',
+            value: true,
+            icon: 'mdi-cookie',
         },
         {
-            messageCode: 'prompts.device_theme',
-            value: 'no-preference',
-            icon: isOnMobile.value ? 'mdi-cellphone' : 'mdi-laptop',
-        },
-        {
-            messageCode: 'prompts.dark_theme',
-            value: 'dark',
-            icon: 'mdi-brightness-2',
+            messageCode: 'prompts.persistence_disabled',
+            value: false,
+            icon: 'mdi-cookie-off',
         }
     ];
-
 </script>
 
 <template>
-    <SelectButton class="flex w-full flex-row" v-model="settings.theme" :options="options" :option-value="o => o.value"
+    <SelectButton class="flex w-full flex-row" v-model="persistenceEnabled" :options="options" :option-value="o => o.value"
         :allow-empty="false" :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
