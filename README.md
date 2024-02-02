@@ -1,5 +1,8 @@
 # Bible-Reader
 
+[![Build](https://github.com/dasdawidt/bible-reader/actions/workflows/build.yml/badge.svg)](https://github.com/dasdawidt/bible-reader/actions/workflows/build.yml)
+[![Deploy](https://github.com/dasdawidt/bible-reader/actions/workflows/deploy.yml/badge.svg)](https://github.com/dasdawidt/bible-reader/actions/workflows/deploy.yml)
+
 > A simple and convenient app to read the bible.
 
 ## Key Features
