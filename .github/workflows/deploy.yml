@@ -1,5 +1,5 @@
 name: Deploy
-run-name: 'Deploy ${{ github.event.workflow_run.head_commit.message }}" #${{ github.run_attempt }}'
+run-name: 'Deploy "${{ github.event.workflow_run.head_commit.message }}" #${{ github.run_attempt }}'
 
 on:
     workflow_run:
