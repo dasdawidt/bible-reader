@@ -29,8 +29,8 @@ const options: {
     <SelectButton class="flex w-full flex-row" v-model="persistenceEnabled" :options="options" :option-value="o => o.value"
         :allow-empty="false" :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
-            <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
-                <i class="mdi" :class="slotProps.option.icon" />
+            <div class="flex flex-row justify-center items-center flex-nowrap w-full gap-3">
+                <i class="mdi scale-125 opacity-75" :class="slotProps.option.icon" />
                 <span v-if="condensed != true" class="text-ellipsis overflow-hidden">
                     {{ $t(slotProps.option.messageCode) }}
                 </span>

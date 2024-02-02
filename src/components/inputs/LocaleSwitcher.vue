@@ -17,7 +17,7 @@ const { settings } = useSettings();
         :pt="{ button: { class: 'w-full' } }">
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
-                <span class="uppercase opacity-50">{{ slotProps.option }}</span>
+                <span class="uppercase opacity-75 font-semibold">{{ slotProps.option }}</span>
                 <span v-if="condensed != true" class="text-ellipsis overflow-hidden">
                     <span>{{ $t(`locales.${slotProps.option}`) }}</span>
                 </span>
