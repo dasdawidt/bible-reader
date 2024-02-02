@@ -1,44 +1,15 @@
 name: Deploy
 
 on:
-    push:
-        branches:
-            - main
+    workflow_run:
+        workflows: ["Build"]
+        branches: [main]
+        types:
+            - completed
 
 jobs:
-    build:
-        name: Build
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v3
-
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 'latest'
-
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: latest
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: Build project
-              run: pnpm run build
-
-            - name: Upload production-ready build files
-              uses: actions/upload-artifact@v3
-              with:
-                  name: production-files
-                  path: ./dist
-
     deploy:
         name: Deploy
-        needs: build
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
 
