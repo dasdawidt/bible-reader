@@ -1,4 +1,5 @@
 name: Deploy
+run-name: 'Deploy ${{ github.event.workflow_run.head_commit.message }}" #${{ github.run_attempt }}'
 
 on:
     workflow_run:
@@ -25,7 +26,7 @@ jobs:
                   name: production-files
                   path: ./dist
 
-            - name: Deploy to Staging server
+            - name: Deploy
               uses: easingthemes/ssh-deploy@main
               with:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
