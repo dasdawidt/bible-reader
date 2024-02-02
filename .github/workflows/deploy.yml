@@ -15,8 +15,10 @@ jobs:
 
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v3
+              uses: dawidd6/action-download-artifact@v3
               with:
+                  workflow: build.yml
+                  workflow_conclusion: success
                   name: production-files
                   path: ./dist
 
