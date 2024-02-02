@@ -13,6 +13,7 @@ import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } f
 import Button from 'primevue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import FullscreenButton from '../inputs/FullscreenButton.vue';
 
 
 
@@ -201,7 +202,8 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <div class="flex w-full gap-2 items-center max-w-container"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'" ref="menuElement">
             <div class="w-full flex flex-row justify-between">
-                <SettingsDialog class="max-md:w-full" />
+                <SettingsDialog />
+                <FullscreenButton />
             </div>
             <div class=" flex flex-col w-full md:flex-row gap-2">
                 <TranslationDialog v-model="selectedTranslation" :translations="translations" />

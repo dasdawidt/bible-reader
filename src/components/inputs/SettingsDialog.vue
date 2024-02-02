@@ -21,7 +21,8 @@ const condensed = computed(() => screenWidth.value < 400);
 </script>
 
 <template>
-    <Button icon="mdi mdi-cog" severity="secondary" @click="visible = true" v-bind="$attrs" :label="label" text />
+    <Button icon="mdi-cog" icon-class="mdi scale-[1.2]" severity="secondary" @click="visible = true" v-bind="$attrs"
+        :label="label" text />
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal :header="$t('prompts.settings')"
         :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask class="w-full max-w-container">
         <template #default>
