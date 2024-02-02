@@ -11,4 +11,7 @@ export default defineConfig({
         },
     },
     base: '/bible-reader',
+    define: {
+        'import.meta.env.BUILD_DATE': JSON.stringify(new Date().toISOString())
+    }
 });

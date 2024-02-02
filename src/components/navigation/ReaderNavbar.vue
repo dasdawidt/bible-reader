@@ -201,7 +201,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center max-w-container"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'" ref="menuElement">
-            <div class="w-full flex flex-row-reverse justify-between">
+            <div class="w-full flex flex-row-reverse justify-between items-center">
                 <SettingsDialog />
                 <FullscreenButton />
             </div>
