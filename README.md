@@ -14,7 +14,7 @@
 * Pleasant reading experience
 * Sharable links
 
-## Demo
+## Live Version
 
 A live version of this app is running on [dasdawidt.com](https://www.dasdawidt.com/bible-reader).
 
