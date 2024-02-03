@@ -3,6 +3,11 @@ run-name: 'Build "${{ github.event.head_commit.message }}" #${{ github.run_attem
 
 on:
     push:
+        paths-ignore:
+            - '.**'
+            - '**.md'
+            - '!src/**.md'
+            - '!public/**.md'
         branches:
             - main
 
