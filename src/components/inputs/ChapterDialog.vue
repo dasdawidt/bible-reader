@@ -38,7 +38,7 @@ const disabled = computed(() => props.chapters == null);
 </script>
 
 <template>
-    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled" v-bind="$attrs">
         <div v-if="selectedChapter && !disabled" class="flex align-items-center">
             <div>{{ bookName ?? $t('bible.chapter') }} {{ selectedChapter?.number }}</div>
         </div>

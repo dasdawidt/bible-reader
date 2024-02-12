@@ -40,7 +40,7 @@ const visible = ref(false);
 
 <template>
     <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="loading === true"
-        :loading="loading === true">
+        :loading="loading === true" v-bind="$attrs">
         <div v-if="selectedTranslation" class="flex flex-row">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
