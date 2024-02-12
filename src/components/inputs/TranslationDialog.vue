@@ -41,8 +41,8 @@ const visible = ref(false);
 <template>
     <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="loading === true"
         :loading="loading === true" v-bind="$attrs">
-        <div v-if="selectedTranslation" class="flex flex-row">
-            <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
+        <div v-if="selectedTranslation" class="flex flex-row gap-2">
+            <div class="flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
         </div>
         <div v-else>
@@ -54,11 +54,13 @@ const visible = ref(false);
         :pt="{ content: { class: 'overflow-hidden' } }">
         <ScrollContainer class="max-h-bottom-sheet">
             <Listbox v-model="selectedTranslation" :options="translations" optionGroupLabel="name"
-                optionGroupChildren="translations" optionLabel="name" class="w-full" @change="visible = false"
-                :pt="{ itemGroup: { class: 'bg-transparent' } }">
+                optionGroupChildren="translations" optionLabel="name" class="w-full h-min" @change="visible = false"
+                :pt="{ itemGroup: { class: 'bg-transparent' }, virtualScroller: { class: 'h-min' } }">
                 <template #option="slotProps">
                     <div class="flex align-items-center">
-                        <div class="w-12 flex-shrink-0 opacity-50">{{ slotProps.option.id?.toUpperCase() }}</div>
+                        <div class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">
+                            {{ slotProps.option.id?.toUpperCase() }}
+                        </div>
                         <div>{{ slotProps.option.name }}</div>
                     </div>
                 </template>

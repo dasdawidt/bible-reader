@@ -46,7 +46,7 @@ const disabled = computed(() => props.books == null);
 
 <template>
     <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled" v-bind="$attrs">
-        <div v-if="selectedBook && !disabled" class="flex align-items-center gap-2">
+        <div v-if="selectedBook && !disabled" class="flex flex-row gap-2">
             <div class="flex-shrink-0 opacity-50 text-left">{{ selectedBook?.abbreviation.toUpperCase() }}</div>
             <div>{{ selectedBook?.name }}</div>
         </div>
@@ -63,8 +63,9 @@ const disabled = computed(() => props.books == null);
                 :pt="{ itemGroup: { class: 'bg-transparent' } }">
                 <template #option="slotProps">
                     <div class="flex align-items-center gap-2">
-                        <div class="w-12 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">{{
-                            slotProps.option.abbreviation?.toUpperCase() }}</div>
+                        <div class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">
+                            {{ slotProps.option.abbreviation?.toUpperCase() }}
+                        </div>
                         <div>{{ slotProps.option.name }}</div>
                     </div>
                 </template>
