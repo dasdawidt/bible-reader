@@ -206,7 +206,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 <SettingsDialog />
                 <FullscreenButton />
             </div>
-            <div class=" flex flex-col w-full md:flex-row gap-2">
+            <div class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full">
                 <TranslationDialog v-model="selectedTranslation" :translations="translations" :loading="loading === true" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
                 <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
