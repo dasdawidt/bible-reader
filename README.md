@@ -13,6 +13,7 @@
 * Dark and light mode
 * Pleasant reading experience
 * Sharable links
+* Installable as Progressive Web App (PWA)
 
 ## Live Version
 
