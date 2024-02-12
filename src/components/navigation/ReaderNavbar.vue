@@ -30,7 +30,8 @@ const props = defineProps<{
     translations?: TranslationList,
     chapter?: Chapter,
     book?: Book,
-    translation?: Translation
+    translation?: Translation,
+    loading?: boolean,
 }>();
 
 const emits = defineEmits<{
@@ -206,7 +207,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 <FullscreenButton />
             </div>
             <div class=" flex flex-col w-full md:flex-row gap-2">
-                <TranslationDialog v-model="selectedTranslation" :translations="translations" />
+                <TranslationDialog v-model="selectedTranslation" :translations="translations" :loading="loading === true" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
                 <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
                     :book-name="selectedBook?.name" />

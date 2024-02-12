@@ -3,7 +3,7 @@ import Footer from '@/components/display/Footer.vue';
 import InlineVerse from '@/components/display/InlineVerse.vue';
 import ReaderNavbar from '@/components/navigation/ReaderNavbar.vue';
 import ShareButtons from '@/components/navigation/ShareButtons.vue';
-import { TRANSLATION_LIST } from '@/logic/translations';
+import { useTranslationList } from '@/logic/translations';
 import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
@@ -15,11 +15,11 @@ import Divider from 'primevue/divider';
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+const { translationList, loading: translationListLoading } = useTranslationList();
 const selectedTranslation = fromQuery<Translation>(
     't',
     (id: string) => {
-        if (TRANSLATION_LIST != null)
-            return findTranslation(TRANSLATION_LIST, id);
+        return findTranslation(translationList.value, id);
     },
     (translation: Translation) => translation?.id?.toLowerCase()
 );
@@ -96,8 +96,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <ReaderNavbar :translations="TRANSLATION_LIST" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" @navigate="removeHighlight" class="print:hidden">
+    <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
+        v-model:chapter="selectedChapter" :loading="translationListLoading" @navigate="removeHighlight"
+        class="print:hidden">
         <template #toast-stack>
             <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="highligtedVerseNumbers.length > 0"
                 @update:visible="removeHighlight" />

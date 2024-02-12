@@ -18,6 +18,10 @@ const props = defineProps<{
      * The selected `Translation`.
      */
     modelValue?: Translation;
+    /**
+     * Whether the element should show a loading state.
+     */
+    loading?: boolean
 }>();
 
 const emits = defineEmits<{
@@ -35,7 +39,8 @@ const visible = ref(false);
 </script>
 
 <template>
-    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="loading === true"
+        :loading="loading === true">
         <div v-if="selectedTranslation" class="flex flex-row">
             <div class="w-12 flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
