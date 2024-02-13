@@ -45,8 +45,11 @@ const visible = ref(false);
             <div class="flex-shrink-0 opacity-50 text-left">{{ selectedTranslation?.id?.toUpperCase() }}</div>
             <div>{{ selectedTranslation?.name }}</div>
         </div>
-        <div v-else>
+        <div v-else-if="loading !== true">
             {{ $t('prompts.select_translation') }}...
+        </div>
+        <div v-else>
+            {{ $t('prompts.loading_translations') }}...
         </div>
     </DialogSelectButton>
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
