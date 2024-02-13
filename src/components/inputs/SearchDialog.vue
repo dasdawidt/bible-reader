@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useOnMobile } from "@/logic/util/MobileDetection";
+import { useFocus } from "@vueuse/core";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import IconField from 'primevue/iconfield';
@@ -14,15 +15,16 @@ const emits = defineEmits();
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
 const searchBar = ref<HTMLElement>();
+const { focused } = useFocus(searchBar);
 const search = ref('');
 </script>
 
 <template>
-    <Button icon="mdi mdi-magnify" :label="$t('prompts.search')" severity="secondary" text @click="visible = true"
-        @keyup.enter="visible = true" v-bind="$attrs" />
+    <Button icon="mdi-magnify" icon-class="mdi scale-[1.5]" :label="$t('prompts.search')" severity="secondary" text
+        @click="visible = true" @keyup.enter="visible = true" v-bind="$attrs" />
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
         :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }">
+        :pt="{ content: { class: 'overflow-hidden' } }" @show="focused = true">
         <template #header>
             <IconField iconPosition="left" class="w-full">
                 <InputIcon>
