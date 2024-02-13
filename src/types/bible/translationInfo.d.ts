@@ -3,4 +3,4 @@ export type TranslationInfo = {
     name: string;
     language: string;
     localizedName?: string;
-}
+};

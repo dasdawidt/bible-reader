@@ -1,6 +1,6 @@
-import { Verse } from "./verse";
+import { Verse } from './verse';
 
 export type Chapter = {
-    number: number,
+    number: number;
     verses: Verse[];
 };

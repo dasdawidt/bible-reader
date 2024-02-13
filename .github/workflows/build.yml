@@ -1,0 +1,43 @@
+name: Build
+run-name: 'Build "${{ github.event.head_commit.message }}" #${{ github.run_attempt }}'
+
+on:
+    push:
+        paths-ignore:
+            - '**.md'
+            - '!src/**.md'
+            - '!public/**.md'
+        branches:
+            - main
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        if: "${{ !startsWith(github.event.head_commit.message, 'dev') && !startsWith(github.event.head_commit.message, 'docs') }}"
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'latest'
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build project
+              run: pnpm run build
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: production-files
+                  path: ./dist

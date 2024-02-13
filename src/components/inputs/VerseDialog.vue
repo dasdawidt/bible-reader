@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import Dialog from "primevue/dialog";
-import Button from "primevue/button";
-import Listbox from "primevue/listbox";
-import Avatar from "primevue/avatar";
-import Divider from "primevue/divider";
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
-import { Passage } from "@/types/plans/passage";
+import { formatPassages, getBook, toPassageVerseList } from "@/logic/util/BibleUtils";
+import { useOnMobile } from "@/logic/util/MobileDetection";
 import { BookType } from "@/types/bible/bookType";
 import { Translation } from "@/types/bible/translation";
-import { useOnMobile } from "@/logic/util/MobileDetection";
-import { formatPassages, getBook, toPassageVerseList } from "@/logic/util/BibleUtils";
-import DialogueSelectButton from "./DialogSelectButton.vue";
+import { Passage } from "@/types/plans/passage";
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import Avatar from "primevue/avatar";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import Divider from "primevue/divider";
+import Listbox from "primevue/listbox";
+import { computed, ref } from "vue";
 import ScrollContainer from "../containment/ScrollContainer.vue";
+import DialogueSelectButton from "./DialogSelectButton.vue";
 
 const props = defineProps<{
     /**
@@ -69,7 +69,7 @@ function confirm() {
 </script>
 
 <template>
-    <DialogueSelectButton @click="open" :disabled="disabled">
+    <DialogueSelectButton @click="open" @keyup.enter="visible = true" :disabled="disabled">
         <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
             {{ formatPassages(translation, selectedPassages) }}
         </div>

@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import Button from 'primevue/button';
 import BookDialog from '@/components/inputs/BookDialog.vue';
-import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
 import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
+import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
+import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
-import { computed, ref } from 'vue';
-import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
 import { TranslationList } from '@/types/bible/translationList';
+import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
+import Button from 'primevue/button';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import FullscreenButton from '../inputs/FullscreenButton.vue';
 
 
 
 // General variables
 
 const { isOnMobile } = useOnMobile();
+const { t } = useI18n();
 
 
 
@@ -24,21 +28,24 @@ const { isOnMobile } = useOnMobile();
 
 const props = defineProps<{
     translations?: TranslationList,
-    chapter?: Chapter,
+    translation?: Translation,
     book?: Book,
-    translation?: Translation
+    chapter?: Chapter,
+    loading?: boolean,
+    expanded?: boolean,
 }>();
 
 const emits = defineEmits<{
-    (e: 'update:chapter', v: Chapter): void;
-    (e: 'update:book', v: Book): void;
     (e: 'update:translation', v: Translation): void;
+    (e: 'update:book', v: Book): void;
+    (e: 'update:chapter', v: Chapter): void;
+    (e: 'update:expanded', v: boolean): void;
     (e: 'navigate', v: NavigationTarget): void;
 }>();
 
-const selectedChapter = computed({
-    get: () => props.chapter,
-    set: (v) => emits('update:chapter', v)
+const selectedTranslation = computed({
+    get: () => props.translation,
+    set: (v) => emits('update:translation', v)
 });
 
 const selectedBook = computed({
@@ -46,16 +53,19 @@ const selectedBook = computed({
     set: (v) => emits('update:book', v)
 });
 
-const selectedTranslation = computed({
-    get: () => props.translation,
-    set: (v) => emits('update:translation', v)
+const selectedChapter = computed({
+    get: () => props.chapter,
+    set: (v) => emits('update:chapter', v)
 });
 
 
 
 // Menu
 
-const showMenu = ref(selectedChapter.value == null);
+const showMenu = computed({
+    get: () => props.expanded,
+    set: (v) => emits('update:expanded', v)
+});
 const menuTransition = ref(false);
 const toggleMenu = () => {
     // make sure the animation is played
@@ -123,7 +133,7 @@ function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget |
     const diff = direction === 'next' ? 1 : -1;
     const toChapter = selectedBook.value?.chapters?.find(c => c.number === selectedChapter.value?.number + diff);
     if (toChapter != null) return { direction, chapter: toChapter, book: selectedBook.value };
-    const toBook = selectedTranslation.value?.books?.find(b => b.type === selectedBook.value?.type + diff);
+    const toBook = selectedTranslation.value?.books?.find(b => bookTypeToNumber(b.type) === bookTypeToNumber(selectedBook.value?.type) + diff);
     if (toBook != null) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
         return { direction, chapter: toBook.chapters?.[toChapterIndex], book: toBook };
@@ -141,7 +151,7 @@ const { width: menuWidth } = useElementSize(menuElement);
 
 function navButtonLabel(navigationTarget: NavigationTarget) {
     return navigationTarget == null
-        ? 'Eternity'
+        ? t('bible.eternity')
         : menuWidth.value < 280
             ? ''
             : menuWidth.value < 500
@@ -167,7 +177,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 
 <template>
     <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
-        :class="menuClass" style="background-color: var(--surface-b); border-color: var(--surface-border);"
+        :class="menuClass" style="background-color: var(--surface-ground); border-color: var(--surface-border);"
         :style="menuStyle">
 
         <div class="absolute w-full h-0 z-20">
@@ -197,11 +207,12 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <!-- Toggleable menu -->
         <div class="flex w-full gap-2 items-center max-w-container"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'" ref="menuElement">
-            <div class="w-full flex flex-row justify-between">
-                <SettingsDialog class="max-md:w-full" />
+            <div class="w-full flex flex-row-reverse justify-between items-center">
+                <SettingsDialog />
+                <FullscreenButton />
             </div>
-            <div class=" flex flex-col w-full md:flex-row gap-2">
-                <TranslationDialog v-model="selectedTranslation" :translations="translations" />
+            <div class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full">
+                <TranslationDialog v-model="selectedTranslation" :translations="translations" :loading="loading === true" />
                 <BookDialog v-model="selectedBook" :books="selectedTranslation?.books" />
                 <ChapterDialog v-model="selectedChapter" :chapters="selectedBook?.chapters"
                     :book-name="selectedBook?.name" />

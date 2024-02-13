@@ -1,6 +1,6 @@
+import { Book } from './book';
 import { BookTypeNewTestament } from './bookTypeNewTestament';
 import { BookTypeOldTestament } from './bookTypeOldTestament';
-import { Book } from './book';
 
 export type BookList = [
     {
@@ -10,7 +10,7 @@ export type BookList = [
     },
     {
         name: string;
-        type: BookTypeOldTestament;
+        type: BookTypeNewTestament;
         books: Book[];
-    }
+    },
 ];

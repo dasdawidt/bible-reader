@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
-import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     title?: string;
@@ -45,7 +48,7 @@ function copyLinkNow() {
     copyToClipboard(props.url);
     pushToast({
         severity: 'success',
-        summary: 'URL copied!',
+        summary: t('prompts.copy_url_success'),
         life: 3000
     });
 }
@@ -58,7 +61,7 @@ function copyNow() {
     copyToClipboard(props.text);
     pushToast({
         severity: 'success',
-        summary: 'Text copied!',
+        summary: t('prompts.copy_text_success'),
         life: 3000
     });
 }
@@ -76,15 +79,15 @@ function printNow() {
 <template>
     <Transition enter-from-class="translate-y-10 opacity-0" leave-to-class="-translate-y-10 opacity-0">
         <div v-if="visibleValue == true" class="
-                flex flex-row w-fit rounded-full p-2 gap-2 shadow-lg transition-all backdrop-blur
-                border border-solid border-green-500 border-opacity-10 bg-green-500 bg-opacity-5
+                flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm
+                bg-green-500 bg-opacity-5
             ">
             <Button icon="mdi mdi-share text-2xl leading-none" rounded text @click="shareNow" />
             <Button icon="mdi mdi-link-variant text-2xl leading-none" rounded text @click="copyLinkNow" />
             <Button icon="mdi mdi-content-copy text-2xl leading-none" rounded text @click="copyNow" />
             <Button icon="mdi mdi-printer text-2xl leading-none" rounded text @click="printNow" />
             <Button icon="mdi mdi-selection-ellipse-remove text-3xl leading-none" severity="secondary" rounded text
-                @click="visibleValue = false" />
+                @click="visibleValue = false" class="opacity-35" />
         </div>
     </Transition>
 </template>

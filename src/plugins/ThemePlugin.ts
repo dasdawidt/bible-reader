@@ -1,12 +1,12 @@
+import darkTheme from '@/assets/themes/dark.css?inline';
+import lightTheme from '@/assets/themes/light.css?inline';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 import {
     ColorSchemeType,
     usePreferredColorScheme,
     useStyleTag,
 } from '@vueuse/core';
 import { Plugin, computed, ref, watch } from 'vue';
-import lightTheme from '@/assets/themes/light.css?inline';
-import darkTheme from '@/assets/themes/dark.css?inline';
-import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { isOnMobile } = useOnMobile();
 const themeColorMetaTag = ref<HTMLMetaElement>(undefined);
@@ -31,7 +31,11 @@ const { load: loadDarkTheme, unload: unloadDarkTheme } = useStyleTag(
 );
 
 watch(colorScheme, (newValue, _oldValue) => {
-    if (newValue === 'dark') {
+    loadScheme(newValue);
+});
+
+function loadScheme(scheme: ColorSchemeType) {
+    if (scheme === 'dark') {
         unloadLightTheme();
         loadDarkTheme();
         setThemeColor(isOnMobile.value ? '#090d15' : '#111827');
@@ -40,7 +44,7 @@ watch(colorScheme, (newValue, _oldValue) => {
         loadLightTheme();
         setThemeColor(isOnMobile.value ? '#ffffff' : '#f9fafb');
     }
-});
+}
 
 function setThemeColor(color: string) {
     themeColorMetaTag.value.content = color;
@@ -53,14 +57,16 @@ const ThemePlugin: Plugin = {
         element.content = '#f9fafb';
         document.head.appendChild(element);
         themeColorMetaTag.value = element;
-        colorSchemeOverride.value = 'no-preference';
+        loadScheme(colorScheme.value);
     },
 };
 export default ThemePlugin;
 
-export const useTheme = () =>
-    computed({
+export const useTheme = () => ({
+    settingsTheme: computed({
         get: () => colorSchemeOverride.value,
         set: (v) =>
             (colorSchemeOverride.value = v ?? colorSchemeOverride.value),
-    });
+    }),
+    activeTheme: colorScheme,
+});
