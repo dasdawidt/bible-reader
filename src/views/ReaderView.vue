@@ -12,7 +12,7 @@ import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Divider from 'primevue/divider';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const { translationList, loading: translationListLoading } = useTranslationList();
@@ -85,13 +85,6 @@ useTitle(
         : initialTitle
     )
 );
-
-onMounted(() => {
-    if (highligtedVerseNumbers.value?.length > 0) {
-        document.querySelector(`#verse-${highligtedVerseNumbers.value[0]}`)
-            .scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-});
 
 </script>
 
