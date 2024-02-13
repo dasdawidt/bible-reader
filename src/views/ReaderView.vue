@@ -12,12 +12,17 @@ import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Divider from 'primevue/divider';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+const TRANSLATION_QUERY_KEY = 't';
+const BOOK_QUERY_KEY = 'b';
+const CHAPTER_QUERY_KEY = 'c';
+const HIGHLIGHT_QUERY_KEY = 'v';
 
 const { translationList, loading: translationListLoading } = useTranslationList();
 const selectedTranslation = fromQuery<Translation>(
-    't',
+    TRANSLATION_QUERY_KEY,
     (id: string) => {
         return findTranslation(translationList.value, id);
     },
@@ -25,7 +30,7 @@ const selectedTranslation = fromQuery<Translation>(
 );
 
 const selectedBook = fromQuery<Book>(
-    'b',
+    BOOK_QUERY_KEY,
     (id: string) => {
         if (selectedTranslation.value != null)
             return getBook(
@@ -37,7 +42,7 @@ const selectedBook = fromQuery<Book>(
 );
 
 const selectedChapter = fromQuery<Chapter>(
-    'c',
+    CHAPTER_QUERY_KEY,
     (id: string) => {
         if (selectedTranslation.value != null && selectedBook.value != null)
             return getChapter(selectedTranslation.value, selectedBook.value?.type, Number.parseInt(id));
@@ -46,7 +51,7 @@ const selectedChapter = fromQuery<Chapter>(
 );
 
 const highligtedVerseNumbers = fromQuery<number[]>(
-    'v',
+    HIGHLIGHT_QUERY_KEY,
     (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
     (numbers: number[]) => numbers?.length == 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')
 );
@@ -60,7 +65,15 @@ const setIsHighlighted = (number: number, value: boolean) => value
     : highligtedVerseNumbers.value = highligtedVerseNumbers.value?.filter(n => n != number);
 const getHiddenForPrint = (number: number) => highligtedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
-const highlightedVerses = computed(() => selectedChapter.value?.verses?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
+const highlightedVerses = computed(() => selectedChapter.value?.verses
+    ?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
+const navigationExpanded = ref(![TRANSLATION_QUERY_KEY, BOOK_QUERY_KEY, CHAPTER_QUERY_KEY]
+    .every(v => Object.keys(useRoute().query).includes(v)));
+watch(translationListLoading, (value, oldValue) => {
+    if (oldValue === true && value === false) {
+        navigationExpanded.value = selectedChapter.value == null;
+    }
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -77,6 +90,7 @@ const shareTitle = computed(() =>
         })))
         : undefined
 );
+const shareButtonsVisible = computed(() => highlightedVerses.value?.length > 0);
 
 const initialTitle = document.title;
 useTitle(
@@ -90,10 +104,10 @@ useTitle(
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
-        v-model:chapter="selectedChapter" :loading="translationListLoading" @navigate="removeHighlight"
-        class="print:hidden">
+        v-model:chapter="selectedChapter" :loading="translationListLoading" v-model:expanded="navigationExpanded"
+        @navigate="removeHighlight" class="print:hidden">
         <template #toast-stack>
-            <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="highligtedVerseNumbers.length > 0"
+            <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="shareButtonsVisible"
                 @update:visible="removeHighlight" />
         </template>
     </ReaderNavbar>

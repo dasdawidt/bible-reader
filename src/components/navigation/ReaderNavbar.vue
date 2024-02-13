@@ -28,22 +28,24 @@ const { t } = useI18n();
 
 const props = defineProps<{
     translations?: TranslationList,
-    chapter?: Chapter,
-    book?: Book,
     translation?: Translation,
+    book?: Book,
+    chapter?: Chapter,
     loading?: boolean,
+    expanded?: boolean,
 }>();
 
 const emits = defineEmits<{
-    (e: 'update:chapter', v: Chapter): void;
-    (e: 'update:book', v: Book): void;
     (e: 'update:translation', v: Translation): void;
+    (e: 'update:book', v: Book): void;
+    (e: 'update:chapter', v: Chapter): void;
+    (e: 'update:expanded', v: boolean): void;
     (e: 'navigate', v: NavigationTarget): void;
 }>();
 
-const selectedChapter = computed({
-    get: () => props.chapter,
-    set: (v) => emits('update:chapter', v)
+const selectedTranslation = computed({
+    get: () => props.translation,
+    set: (v) => emits('update:translation', v)
 });
 
 const selectedBook = computed({
@@ -51,16 +53,19 @@ const selectedBook = computed({
     set: (v) => emits('update:book', v)
 });
 
-const selectedTranslation = computed({
-    get: () => props.translation,
-    set: (v) => emits('update:translation', v)
+const selectedChapter = computed({
+    get: () => props.chapter,
+    set: (v) => emits('update:chapter', v)
 });
 
 
 
 // Menu
 
-const showMenu = ref(selectedChapter.value == null);
+const showMenu = computed({
+    get: () => props.expanded,
+    set: (v) => emits('update:expanded', v)
+});
 const menuTransition = ref(false);
 const toggleMenu = () => {
     // make sure the animation is played
