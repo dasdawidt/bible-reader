@@ -6,7 +6,7 @@ import Dialog from "primevue/dialog";
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from "primevue/inputtext";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const props = defineProps();
 
