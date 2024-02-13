@@ -35,7 +35,7 @@ const search = ref('');
             {{ search }}
         </template>
         <template #footer>
-            <Button :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
+            <Button :label="$t('prompts.close')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>
