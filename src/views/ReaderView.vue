@@ -106,10 +106,14 @@ onMounted(() => {
     </ReaderNavbar>
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
+            <div class="relative w-full h-0">
+                <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-50 w-full text-center">{{
+                    selectedBook?.verboseName ?? selectedBook?.name }}</div>
+            </div>
             <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
                 <Divider class="flex-shrink" />
-                <span class="text-2xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
-                    {{ getBook(selectedTranslation, selectedBook?.type)?.name }} {{ selectedChapter?.number }}
+                <span class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
+                    {{ $t('bible.chapter') }} {{ selectedChapter?.number }}
                 </span>
                 <Divider class="flex-shrink" />
             </div>
