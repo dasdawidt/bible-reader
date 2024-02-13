@@ -107,7 +107,7 @@ onMounted(() => {
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen">
         <div v-if="selectedChapter != null">
             <div class="relative w-full h-0">
-                <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-50 w-full text-center">
+                <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
                     {{ selectedBook?.verboseName ?? selectedBook?.name }}
                 </div>
             </div>
