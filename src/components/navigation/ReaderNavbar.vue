@@ -14,6 +14,7 @@ import Button from 'primevue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import FullscreenButton from '../inputs/FullscreenButton.vue';
+import SearchDialog from '../inputs/SearchDialog.vue';
 
 
 
@@ -209,6 +210,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'" ref="menuElement">
             <div class="w-full flex flex-row-reverse justify-between items-center">
                 <SettingsDialog />
+                <SearchDialog />
                 <FullscreenButton />
             </div>
             <div class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full">

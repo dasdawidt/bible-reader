@@ -15,8 +15,8 @@ dependencies:
     specifier: ^10.7.0
     version: 10.7.2(vue-router@4.2.5)(vue@3.4.15)
   primevue:
-    specifier: ^3.47.2
-    version: 3.47.2(vue@3.4.15)
+    specifier: ^3.48.1
+    version: 3.48.1(vue@3.4.15)
   vue:
     specifier: ^3.4.15
     version: 3.4.15(typescript@5.3.3)
@@ -1980,8 +1980,8 @@ packages:
       react-is: 18.2.0
     dev: true
 
-  /primevue@3.47.2(vue@3.4.15):
-    resolution: {integrity: sha512-/vgIhc2vxNW8amBGBJX/NMBgWi/THOwT0DIPgy/aswJ86x+uwLwGtjNz22c/uSE5UkHu4E5rpktWOJtFvTbRPg==}
+  /primevue@3.48.1(vue@3.4.15):
+    resolution: {integrity: sha512-lyJ+E0ZCv2pR9jIpdPLBysU8zB2hOKrN7q78orloWelPx05zSYoMVKAWaqKTHNpunD52xffjaqovt1y6B/9XoQ==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
