@@ -1,6 +1,6 @@
 import { BookInfo } from './bookInfo';
-import { Chapter } from "./chapter";
+import { Chapter } from './chapter';
 
 export type Book = BookInfo & {
     chapters: Chapter[];
-}
+};
