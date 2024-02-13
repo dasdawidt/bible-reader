@@ -10,6 +10,8 @@ const I18nPlugin = createI18n({
             prompts: {
                 cancel: 'Cancel',
                 close: 'Close',
+                confirm: 'Yes',
+                deny: 'No',
                 settings: 'Settings',
                 select_translation: 'Select Translation',
                 select_book: 'Select Book',
@@ -43,6 +45,8 @@ const I18nPlugin = createI18n({
             prompts: {
                 cancel: 'Abbrechen',
                 close: 'Schließen',
+                confirm: 'Ja',
+                deny: 'Nein',
                 settings: 'Einstellungen',
                 select_translation: 'Übersetzung auswählen',
                 select_book: 'Buch auswählen',
