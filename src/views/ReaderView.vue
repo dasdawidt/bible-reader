@@ -50,23 +50,23 @@ const selectedChapter = fromQuery<Chapter>(
     (chapter: Chapter) => chapter?.number?.toString()
 );
 
-const highligtedVerseNumbers = fromQuery<number[]>(
+const highlightedVerseNumbers = fromQuery<number[]>(
     HIGHLIGHT_QUERY_KEY,
     (string: string) => string?.split(',')?.map(s => Number.parseInt(s)) ?? [],
     (numbers: number[]) => numbers?.length == 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')
 );
 
 const removeHighlight = () => {
-    highligtedVerseNumbers.value = [];
+    highlightedVerseNumbers.value = [];
 }
-const getIsHighlighted = (number: number) => highligtedVerseNumbers.value?.includes(number);
+const getIsHighlighted = (number: number) => highlightedVerseNumbers.value?.includes(number);
 const setIsHighlighted = (number: number, value: boolean) => value
-    ? highligtedVerseNumbers.value = highligtedVerseNumbers.value?.concat(number)
-    : highligtedVerseNumbers.value = highligtedVerseNumbers.value?.filter(n => n != number);
-const getHiddenForPrint = (number: number) => highligtedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
+    ? highlightedVerseNumbers.value = highlightedVerseNumbers.value?.concat(number)
+    : highlightedVerseNumbers.value = highlightedVerseNumbers.value?.filter(n => n != number);
+const getHiddenForPrint = (number: number) => highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
 const highlightedVerses = computed(() => selectedChapter.value?.verses
-    ?.filter(v => highligtedVerseNumbers.value?.includes(v.number)));
+    ?.filter(v => highlightedVerseNumbers.value?.includes(v.number)));
 const navigationExpanded = ref(![TRANSLATION_QUERY_KEY, BOOK_QUERY_KEY, CHAPTER_QUERY_KEY]
     .every(v => Object.keys(useRoute().query).includes(v)));
 watch(translationListLoading, (value, oldValue) => {
