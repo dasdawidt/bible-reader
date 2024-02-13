@@ -3,7 +3,7 @@ import { Plugin, ref, watch } from 'vue';
 import I18nPlugin from './I18nPlugin';
 import { useTheme } from './ThemePlugin';
 
-const theme = useTheme();
+const { settingsTheme: theme } = useTheme();
 const { locale } = I18nPlugin.global;
 
 const SETTINGS_KEY = 'settings/settings';

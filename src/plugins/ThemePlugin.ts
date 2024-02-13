@@ -62,9 +62,11 @@ const ThemePlugin: Plugin = {
 };
 export default ThemePlugin;
 
-export const useTheme = () =>
-    computed({
+export const useTheme = () => ({
+    settingsTheme: computed({
         get: () => colorSchemeOverride.value,
         set: (v) =>
             (colorSchemeOverride.value = v ?? colorSchemeOverride.value),
-    });
+    }),
+    activeTheme: colorScheme,
+});
