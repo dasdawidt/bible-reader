@@ -20,7 +20,7 @@ const search = ref('');
 </script>
 
 <template>
-    <Button icon="mdi-magnify" icon-class="mdi scale-[1.5]" :label="$t('prompts.search')" severity="secondary" text
+    <Button icon="mdi-magnify" icon-class="mdi scale-150" :label="$t('prompts.search')" severity="secondary" text
         @click="visible = true" @keyup.enter="visible = true" v-bind="$attrs" />
     <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
         :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
@@ -28,7 +28,7 @@ const search = ref('');
         <template #header>
             <IconField iconPosition="left" class="w-full">
                 <InputIcon>
-                    <i class="mdi mdi-magnify scale-150" />
+                    <i class="mdi mdi-magnify scale-150 px-1" />
                 </InputIcon>
                 <InputText class="w-full" v-model="search" :placeholder="$t('prompts.search')" ref="searchBar" />
             </IconField>
