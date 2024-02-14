@@ -14,6 +14,8 @@ import Button from 'primevue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import FullscreenButton from '../inputs/FullscreenButton.vue';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiArrowLeft, mdiArrowRight, mdiChevronUp, mdiChevronDown } from '@mdi/js';
 
 
 
@@ -92,10 +94,10 @@ useResizeObserver(menuElement, () => {
 });
 
 // Menu icon
-const menuIcon = computed(() => {
+const menuIconUp = computed(() => {
     return isOnMobile.value
-        ? showMenu.value ? 'mdi mdi-chevron-down' : 'mdi mdi-chevron-up'
-        : showMenu.value ? 'mdi mdi-chevron-up' : 'mdi mdi-chevron-down';
+        ? showMenu.value ? false : true
+        : showMenu.value ? true : false;
 });
 
 // Menu style
@@ -191,16 +193,27 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
             :class="{ '!max-w-container': showMenu }">
             <div class="w-full flex flex-row justify-start">
-                <Button class="whitespace-nowrap" icon="mdi mdi-arrow-left" :label="navigationLabelPrevious"
-                    :disabled="!canNavigatePrevious" @click="navigatePrevious" rounded text
-                    :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+                <Button class="whitespace-nowrap" :label="navigationLabelPrevious" :disabled="!canNavigatePrevious"
+                    @click="navigatePrevious" rounded text :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }">
+                    <template #icon>
+                        <SvgIcon type="mdi" size="16" :path="mdiArrowLeft" />
+                    </template>
+                </Button>
             </div>
             <!-- Menu toggle button -->
-            <Button :icon="menuIcon" class="text-3xl flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile" />
+            <Button class="flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile">
+                <template #icon>
+                    <SvgIcon v-show="menuIconUp" type="mdi" size="30" :path="mdiChevronUp" />
+                    <SvgIcon v-show="!menuIconUp" type="mdi" size="30" :path="mdiChevronDown" />
+                </template>
+            </Button>
             <div class="w-full flex flex-row justify-end">
-                <Button class="whitespace-nowrap" icon="mdi mdi-arrow-right" icon-pos="right" :label="navigationLabelNext"
-                    :disabled="!canNavigateNext" @click="navigateNext" rounded text
-                    :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }" />
+                <Button class="whitespace-nowrap" icon-pos="right" :label="navigationLabelNext" :disabled="!canNavigateNext"
+                    @click="navigateNext" rounded text :pt="{ label: { class: 'text-ellipsis overflow-hidden' } }">
+                    <template #icon>
+                        <SvgIcon type="mdi" size="16" :path="mdiArrowRight" />
+                    </template>
+                </Button>
             </div>
         </div>
 
