@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiCog } from '@mdi/js';
 import { useWindowSize } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -22,8 +24,11 @@ const buildDate = import.meta.env.BUILD_DATE;
 </script>
 
 <template>
-    <Button icon="mdi-cog" icon-class="mdi scale-[1.2]" severity="secondary" @click="visible = true" v-bind="$attrs"
-        :label="label" text />
+    <Button severity="secondary" @click="visible = true" v-bind="$attrs" :label="label" text>
+        <template #icon>
+            <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiCog" />
+        </template>
+    </Button>
     <Dialog class="w-full max-w-container" v-model:visible="visible" :closable="false" :draggable="false" modal
         :header="$t('prompts.settings')" :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask
         :pt="{ content: { class: 'pb-0 pt-2' } }">
