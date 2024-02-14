@@ -7,11 +7,13 @@ import { useTranslationList } from '@/logic/translations';
 import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/util/BibleUtils';
 import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
+import { useSettings } from '@/plugins/SettingsPlugin';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Divider from 'primevue/divider';
+import { onMounted } from 'vue';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -100,12 +102,22 @@ useTitle(
     )
 );
 
+const { settings } = useSettings();
+function bibleLocationChanged() {
+    removeHighlight();
+    settings.value.lastRoute = route.fullPath;
+}
+if (![TRANSLATION_QUERY_KEY, BOOK_QUERY_KEY, CHAPTER_QUERY_KEY]
+    .some(v => Object.keys(useRoute().query).includes(v)) && settings.value.lastRoute != null) {
+    router.push(settings.value.lastRoute);
+}
+
 </script>
 
 <template>
     <ReaderNavbar :translations="translationList" v-model:translation="selectedTranslation" v-model:book="selectedBook"
         v-model:chapter="selectedChapter" :loading="translationListLoading" v-model:expanded="navigationExpanded"
-        @navigate="removeHighlight" class="print:hidden">
+        @navigate="bibleLocationChanged" class="print:hidden">
         <template #toast-stack>
             <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="shareButtonsVisible"
                 @update:visible="removeHighlight" />

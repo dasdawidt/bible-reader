@@ -13,12 +13,14 @@ type Settings = {
     theme: ColorSchemeType;
     language: typeof locale.value;
     translation: string;
+    lastRoute: string;
 };
 
 const defaultSettings: Settings = {
     theme: 'no-preference',
     language: 'en',
     translation: 'kjv',
+    lastRoute: import.meta.env.BASE_URL,
 };
 
 const persistenceEnabled = ref<boolean>(false);
