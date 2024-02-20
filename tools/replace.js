@@ -1,12 +1,12 @@
 import fs from 'fs';
 
-const wrongAbbreviationsFile = '../src/assets/translations/elb.json';
+const wrongAbbreviationsFile = '../src/assets/translations/asv.json';
 
 const wrongAbbreviations = JSON.parse(
     fs.readFileSync(wrongAbbreviationsFile, 'utf8')
 );
 const rightAbbreviations = JSON.parse(
-    fs.readFileSync('../src/assets/translations/sch.json', 'utf8')
+    fs.readFileSync('../src/assets/translations/kjv.json', 'utf8')
 );
 
 wrongAbbreviations.books = wrongAbbreviations.books.map((targetBook) => {
@@ -15,7 +15,7 @@ wrongAbbreviations.books = wrongAbbreviations.books.map((targetBook) => {
     );
     return {
         ...targetBook,
-        abbreviation: sourceBook.abbreviation,
+        verboseName: sourceBook.verboseName,
     };
 });
 
