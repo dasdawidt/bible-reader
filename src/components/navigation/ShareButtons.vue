@@ -26,7 +26,6 @@ const visibleValue = computed({
 const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
 const { share: pushShare } = useShare();
-onKeyStroke('Escape', () => (visibleValue.value = false), { passive: true });
 
 // Share
 
@@ -59,20 +58,25 @@ function copyNow() {
         life: 3000,
     });
 }
-onKeyStroke(
-    (e) => e.ctrlKey && e.code === 'KeyC',
-    (_e) => {
-        if (visibleValue.value) {
-            copyNow();
-        }
-    }
-);
 
 // Print
 
 function printNow() {
     window.print();
 }
+
+// Keybindings
+
+onKeyStroke('Escape', () => (visibleValue.value = false), { passive: true });
+onKeyStroke(
+    (e) => e.ctrlKey && e.code === 'KeyC',
+    () => {
+        if (visibleValue.value) {
+            copyNow();
+        }
+    },
+    { passive: true }
+);
 </script>
 
 <template>
