@@ -20,15 +20,12 @@ const emit = defineEmits<{
 
 const visibleValue = computed({
     get: () => props.visible,
-    set: v => emit('update:visible', v),
+    set: (v) => emit('update:visible', v),
 });
 
 const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
 const { share: pushShare } = useShare();
-onKeyStroke('Escape', () => visibleValue.value = false, { passive: true });
-
-
 
 // Share
 
@@ -40,8 +37,6 @@ function shareNow() {
     });
 }
 
-
-
 // Copy Link
 
 function copyLinkNow() {
@@ -49,11 +44,9 @@ function copyLinkNow() {
     pushToast({
         severity: 'success',
         summary: t('prompts.copy_url_success'),
-        life: 3000
+        life: 3000,
     });
 }
-
-
 
 // Copy Text
 
@@ -62,11 +55,9 @@ function copyNow() {
     pushToast({
         severity: 'success',
         summary: t('prompts.copy_text_success'),
-        life: 3000
+        life: 3000,
     });
 }
-
-
 
 // Print
 
@@ -74,20 +65,61 @@ function printNow() {
     window.print();
 }
 
+// Keybindings
+
+onKeyStroke('Escape', () => (visibleValue.value = false), { passive: true });
+onKeyStroke(
+    (e) => e.ctrlKey && e.code === 'KeyC',
+    () => {
+        if (visibleValue.value) {
+            copyNow();
+        }
+    },
+    { passive: true }
+);
 </script>
 
 <template>
-    <Transition enter-from-class="translate-y-10 opacity-0" leave-to-class="-translate-y-10 opacity-0">
-        <div v-if="visibleValue == true" class="
-                flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm
-                bg-green-500 bg-opacity-5
-            ">
-            <Button icon="mdi mdi-share text-2xl leading-none" rounded text @click="shareNow" />
-            <Button icon="mdi mdi-link-variant text-2xl leading-none" rounded text @click="copyLinkNow" />
-            <Button icon="mdi mdi-content-copy text-2xl leading-none" rounded text @click="copyNow" />
-            <Button icon="mdi mdi-printer text-2xl leading-none" rounded text @click="printNow" />
-            <Button icon="mdi mdi-selection-ellipse-remove text-3xl leading-none" severity="secondary" rounded text
-                @click="visibleValue = false" class="opacity-35" />
+    <Transition
+        enter-from-class="translate-y-10 opacity-0"
+        leave-to-class="-translate-y-10 opacity-0"
+    >
+        <div
+            v-if="visibleValue == true"
+            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm bg-green-500 bg-opacity-5"
+        >
+            <Button
+                icon="mdi mdi-share text-2xl leading-none"
+                rounded
+                text
+                @click="shareNow"
+            />
+            <Button
+                icon="mdi mdi-link-variant text-2xl leading-none"
+                rounded
+                text
+                @click="copyLinkNow"
+            />
+            <Button
+                icon="mdi mdi-content-copy text-2xl leading-none"
+                rounded
+                text
+                @click="copyNow"
+            />
+            <Button
+                icon="mdi mdi-printer text-2xl leading-none"
+                rounded
+                text
+                @click="printNow"
+            />
+            <Button
+                icon="mdi mdi-selection-ellipse-remove text-3xl leading-none"
+                severity="secondary"
+                rounded
+                text
+                @click="visibleValue = false"
+                class="opacity-35"
+            />
         </div>
     </Transition>
 </template>
