@@ -17,31 +17,52 @@ const props = defineProps<{
     showLabel?: boolean;
 }>();
 
-const label = computed(() => props.showLabel ? 'Settings' : null);
+const label = computed(() => (props.showLabel ? 'Settings' : null));
 const condensed = computed(() => screenWidth.value < 400);
 const buildDate = import.meta.env.BUILD_DATE;
-
 </script>
 
 <template>
-    <Button severity="secondary" @click="visible = true" v-bind="$attrs" :label="label" text>
+    <Button
+        severity="secondary"
+        @click="visible = true"
+        v-bind="$attrs"
+        :label="label"
+        text
+    >
         <template #icon>
             <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiCog" />
         </template>
     </Button>
-    <Dialog class="w-full max-w-container" v-model:visible="visible" :closable="false" :draggable="false" modal
-        :header="$t('prompts.settings')" :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask
-        :pt="{ content: { class: 'pb-0 pt-2' } }">
+    <Dialog
+        class="w-full max-w-container"
+        v-model:visible="visible"
+        :closable="false"
+        :draggable="false"
+        modal
+        :header="$t('prompts.settings')"
+        :position="isOnMobile ? 'bottom' : 'top'"
+        dismissable-mask
+        :pt="{ content: { class: 'pb-0 pt-2' } }"
+    >
         <template #default>
             <div class="flex flex-col gap-4">
                 <SaveSettingsSwitch :condensed="condensed" />
                 <ThemeSwitcher :condensed="condensed" />
                 <LocaleSwitcher :condensed="condensed" />
             </div>
-            <div class="w-full text-center text-sm uppercase opacity-5 p-4">Build {{ buildDate }}</div>
+            <div class="w-full text-center text-sm uppercase opacity-5 p-4">
+                Build {{ buildDate }}
+            </div>
         </template>
         <template #footer>
-            <Button :label="$t('prompts.close')" @click="visible = false" severity="secondary" text class="w-full" />
+            <Button
+                :label="$t('prompts.close')"
+                @click="visible = false"
+                severity="secondary"
+                text
+                class="w-full"
+            />
         </template>
     </Dialog>
 </template>

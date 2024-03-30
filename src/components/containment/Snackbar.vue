@@ -9,16 +9,15 @@ const passThrough: ToastPassThroughOptions = {
             padding: '20px',
             width: '100%',
             maxWidth: '400px',
-            pointerEvents: 'none'
-        }
+            pointerEvents: 'none',
+        },
     },
     container: {
         style: {
-            pointerEvents: 'auto'
-        }
-    }
+            pointerEvents: 'auto',
+        },
+    },
 };
-
 </script>
 
 <template>
