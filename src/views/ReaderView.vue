@@ -11,6 +11,7 @@ import {
     getChapter,
 } from '@/logic/util/BibleUtils';
 import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
+import { formatPassageOptionsFromI18n } from '@/logic/util/I18nUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
 import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
@@ -18,12 +19,15 @@ import { Translation } from '@/types/bible/translation';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Divider from 'primevue/divider';
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 const TRANSLATION_QUERY_KEY = 't';
 const BOOK_QUERY_KEY = 'b';
 const CHAPTER_QUERY_KEY = 'c';
 const HIGHLIGHT_QUERY_KEY = 'v';
+
+const { t } = useI18n();
 
 const { translationList, loading: translationListLoading } =
     useTranslationList();
@@ -119,7 +123,8 @@ const shareTitle = computed(() =>
                   bookType: selectedBook.value?.type,
                   chapter: selectedChapter.value?.number,
                   verse: v.number,
-              }))
+              })),
+              formatPassageOptionsFromI18n('bible.passage_format_options', t)
           )
         : undefined
 );
