@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useOnMobile } from '@/logic/util/MobileDetection';
+import { mdiMagnify } from '@mdi/js';
 import { refDebounced, useFocus } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import SvgIcon from '@jamescoyle/vue-icon';
 import { ref } from 'vue';
 
 const props = defineProps();
@@ -26,15 +28,27 @@ function reset() {
 
 <template>
     <Button
-        icon="mdi-magnify"
-        icon-class="mdi scale-150"
+        v-bind="$attrs"
+        class="whitespace-nowrap"
         :label="$t('prompts.search')"
-        severity="secondary"
-        text
         @click="visible = true"
         @keyup.enter="visible = true"
-        v-bind="$attrs"
-    />
+        severity="secondary"
+        text
+        :pt="{
+            root: { class: 'flex flex-row gap-2.5' },
+            label: { class: 'text-ellipsis overflow-hidden' },
+        }"
+    >
+        <template #icon>
+            <SvgIcon
+                class="!scale-150"
+                type="mdi"
+                size="16"
+                :path="mdiMagnify"
+            />
+        </template>
+    </Button>
     <Dialog
         v-model:visible="visible"
         :closable="false"
@@ -50,7 +64,12 @@ function reset() {
         <template #header>
             <IconField iconPosition="left" class="w-full">
                 <InputIcon>
-                    <i class="mdi mdi-magnify scale-150 px-1" />
+                    <SvgIcon
+                        class="!scale-150 mx-0.5"
+                        type="mdi"
+                        size="16"
+                        :path="mdiMagnify"
+                    />
                 </InputIcon>
                 <InputText
                     class="w-full"
