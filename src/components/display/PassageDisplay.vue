@@ -6,19 +6,19 @@ import Card from 'primevue/card';
 import { computed } from 'vue';
 
 const props = defineProps<{
-    passages?: Passage[],
-    translation?: Translation,
-    placeholder?: string,
+    passages?: Passage[];
+    translation?: Translation;
+    placeholder?: string;
 }>();
 
-const visible = computed(() =>
-    props.placeholder != null
-    || valuesPresent.value
+const visible = computed(
+    () => props.placeholder != null || valuesPresent.value
 );
-const valuesPresent = computed(() =>
-    props.passages != null
-    && props.translation != null
-    && props.passages.length > 0
+const valuesPresent = computed(
+    () =>
+        props.passages != null &&
+        props.translation != null &&
+        props.passages.length > 0
 );
 </script>
 

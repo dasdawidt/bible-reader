@@ -31,6 +31,13 @@ const I18nPlugin = createI18n({
                 eternity: 'Eternity',
                 old_testament: 'Old Testament',
                 new_testament: 'New Testament',
+                passage_format_options: {
+                    books_delimiter: '; ',
+                    chapters_delimiter: '; ',
+                    chapter_verse_delimiter: ':',
+                    verse_span: '–',
+                    verse_gap: ', ',
+                },
             },
             legal: {
                 imprint: 'Imprint',
@@ -68,6 +75,13 @@ const I18nPlugin = createI18n({
                 eternity: 'Ewigkeit',
                 old_testament: 'Altes Testament',
                 new_testament: 'Neues Testament',
+                passage_format_options: {
+                    books_delimiter: '; ',
+                    chapters_delimiter: '; ',
+                    chapter_verse_delimiter: ',',
+                    verse_span: '–',
+                    verse_gap: '.',
+                },
             },
             legal: {
                 imprint: 'Impressum',

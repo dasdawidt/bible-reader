@@ -8,7 +8,6 @@ import SettingsPlugin from './plugins/SettingsPlugin';
 import ThemePlugin from './plugins/ThemePlugin';
 import Router from './router';
 
-import '@mdi/font/css/materialdesignicons.css';
 import './style.css';
 
 createApp(App)

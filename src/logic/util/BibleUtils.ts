@@ -81,6 +81,37 @@ export function sortPassagesAsc(passages: Passage[]) {
     );
 }
 
+export type FormatPassageOptions = {
+    /**
+     * Delimiter between different books.
+     */
+    booksDelimiter?: string;
+    /**
+     * Delimiter between different chapters of the same book.
+     */
+    chaptersDelimiter?: string;
+    /**
+     * Delimiter between a chapter and its first verse.
+     */
+    chapterVerseDelimiter?: string;
+    /**
+     * Delimiter between start and end of a consecutive sequence of verses.
+     */
+    verseSpan?: string;
+    /**
+     * Delimiter between non-consecutive verses.
+     */
+    verseGap?: string;
+    /**
+     * Whether the book's abbreviation should be used.
+     */
+    short?: boolean;
+    /**
+     * Whether the translation's id should be included.
+     */
+    includeTranslation?: boolean;
+};
+
 /**
  * Formats a `Passage` to be readable.
  * Using the options, the formatting style can be configured.
@@ -91,45 +122,8 @@ export function sortPassagesAsc(passages: Passage[]) {
 export function formatPassages(
     translation: Translation,
     passages: Passage[],
-    options?: {
-        /**
-         * Delimiter between different books.
-         */
-        booksDelimiter?: string;
-        /**
-         * Delimiter between different chapters of the same book.
-         */
-        chaptersDelimiter?: string;
-        /**
-         * Delimiter between a chapter and its first verse.
-         */
-        chapterVerseDelimiter?: string;
-        /**
-         * Delimiter between start and end of a consecutive sequence of verses.
-         */
-        verseSpan?: string;
-        /**
-         * Delimiter between non-consecutive verses.
-         */
-        verseGap?: string;
-        /**
-         * Whether the book's abbreviation should be used.
-         */
-        short?: boolean;
-        /**
-         * Whether the translation's id should be included.
-         */
-        includeTranslation?: boolean;
-    }
+    options?: FormatPassageOptions
 ) {
-    // const germanOptions = {
-    //     short: true,
-    //     booksDelimiter: '; ',
-    //     chaptersDelimiter: '; ',
-    //     chapterVerseDelimiter: ',',
-    //     verseSpan: '–',
-    //     verseGap: '.',
-    // }
     const defaultOptions = {
         booksDelimiter: '; ',
         chaptersDelimiter: '; ',

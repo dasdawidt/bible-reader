@@ -1,19 +1,35 @@
 <script setup lang="ts">
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiFullscreen, mdiFullscreenExit } from '@mdi/js';
 import { useFullscreen } from '@vueuse/core';
 import Button from 'primevue/button';
-import { computed } from 'vue';
 
-const {
-    isSupported,
-    isFullscreen,
-    toggle
-} = useFullscreen();
-
-const fullscreenIcon = computed(() => isFullscreen.value ? 'mdi-fullscreen-exit' : 'mdi-fullscreen');
-
+const { isSupported, isFullscreen, toggle } = useFullscreen();
 </script>
 
 <template>
-    <Button icon-class="mdi scale-[1.6]" severity="secondary" :icon="fullscreenIcon" :disabled="!isSupported"
-        @click="toggle" v-bind="$attrs" text />
+    <Button
+        severity="secondary"
+        :disabled="!isSupported"
+        @click="toggle"
+        v-bind="$attrs"
+        text
+    >
+        <template #icon>
+            <SvgIcon
+                v-show="isFullscreen"
+                class="!scale-150"
+                size="16"
+                type="mdi"
+                :path="mdiFullscreenExit"
+            />
+            <SvgIcon
+                v-show="!isFullscreen"
+                class="!scale-150"
+                size="16"
+                type="mdi"
+                :path="mdiFullscreen"
+            />
+        </template>
+    </Button>
 </template>

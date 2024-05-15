@@ -3,7 +3,7 @@ import Card from 'primevue/card';
 import { Verse } from '@/types/bible/verse';
 
 const props = defineProps<{
-    verses: Verse[]
+    verses: Verse[];
 }>();
 </script>
 
