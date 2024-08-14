@@ -9,9 +9,7 @@ const createdByHtml = computed(() =>
         creator: /* html */ `
         <a href=" https://www.dasdawidt.com" style="color: var(--text-color)"
            class="underline underline-offset-4 hover:opacity-50 transition-opacity ease-in-out"
-        >
-            David Maier
-        </a>`,
+        >David Maier</a>`,
     })
 );
 </script>
@@ -30,9 +28,8 @@ const createdByHtml = computed(() =>
                 target="_blank"
                 class="underline underline-offset-4 hover:opacity-50 transition-opacity ease-in-out"
             >
-                {{ $t('legal.imprint') }}
-            </a>
-            .
+                {{ $t('legal.imprint') }} </a
+            >.
         </span>
     </div>
 </template>
