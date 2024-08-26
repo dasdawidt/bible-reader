@@ -161,7 +161,9 @@ useTitle(
             />
         </template>
     </ReaderNavbar>
-    <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen">
+    <div
+        class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen print:min-h-0"
+    >
         <div v-if="selectedChapter != null">
             <div class="relative w-full h-0">
                 <div
