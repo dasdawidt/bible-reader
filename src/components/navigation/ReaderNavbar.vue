@@ -26,6 +26,7 @@ import {
     mdiChevronUp,
     mdiChevronDown,
 } from '@mdi/js';
+import MoreActions from './MoreActions.vue';
 
 // General variables
 
@@ -327,8 +328,8 @@ onKeyStroke('ArrowLeft', navigatePrevious);
             <div
                 class="w-full flex flex-row-reverse justify-between items-center"
             >
+                <MoreActions />
                 <SettingsDialog />
-                <FullscreenButton />
             </div>
             <div
                 class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full"

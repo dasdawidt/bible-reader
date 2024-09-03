@@ -24,6 +24,10 @@ const I18nPlugin = createI18n({
                 persistence_disabled: "Don't save settings",
                 copy_url_success: 'URL copied!',
                 copy_text_success: 'Text copied!',
+                more_actions: 'More Actions',
+                fullscreen_enter: 'Enter fullscreen',
+                fullscreen_exit: 'Exit fullscreen',
+                print_chapter: 'Print chapter',
             },
             bible: {
                 chapter: 'Chapter',
@@ -67,6 +71,10 @@ const I18nPlugin = createI18n({
                 persistence_disabled: 'Einstellungen nicht speichern',
                 copy_url_success: 'URL kopiert!',
                 copy_text_success: 'Text kopiert!',
+                more_actions: 'Weitere Aktionen',
+                fullscreen_enter: 'Vollbild',
+                fullscreen_exit: 'Vollbild verlassen',
+                print_chapter: 'Kapitel drucken',
             },
             bible: {
                 chapter: 'Kapitel',
