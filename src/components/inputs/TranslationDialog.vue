@@ -33,8 +33,14 @@ const selectedTranslation = computed<Translation>({
     set: (v) => emits('update:modelValue', v),
 });
 
-const { isOnMobile } = useOnMobile();
+const options = new Map<string, HTMLDivElement>();
+function scrollToSelection() {
+    options.get(selectedTranslation.value?.id)?.parentElement?.scrollIntoView({
+        block: 'center',
+    });
+}
 
+const { isOnMobile } = useOnMobile();
 const visible = ref(false);
 </script>
 
@@ -66,9 +72,9 @@ const visible = ref(false);
         :header="$t('prompts.select_translation')"
         :position="isOnMobile ? 'bottom' : 'top'"
         class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }"
+        @show="scrollToSelection"
     >
-        <ScrollContainer class="max-h-bottom-sheet">
+        <ScrollContainer class="max-h-bottom-sheet" pt:content:class="py-6">
             <Listbox
                 v-model="selectedTranslation"
                 :options="translations"
@@ -76,25 +82,28 @@ const visible = ref(false);
                 optionGroupChildren="translations"
                 optionLabel="name"
                 class="w-full h-min"
+                pt:item-group:class="bg-transparent"
                 @change="visible = false"
-                :pt="{
-                    itemGroup: { class: 'bg-transparent' },
-                    virtualScroller: { class: 'h-min' },
-                }"
             >
-                <template #option="slotProps">
-                    <div class="flex align-items-center">
+                <template #option="{ option }">
+                    <div
+                        class="flex align-items-center"
+                        :ref="
+                            (el) =>
+                                options.set(option.number, el as HTMLDivElement)
+                        "
+                    >
                         <div
                             class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis"
                         >
-                            {{ slotProps.option.id?.toUpperCase() }}
+                            {{ option.id?.toUpperCase() }}
                         </div>
-                        <div>{{ slotProps.option.name }}</div>
+                        <div>{{ option.name }}</div>
                     </div>
                 </template>
-                <template #optiongroup="slotProps">
+                <template #optiongroup="{ option }">
                     <div class="flex align-items-center">
-                        <div>{{ $t(`locales.${slotProps.option.id}`) }}</div>
+                        <div>{{ $t(`locales.${option.id}`) }}</div>
                     </div>
                 </template>
             </Listbox>

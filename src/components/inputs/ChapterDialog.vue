@@ -32,6 +32,13 @@ const selectedChapter = computed({
     set: (v) => emits('update:modelValue', v),
 });
 
+const options = new Map<number, HTMLDivElement>();
+function scrollToSelection() {
+    options.get(selectedChapter.value?.number)?.parentElement?.scrollIntoView({
+        block: 'center',
+    });
+}
+
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
 const disabled = computed(() => props.chapters == null);
@@ -64,20 +71,26 @@ const disabled = computed(() => props.chapters == null);
         :header="$t('prompts.select_chapter')"
         :position="isOnMobile ? 'bottom' : 'top'"
         class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }"
+        @show="scrollToSelection"
     >
-        <ScrollContainer class="max-h-bottom-sheet">
+        <ScrollContainer class="max-h-bottom-sheet" pt:content:class="py-6">
             <Listbox
                 v-model="selectedChapter"
                 :options="chapters"
                 class="w-full"
                 @change="visible = false"
             >
-                <template #option="slotProps">
-                    <div class="flex align-items-center">
+                <template #option="{ option }">
+                    <div
+                        class="flex align-items-center"
+                        :ref="
+                            (el) =>
+                                options.set(option.number, el as HTMLDivElement)
+                        "
+                    >
                         <div>
                             {{ bookName ?? $t('prompts.select_chapter') }}
-                            {{ slotProps.option.number }}
+                            {{ option.number }}
                         </div>
                     </div>
                 </template>
