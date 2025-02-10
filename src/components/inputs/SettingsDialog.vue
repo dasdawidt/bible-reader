@@ -28,6 +28,7 @@ const buildDate = import.meta.env.BUILD_DATE;
         @click="visible = true"
         v-bind="$attrs"
         :label="label"
+        rounded
         text
     >
         <template #icon>

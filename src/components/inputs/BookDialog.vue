@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { Book } from '@/types/bible/book';
+import { BookType } from '@/types/bible/bookType';
 import { BookTypeOldTestament } from '@/types/bible/bookTypeOldTestament';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -49,6 +50,13 @@ const groupedBooks = computed(() =>
     )
 );
 
+const options = new Map<BookType, HTMLDivElement>();
+function scrollToSelection() {
+    options.get(selectedBook.value?.type)?.parentElement?.scrollIntoView({
+        block: 'center',
+    });
+}
+
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
 const disabled = computed(() => props.books == null);
@@ -78,9 +86,12 @@ const disabled = computed(() => props.books == null);
         :header="$t('prompts.select_book')"
         :position="isOnMobile ? 'bottom' : 'top'"
         class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }"
+        @show="scrollToSelection"
     >
-        <ScrollContainer class="max-h-bottom-sheet">
+        <ScrollContainer
+            class="max-h-bottom-sheet mt-1"
+            pt:content:class="py-6"
+        >
             <Listbox
                 v-model="selectedBook"
                 :options="groupedBooks"
@@ -88,22 +99,28 @@ const disabled = computed(() => props.books == null);
                 option-group-children="books"
                 option-group-label="name"
                 class="w-full h-min"
+                pt:item-group:class="bg-transparent"
                 @change="visible = false"
-                :pt="{ itemGroup: { class: 'bg-transparent' } }"
             >
-                <template #option="slotProps">
-                    <div class="flex align-items-center gap-2">
+                <template #option="{ option }">
+                    <div
+                        class="flex align-items-center gap-2"
+                        :ref="
+                            (el) =>
+                                options.set(option.type, el as HTMLDivElement)
+                        "
+                    >
                         <div
                             class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis"
                         >
-                            {{ slotProps.option.abbreviation?.toUpperCase() }}
+                            {{ option.abbreviation?.toUpperCase() }}
                         </div>
-                        <div>{{ slotProps.option.name }}</div>
+                        <div>{{ option.name }}</div>
                     </div>
                 </template>
-                <template #optiongroup="slotProps">
+                <template #optiongroup="{ option }">
                     <div class="flex flex-col gap-3">
-                        <span>{{ $t(slotProps.option.messageCode) }}</span>
+                        <span>{{ $t(option.messageCode) }}</span>
                     </div>
                 </template>
             </Listbox>
