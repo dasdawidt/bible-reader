@@ -2,7 +2,7 @@ RewriteEngine On
 RewriteBase /bible-reader/
 RewriteCond %{ENV:HTTPS} !on [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$
-RewriteRule ^(.*)$ https://%1/$1 [R,L]
+RewriteRule ^(.*)$ https://%1/bible-reader/$1 [R,L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.html [L]
