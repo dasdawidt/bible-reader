@@ -18,7 +18,7 @@ jobs:
 
         steps:
             - name: Download artifact
-              uses: dawidd6/action-download-artifact@v8
+              uses: dawidd6/action-download-artifact@v9
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   workflow: build.yml
@@ -27,7 +27,7 @@ jobs:
                   path: ./dist
 
             - name: Deploy
-              uses: easingthemes/ssh-deploy@main
+              uses: easingthemes/ssh-deploy@v5.1.0
               with:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                   ARGS: '-z --delete'

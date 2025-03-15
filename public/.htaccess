@@ -1,8 +1,12 @@
 RewriteEngine On
 RewriteBase /bible-reader/
+
+# Rewrite all paths to use HTTPS
 RewriteCond %{ENV:HTTPS} !on [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$
 RewriteRule ^(.*)$ https://%1/bible-reader/$1 [R,L]
+
+# Rewrite all paths that are neither files nor directories to index.html
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . index.html [L]
+RewriteRule ^(.*)$ index.html [L]

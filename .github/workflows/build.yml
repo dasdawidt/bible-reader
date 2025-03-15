@@ -41,3 +41,4 @@ jobs:
               with:
                   name: production-files
                   path: ./dist
+                  include-hidden-files: true
