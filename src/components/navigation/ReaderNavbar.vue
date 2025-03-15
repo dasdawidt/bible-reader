@@ -18,7 +18,6 @@ import {
 import Button from 'primevue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import FullscreenButton from '../inputs/FullscreenButton.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import {
     mdiArrowLeft,

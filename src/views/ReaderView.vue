@@ -18,7 +18,7 @@ import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { useBrowserLocation, useTitle } from '@vueuse/core';
 import Divider from 'primevue/divider';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -72,16 +72,19 @@ const highlightedVerseNumbers = fromQuery<number[]>(
 );
 
 const removeHighlight = () => {
+    unwatchSelection();
     highlightedVerseNumbers.value = [];
 };
 const getIsHighlighted = (number: number) =>
     highlightedVerseNumbers.value?.includes(number);
-const setIsHighlighted = (number: number, value: boolean) =>
+const setIsHighlighted = (number: number, value: boolean) => {
+    unwatchSelection();
     value
         ? (highlightedVerseNumbers.value =
               highlightedVerseNumbers.value?.concat(number))
         : (highlightedVerseNumbers.value =
               highlightedVerseNumbers.value?.filter((n) => n != number));
+}
 const getHiddenForPrint = (number: number) =>
     highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
@@ -138,15 +141,27 @@ useTitle(
             : initialTitle
     )
 );
+
+const verseRefs = ref(new Map<number, InstanceType<typeof InlineVerse>>());
+const unwatchSelection = watchEffect(() => {
+    const firstHighlightedVerseNumber = highlightedVerseNumbers.value?.at(0);
+    if (firstHighlightedVerseNumber !== undefined) {
+        const verseRef = verseRefs.value.get(firstHighlightedVerseNumber);
+        if (verseRef !== undefined) {
+            (verseRef.$el as HTMLElement).scrollIntoView({ block: 'center', behavior: 'smooth' });
+            nextTick(unwatchSelection);
+        }
+    }
+})
 </script>
 
 <template>
     <ReaderNavbar
         :translations="translationList"
+        :loading="translationListLoading"
         v-model:translation="selectedTranslation"
         v-model:book="selectedBook"
         v-model:chapter="selectedChapter"
-        :loading="translationListLoading"
         v-model:expanded="navigationExpanded"
         @navigate="removeHighlight"
         class="print:hidden"
@@ -191,6 +206,7 @@ useTitle(
             <InlineVerse
                 v-for="(verse, i) of selectedChapter?.verses"
                 :id="`verse-${verse.number}`"
+                :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)"
                 :key="i"
                 :verse="verse"
                 :is-highlighted="getIsHighlighted(verse.number)"
