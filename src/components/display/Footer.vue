@@ -10,7 +10,7 @@ const createdByHtml = computed(() =>
         <a href=" https://www.dasdawidt.com" style="color: var(--text-color)"
            class="underline underline-offset-4 hover:opacity-50 transition-opacity ease-in-out"
         >David Maier</a>`,
-    })
+    }),
 );
 </script>
 

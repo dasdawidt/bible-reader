@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiArrowLeft, mdiArrowRight, mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
+import Button from 'primevue/button';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import BookDialog from '@/components/inputs/BookDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
 import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
@@ -9,22 +15,6 @@ import { Book } from '@/types/bible/book';
 import { Chapter } from '@/types/bible/chapter';
 import { Translation } from '@/types/bible/translation';
 import { TranslationList } from '@/types/bible/translationList';
-import {
-    computedWithControl,
-    onKeyStroke,
-    useElementSize,
-    useResizeObserver,
-} from '@vueuse/core';
-import Button from 'primevue/button';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import SvgIcon from '@jamescoyle/vue-icon';
-import {
-    mdiArrowLeft,
-    mdiArrowRight,
-    mdiChevronUp,
-    mdiChevronDown,
-} from '@mdi/js';
 import MoreActions from './MoreActions.vue';
 
 // General variables
@@ -85,16 +75,16 @@ const menuStyle = computedWithControl(
     () => [isOnMobile.value, showMenu.value],
     () => ({
         transform:
-            'translateY(' +
-            (isOnMobile.value
+            'translateY('
+            + (isOnMobile.value
                 ? showMenu.value
                     ? '0px'
                     : `${menuElement.value?.clientHeight}px`
                 : showMenu.value
                   ? '0px'
-                  : `-${menuElement.value?.clientHeight}px`) +
-            ')',
-    })
+                  : `-${menuElement.value?.clientHeight}px`)
+            + ')',
+    }),
 );
 useResizeObserver(menuElement, () => {
     // disable animation for auto-resize
@@ -104,34 +94,17 @@ useResizeObserver(menuElement, () => {
 
 // Menu icon
 const menuIconUp = computed(() => {
-    return isOnMobile.value
-        ? showMenu.value
-            ? false
-            : true
-        : showMenu.value
-          ? true
-          : false;
+    return isOnMobile.value ? !showMenu.value : showMenu.value;
 });
 
 // Menu style
 const menuClass = computed(() => {
     let classes = '';
+    classes += ` ${menuTransition.value ? 'transition-all duration-300' : ''}`;
+    classes += ` ${isOnMobile.value ? 'pb-0 bottom-0 border-b-0' : 'flex-col-reverse pt-0 top-0 border-t-0'}`;
     classes +=
-        ' ' + (menuTransition.value ? 'transition-all duration-300' : '');
-    classes +=
-        ' ' +
-        (isOnMobile.value
-            ? 'pb-0 bottom-0 border-b-0'
-            : 'flex-col-reverse pt-0 top-0 border-t-0');
-    classes +=
-        ' ' +
-        (isOnMobile.value
-            ? showMenu.value
-                ? 'rounded-t-[2rem]'
-                : ''
-            : showMenu.value
-              ? 'rounded-b-[2rem]'
-              : '');
+        ' '
+        + (isOnMobile.value ? (showMenu.value ? 'rounded-t-[2rem]' : '') : showMenu.value ? 'rounded-b-[2rem]' : '');
     return classes;
 });
 
@@ -143,34 +116,20 @@ type NavigationTarget = {
     chapter: Chapter;
 };
 
-const navigationTargetPrevious = computed(() =>
-    getNavigationTarget('previous')
-);
+const navigationTargetPrevious = computed(() => getNavigationTarget('previous'));
 const navigationTargetNext = computed(() => getNavigationTarget('next'));
 
-function getNavigationTarget(
-    direction: 'next' | 'previous'
-): NavigationTarget | undefined {
-    if (
-        selectedChapter.value == null ||
-        selectedBook.value == null ||
-        selectedTranslation.value == null
-    )
+function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget | undefined {
+    if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null)
         return undefined;
     const diff = direction === 'next' ? 1 : -1;
-    const toChapter = selectedBook.value?.chapters?.find(
-        (c) => c.number === selectedChapter.value?.number + diff
-    );
-    if (toChapter != null)
-        return { direction, chapter: toChapter, book: selectedBook.value };
+    const toChapter = selectedBook.value?.chapters?.find((c) => c.number === selectedChapter.value?.number + diff);
+    if (toChapter != null) return { direction, chapter: toChapter, book: selectedBook.value };
     const toBook = selectedTranslation.value?.books?.find(
-        (b) =>
-            bookTypeToNumber(b.type) ===
-            bookTypeToNumber(selectedBook.value?.type) + diff
+        (b) => bookTypeToNumber(b.type) === bookTypeToNumber(selectedBook.value?.type) + diff,
     );
     if (toBook != null) {
-        const toChapterIndex =
-            direction === 'next' ? 0 : toBook.chapters?.length - 1;
+        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
         return {
             direction,
             chapter: toBook.chapters?.[toChapterIndex],
@@ -180,17 +139,11 @@ function getNavigationTarget(
     return undefined;
 }
 
-const canNavigatePrevious = computed(
-    () => navigationTargetPrevious.value != null
-);
+const canNavigatePrevious = computed(() => navigationTargetPrevious.value != null);
 const canNavigateNext = computed(() => navigationTargetNext.value != null);
 
-const navigationLabelPrevious = computed(() =>
-    navButtonLabel(navigationTargetPrevious.value)
-);
-const navigationLabelNext = computed(() =>
-    navButtonLabel(navigationTargetNext.value)
-);
+const navigationLabelPrevious = computed(() => navButtonLabel(navigationTargetPrevious.value));
+const navigationLabelNext = computed(() => navButtonLabel(navigationTargetNext.value));
 
 const { width: menuWidth } = useElementSize(menuElement);
 

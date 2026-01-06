@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import SvgIcon from '@jamescoyle/vue-icon';
-import {
-    mdiContentCopy,
-    mdiLinkVariant,
-    mdiPrinter,
-    mdiSelectionEllipseRemove,
-    mdiShare,
-} from '@mdi/js';
+import { mdiContentCopy, mdiLinkVariant, mdiPrinter, mdiSelectionEllipseRemove, mdiShare } from '@mdi/js';
 import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
@@ -22,9 +16,7 @@ const props = defineProps<{
     visible?: boolean;
 }>();
 
-const emit = defineEmits<{
-    (event: 'update:visible', v: boolean): void;
-}>();
+const emit = defineEmits<(event: 'update:visible', v: boolean) => void>();
 
 const visibleValue = computed({
     get: () => props.visible,
@@ -38,7 +30,7 @@ const { share: pushShare } = useShare();
 // Share
 
 function shareNow() {
-    share: pushShare({
+    pushShare({
         title: props.title,
         text: props.text,
         url: props.url,
@@ -83,7 +75,7 @@ onKeyStroke(
             copyNow();
         }
     },
-    { passive: true }
+    { passive: true },
 );
 </script>
 

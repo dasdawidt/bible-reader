@@ -1,14 +1,12 @@
-import { BookInfo } from '@/types/bible/bookInfo';
-import { BookType } from '@/types/bible/bookType';
-import { Translation } from '@/types/bible/translation';
-import { TranslationList } from '@/types/bible/translationList';
-import { Verse } from '@/types/bible/verse';
-import { Passage } from '@/types/plans/passage';
+import type { BookInfo } from '@/types/bible/bookInfo';
+import type { BookType } from '@/types/bible/bookType';
+import type { Translation } from '@/types/bible/translation';
+import type { TranslationList } from '@/types/bible/translationList';
+import type { Verse } from '@/types/bible/verse';
+import type { Passage } from '@/types/plans/passage';
 
 export function findTranslation(list: TranslationList, id: string) {
-    return list
-        .flatMap((l) => l.translations)
-        .find((t) => t.id.toLowerCase() === id?.toLowerCase());
+    return list.flatMap((l) => l.translations).find((t) => t.id.toLowerCase() === id?.toLowerCase());
 }
 
 export function supportedBooks(translation: Translation): BookInfo[] {
@@ -19,40 +17,19 @@ export function getBook(translation: Translation, type: BookType) {
     return translation.books.find((b) => b.type === type);
 }
 
-export function getChapter(
-    translation: Translation,
-    book: BookType,
-    chapter: number
-) {
-    return getBook(translation, book).chapters.find(
-        (c) => c.number === chapter
-    );
+export function getChapter(translation: Translation, book: BookType, chapter: number) {
+    return getBook(translation, book).chapters.find((c) => c.number === chapter);
 }
 
-export function getVerse(
-    translation: Translation,
-    book: BookType,
-    chapter: number,
-    verse: number
-) {
-    return getChapter(translation, book, chapter).verses.find(
-        (v) => v.number === verse
-    );
+export function getVerse(translation: Translation, book: BookType, chapter: number, verse: number) {
+    return getChapter(translation, book, chapter).verses.find((v) => v.number === verse);
 }
 
 export function getPassage(translation: Translation, passage: Passage) {
-    return getVerse(
-        translation,
-        passage.bookType,
-        passage.chapter,
-        passage.verse
-    );
+    return getVerse(translation, passage.bookType, passage.chapter, passage.verse);
 }
 
-export function toPassageVerseList(
-    translation: Translation,
-    bookType: BookType
-) {
+export function toPassageVerseList(translation: Translation, bookType: BookType) {
     return getBook(translation, bookType).chapters.map(
         (c) =>
             ({
@@ -66,19 +43,17 @@ export function toPassageVerseList(
                             verse: v.number,
                             number: v.number,
                             text: v.text,
-                        }) as Passage & Verse
+                        }) as Passage & Verse,
                 ),
             }) as {
                 chapter: number;
                 passages: Array<Passage & Verse>;
-            }
+            },
     );
 }
 
 export function sortPassagesAsc(passages: Passage[]) {
-    return passages.sort((a, b) =>
-        a.chapter - b.chapter === 0 ? a.verse - b.verse : a.chapter - b.chapter
-    );
+    return passages.sort((a, b) => (a.chapter - b.chapter === 0 ? a.verse - b.verse : a.chapter - b.chapter));
 }
 
 export type FormatPassageOptions = {
@@ -119,11 +94,7 @@ export type FormatPassageOptions = {
  * @param passages the `Passages` to format
  * @param options options for configuration
  */
-export function formatPassages(
-    translation: Translation,
-    passages: Passage[],
-    options?: FormatPassageOptions
-) {
+export function formatPassages(translation: Translation, passages: Passage[], options?: FormatPassageOptions) {
     const defaultOptions = {
         booksDelimiter: '; ',
         chaptersDelimiter: '; ',
@@ -139,17 +110,11 @@ export function formatPassages(
     };
 
     passages = sortPassagesAsc(passages);
-    const groupedByBook = passages.reduce<Map<BookType, Passage[]>>(
-        (groups, passage) => {
-            const { bookType } = passage;
-            groups.set(
-                bookType,
-                (groups.get(bookType) ?? []).concat([passage])
-            );
-            return groups;
-        },
-        new Map()
-    );
+    const groupedByBook = passages.reduce<Map<BookType, Passage[]>>((groups, passage) => {
+        const { bookType } = passage;
+        groups.set(bookType, (groups.get(bookType) ?? []).concat([passage]));
+        return groups;
+    }, new Map());
 
     let formatted = Array.from(groupedByBook.entries())
         .map((entry) =>
@@ -160,12 +125,12 @@ export function formatPassages(
                 options.chaptersDelimiter,
                 options.verseSpan,
                 options.verseGap,
-                options.short
-            )
+                options.short,
+            ),
         )
         .join(options.booksDelimiter);
 
-    if (options.includeTranslation == true) {
+    if (options.includeTranslation === true) {
         formatted += ` (${translation.id.toUpperCase()})`;
     }
 
@@ -179,36 +144,24 @@ function formatPassagesSameBook(
     chaptersDelimiter: string,
     verseSpan: string,
     verseGap: string,
-    short: boolean
+    short: boolean,
 ) {
     const bookName = short ? book.abbreviation.toUpperCase() : book.name;
-    const groupedByChapter = passages.reduce<Map<number, Passage[]>>(
-        (groups, passage) => {
-            const { chapter } = passage;
-            groups.set(chapter, (groups.get(chapter) ?? []).concat([passage]));
-            return groups;
-        },
-        new Map()
-    );
+    const groupedByChapter = passages.reduce<Map<number, Passage[]>>((groups, passage) => {
+        const { chapter } = passage;
+        groups.set(chapter, (groups.get(chapter) ?? []).concat([passage]));
+        return groups;
+    }, new Map());
 
     const formatted = Array.from(groupedByChapter.entries())
-        .map(
-            (entry) =>
-                entry[0] +
-                chapterVerseDelimiter +
-                formatPassagesSameChapter(entry[1], verseSpan, verseGap)
-        )
+        .map((entry) => entry[0] + chapterVerseDelimiter + formatPassagesSameChapter(entry[1], verseSpan, verseGap))
         .join(chaptersDelimiter);
 
     return `${bookName} ${formatted}`;
 }
 
-function formatPassagesSameChapter(
-    passages: Passage[],
-    verseSpan: string,
-    verseGap: string
-) {
-    let ranges = [];
+function formatPassagesSameChapter(passages: Passage[], verseSpan: string, verseGap: string) {
+    const ranges = [];
     let range = [];
     ranges.push(passages[0]);
     passages.forEach((p) => {
@@ -225,6 +178,6 @@ function formatPassagesSameChapter(
 
     return ranges
         .filter((r) => r.length === 2)
-        .map((r) => (r[0] === r[1] ? r[0] + '' : r[0] + verseSpan + r[1]))
+        .map((r) => (r[0] === r[1] ? `${r[0]}` : r[0] + verseSpan + r[1]))
         .join(verseGap);
 }

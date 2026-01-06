@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import { Verse } from '@/types/bible/verse';
 import Avatar from 'primevue/avatar';
 import { computed } from 'vue';
+import { Verse } from '@/types/bible/verse';
 
 const props = defineProps<{
     verse: Verse;
     isHighlighted?: boolean;
 }>();
 
-const emit = defineEmits<{
-    (event: 'update:isHighlighted', value: boolean): void;
-}>();
+const emit = defineEmits<(event: 'update:isHighlighted', value: boolean) => void>();
 
 const highlighted = computed({
     get: () => props.isHighlighted,
     set: (v) => emit('update:isHighlighted', v),
 });
 
-const borderColor = computed(() =>
-    highlighted.value ? 'var(--primary-color)' : ''
-);
-const color = computed(() =>
-    highlighted.value ? 'var(--highlight-text-color)' : ''
-);
-const backgroundColor = computed(() =>
-    highlighted.value ? 'var(--highlight-bg)' : ''
-);
+const borderColor = computed(() => (highlighted.value ? 'var(--primary-color)' : ''));
+const color = computed(() => (highlighted.value ? 'var(--highlight-text-color)' : ''));
+const backgroundColor = computed(() => (highlighted.value ? 'var(--highlight-bg)' : ''));
 </script>
 
 <template>

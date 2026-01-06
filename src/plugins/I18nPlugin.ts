@@ -45,8 +45,7 @@ const I18nPlugin = createI18n({
             legal: {
                 imprint: 'Imprint',
                 created_by: 'A project by {creator}.',
-                cookie_policy:
-                    'This website does not collect any personal data and only uses technical cookies.',
+                cookie_policy: 'This website does not collect any personal data and only uses technical cookies.',
             },
             locales: {
                 en: 'English',

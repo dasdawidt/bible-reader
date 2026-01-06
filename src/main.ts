@@ -1,7 +1,6 @@
-import { createApp } from 'vue';
-
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
+import { createApp } from 'vue';
 import App from './App.vue';
 import I18nPlugin from './plugins/I18nPlugin';
 import SettingsPlugin from './plugins/SettingsPlugin';

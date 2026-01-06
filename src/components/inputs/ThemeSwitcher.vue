@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import { useOnMobile } from '@/logic/util/MobileDetection';
-import { useSettings } from '@/plugins/SettingsPlugin';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiBrightness2, mdiCellphone, mdiLaptop, mdiWhiteBalanceSunny } from '@mdi/js';
 import { ColorSchemeType } from '@vueuse/core';
 import SelectButton from 'primevue/selectbutton';
-import SvgIcon from '@jamescoyle/vue-icon';
-import {
-    mdiCellphone,
-    mdiLaptop,
-    mdiWhiteBalanceSunny,
-    mdiBrightness2,
-} from '@mdi/js';
+import { useOnMobile } from '@/logic/util/MobileDetection';
+import { useSettings } from '@/plugins/SettingsPlugin';
 
 defineProps<{
     condensed?: boolean;

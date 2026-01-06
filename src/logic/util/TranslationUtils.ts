@@ -1,6 +1,6 @@
-import { Translation } from '@/types/bible/translation';
+import type { Translation } from '@/types/bible/translation';
+import type { TranslationProvider } from '@/types/logic/TranslationProvider';
 import { getBook, getChapter, getVerse } from './BibleUtils';
-import { TranslationProvider } from '@/types/logic/TranslationProvider';
 
 export const fromTranslation = (translation: Translation) =>
     ({
@@ -22,8 +22,6 @@ export const fromTranslation = (translation: Translation) =>
             return new Promise(() => getChapter(translation, book, chapter));
         },
         async getVerse(book, chapter, verse) {
-            return new Promise(() =>
-                getVerse(translation, book, chapter, verse)
-            );
+            return new Promise(() => getVerse(translation, book, chapter, verse));
         },
-    } as TranslationProvider);
+    }) as TranslationProvider;

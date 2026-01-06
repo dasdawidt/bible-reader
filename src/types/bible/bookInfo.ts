@@ -1,4 +1,4 @@
-import { BookType } from './bookType';
+import type { BookType } from './bookType';
 
 export type BookInfo = {
     type: BookType;

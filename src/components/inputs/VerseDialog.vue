@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import {
-    formatPassages,
-    getBook,
-    toPassageVerseList,
-} from '@/logic/util/BibleUtils';
-import { useOnMobile } from '@/logic/util/MobileDetection';
-import { BookType } from '@/types/bible/bookType';
-import { Translation } from '@/types/bible/translation';
-import { Passage } from '@/types/plans/passage';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Avatar from 'primevue/avatar';
@@ -16,6 +7,11 @@ import Dialog from 'primevue/dialog';
 import Divider from 'primevue/divider';
 import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
+import { formatPassages, getBook, toPassageVerseList } from '@/logic/util/BibleUtils';
+import { useOnMobile } from '@/logic/util/MobileDetection';
+import { BookType } from '@/types/bible/bookType';
+import { Translation } from '@/types/bible/translation';
+import { Passage } from '@/types/plans/passage';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogueSelectButton from './DialogSelectButton.vue';
 
@@ -34,13 +30,9 @@ const props = defineProps<{
     book?: BookType;
 }>();
 
-const chapters = computed(() =>
-    toPassageVerseList(props.translation, props.book)
-);
+const chapters = computed(() => toPassageVerseList(props.translation, props.book));
 
-const emits = defineEmits<{
-    (event: 'update:modelValue', value: Passage[]): void;
-}>();
+const emits = defineEmits<(event: 'update:modelValue', value: Passage[]) => void>();
 
 const selectedPassages = computed<Passage[]>({
     get: () => props.modelValue,
@@ -51,16 +43,14 @@ const selectedPassages = computed<Passage[]>({
                 translationId: props.translation?.id,
                 bookType: props.book,
                 ...v2,
-            }))
+            })),
         ),
 });
 const pendingSelectedPassages = ref<Passage[]>([]);
 
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
-const disabled = computed(
-    () => props.translation == null || props.book == null
-);
+const disabled = computed(() => props.translation == null || props.book == null);
 
 function open() {
     pendingSelectedPassages.value = selectedPassages.value;

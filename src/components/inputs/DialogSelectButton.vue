@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Dropdown, { DropdownProps } from 'primevue/dropdown';
-import { mdiChevronRight } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiChevronRight } from '@mdi/js';
+import Dropdown, { DropdownProps } from 'primevue/dropdown';
 
 // The @vue-ignore is needed because vue is not able to resolve the base type at the moment.
 export interface Props extends /* @vue-ignore */ DropdownProps {}

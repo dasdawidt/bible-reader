@@ -1,6 +1,6 @@
-import { Interval } from "./interval";
+import type { Interval } from './interval';
 
 export type TrainingPlan = {
-    name: string,
+    name: string;
     intervals: Interval[];
-}
+};

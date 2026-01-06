@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
-import { useOnMobile } from '@/logic/util/MobileDetection';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiCog } from '@mdi/js';
 import { useWindowSize } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
+import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 import LocaleSwitcher from './LocaleSwitcher.vue';
 import SaveSettingsSwitch from './SaveSettingsSwitch.vue';
 

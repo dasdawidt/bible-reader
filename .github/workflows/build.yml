@@ -31,7 +31,10 @@ jobs:
                   version: latest
 
             - name: Install dependencies
-              run: pnpm install
+              run: pnpm run install
+
+            - name: Run check
+              run: pnpm run ci
 
             - name: Build project
               run: pnpm run build
