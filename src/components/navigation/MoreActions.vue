@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useOnMobile } from '@/logic/util/MobileDetection';
 import SvgIcon from '@jamescoyle/vue-icon';
 import {
     mdiDotsVertical,
@@ -15,6 +14,7 @@ import Dialog from 'primevue/dialog';
 import Menu from 'primevue/menu';
 import { MenuItem } from 'primevue/menuitem';
 import { computed, ref } from 'vue';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 
 const { isOnMobile } = useOnMobile();
@@ -28,17 +28,15 @@ const items = computed<MenuItem[]>(() => [
         command: () => window.print(),
     },
     {
-        messageCode: isFullscreen.value
-            ? 'prompts.fullscreen_exit'
-            : 'prompts.fullscreen_enter',
+        messageCode: isFullscreen.value ? 'prompts.fullscreen_exit' : 'prompts.fullscreen_enter',
         disabled: !isSupported.value,
         icon: isFullscreen.value ? mdiFullscreenExit : mdiFullscreen,
         command: toggle,
     },
 ]);
 
-const selectedCommand = ref<() => any>();
-function runCommand(command: (...args: any[]) => any = () => {}) {
+const selectedCommand = ref<() => unknown>();
+function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
     selectedCommand.value = () => {
         command();
         selectedCommand.value = () => {};

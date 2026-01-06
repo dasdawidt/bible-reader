@@ -5,7 +5,7 @@ export function fromQuery<Y>(
     queryName: string,
     stringToType: (v: string) => Y,
     typeToString: (v: Y) => string,
-    fallbackValue?: Y
+    fallbackValue?: Y,
 ) {
     const fallbackValueString = typeToString(fallbackValue);
     const query = useRouteQuery(queryName, fallbackValueString);

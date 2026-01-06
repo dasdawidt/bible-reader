@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Translation } from '@/types/bible/translation';
-import { TranslationList } from '@/types/bible/translationList';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
+import { useOnMobile } from '@/logic/util/MobileDetection';
+import { Translation } from '@/types/bible/translation';
+import { TranslationList } from '@/types/bible/translationList';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogSelectButton from './DialogSelectButton.vue';
 
@@ -24,9 +24,7 @@ const props = defineProps<{
     loading?: boolean;
 }>();
 
-const emits = defineEmits<{
-    (event: 'update:modelValue', value: Translation): void;
-}>();
+const emits = defineEmits<(event: 'update:modelValue', value: Translation) => void>();
 
 const selectedTranslation = computed<Translation>({
     get: () => props.modelValue,

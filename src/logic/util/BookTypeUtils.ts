@@ -1,18 +1,9 @@
-import { BookType } from '@/types/bible/bookType';
-import {
-    BookTypeNewTestament,
-    KeysNewTestament,
-} from '@/types/bible/bookTypeNewTestament';
-import {
-    BookTypeOldTestament,
-    KeysOldTestament,
-} from '@/types/bible/bookTypeOldTestament';
+import type { BookType } from '@/types/bible/bookType';
+import { BookTypeNewTestament, KeysNewTestament } from '@/types/bible/bookTypeNewTestament';
+import { BookTypeOldTestament, KeysOldTestament } from '@/types/bible/bookTypeOldTestament';
 
 export function stringToBookType(type: string) {
-    return (
-        BookTypeOldTestament[type?.toUpperCase()] ??
-        BookTypeNewTestament[type?.toUpperCase()]
-    );
+    return BookTypeOldTestament[type?.toUpperCase()] ?? BookTypeNewTestament[type?.toUpperCase()];
 }
 
 export function bookTypeToString(type: BookType) {
@@ -20,10 +11,7 @@ export function bookTypeToString(type: BookType) {
 }
 
 export function numberToBookType(type: number) {
-    return (
-        KeysOldTestament[type] ??
-        KeysNewTestament[type - KeysOldTestament.length]
-    );
+    return KeysOldTestament[type] ?? KeysNewTestament[type - KeysOldTestament.length];
 }
 
 export function bookTypeToNumber(type: BookType) {

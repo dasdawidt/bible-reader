@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useSettings } from '@/plugins/SettingsPlugin';
-import SelectButton from 'primevue/selectbutton';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiCookie, mdiCookieOff } from '@mdi/js';
+import SelectButton from 'primevue/selectbutton';
+import { useSettings } from '@/plugins/SettingsPlugin';
 
 defineProps<{
     condensed?: boolean;

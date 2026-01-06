@@ -1,4 +1,4 @@
-import { Verse } from './verse';
+import type { Verse } from './verse';
 
 export type Chapter = {
     number: number;

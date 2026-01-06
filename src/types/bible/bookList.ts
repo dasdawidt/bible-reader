@@ -1,6 +1,6 @@
-import { Book } from './book';
-import { BookTypeNewTestament } from './bookTypeNewTestament';
-import { BookTypeOldTestament } from './bookTypeOldTestament';
+import type { Book } from './book';
+import type { BookTypeNewTestament } from './bookTypeNewTestament';
+import type { BookTypeOldTestament } from './bookTypeOldTestament';
 
 export type BookList = [
     {

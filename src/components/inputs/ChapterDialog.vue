@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Chapter } from '@/types/bible/chapter';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
+import { useOnMobile } from '@/logic/util/MobileDetection';
+import { Chapter } from '@/types/bible/chapter';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogSelectButton from './DialogSelectButton.vue';
 
@@ -23,9 +23,7 @@ const props = defineProps<{
     bookName?: string;
 }>();
 
-const emits = defineEmits<{
-    (event: 'update:modelValue', value: Chapter): void;
-}>();
+const emits = defineEmits<(event: 'update:modelValue', value: Chapter) => void>();
 
 const selectedChapter = computed({
     get: () => props.modelValue,

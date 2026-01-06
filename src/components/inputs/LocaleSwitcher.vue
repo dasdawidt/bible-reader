@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useSettings } from '@/plugins/SettingsPlugin';
 import SelectButton from 'primevue/selectbutton';
 import { useI18n } from 'vue-i18n';
+import { useSettings } from '@/plugins/SettingsPlugin';
 
 defineProps<{
     condensed?: boolean;

@@ -1,5 +1,5 @@
-import { ColorSchemeType } from '@vueuse/core';
-import { Plugin, ref, watch } from 'vue';
+import type { ColorSchemeType } from '@vueuse/core';
+import { type Plugin, ref, watch } from 'vue';
 import I18nPlugin from './I18nPlugin';
 import { useTheme } from './ThemePlugin';
 
@@ -32,7 +32,7 @@ watch(
     },
     {
         deep: true,
-    }
+    },
 );
 
 function read(key: string) {
@@ -44,7 +44,7 @@ function read(key: string) {
     }
 }
 
-function write(key: string, value: any) {
+function write(key: string, value: unknown) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -76,7 +76,7 @@ const SettingsPlugin: Plugin = {
             },
             {
                 deep: true,
-            }
+            },
         );
     },
 };

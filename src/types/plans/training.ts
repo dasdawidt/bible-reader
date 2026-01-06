@@ -1,7 +1,7 @@
-import { TrainingPlan } from "./tainingPlan";
+import type { TrainingPlan } from './tainingPlan';
 
 export type Training = {
     plan: TrainingPlan;
     from: Date;
     progress: object;
-}
+};

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Snackbar from '@/components/containment/Snackbar.vue';
 import ScrollContainer from '@/components/containment/ScrollContainer.vue';
+import Snackbar from '@/components/containment/Snackbar.vue';
 </script>
 
 <template>

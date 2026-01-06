@@ -1,5 +1,5 @@
-@import url('primevue/resources/themes/lara-light-green/theme.css');
-@import url('./fixes.css');
+@import url("primevue/resources/themes/lara-light-green/theme.css");
+@import url("./fixes.css");
 
 :root {
     --surface-underground: hsl(0, 0%, 100%);
