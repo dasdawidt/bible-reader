@@ -3,8 +3,10 @@ run-name: 'Deploy "${{ github.event.workflow_run.head_commit.message }}" #${{ gi
 
 on:
     workflow_run:
-        workflows: ['Build']
-        branches: [main]
+        workflows:
+            - Build
+        branches:
+            - main
         types:
             - completed
 
