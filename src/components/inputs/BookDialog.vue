@@ -31,9 +31,11 @@ const selectedBook = computed({
 const groupedBooks = computed(() =>
     props.books.reduce<[{ messageCode: string; books: Book[] }, { messageCode: string; books: Book[] }]>(
         (obj, b) => {
-            Object.keys(BookTypeOldTestament).includes(b.type)
-                ? (obj[0].books = [...obj[0].books, b])
-                : (obj[1].books = [...obj[1].books, b]);
+            if (Object.keys(BookTypeOldTestament).includes(b.type)) {
+                obj[0].books = [...obj[0].books, b];
+            } else {
+                obj[1].books = [...obj[1].books, b];
+            }
             return obj;
         },
         [

@@ -67,7 +67,13 @@ function printNow() {
 
 // Keybindings
 
-onKeyStroke('Escape', () => (visibleValue.value = false), { passive: true });
+onKeyStroke(
+    'Escape',
+    () => {
+        visibleValue.value = false;
+    },
+    { passive: true },
+);
 onKeyStroke(
     (e) => e.ctrlKey && e.code === 'KeyC',
     () => {
