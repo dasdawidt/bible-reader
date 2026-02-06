@@ -53,7 +53,9 @@ export default ThemePlugin;
 export const useTheme = () => ({
     settingsTheme: computed({
         get: () => colorSchemeOverride.value,
-        set: (v) => (colorSchemeOverride.value = v ?? colorSchemeOverride.value),
+        set: (v) => {
+            colorSchemeOverride.value = v ?? colorSchemeOverride.value;
+        },
     }),
     activeTheme: colorScheme,
 });

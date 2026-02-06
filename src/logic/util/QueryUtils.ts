@@ -11,7 +11,9 @@ export function fromQuery<Y>(
     const query = useRouteQuery(queryName, fallbackValueString);
     const reference = computed({
         get: () => stringToType(query.value),
-        set: (v) => (query.value = typeToString(v)),
+        set: (v) => {
+            query.value = typeToString(v);
+        },
     });
     return reference;
 }

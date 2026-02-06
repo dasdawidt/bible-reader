@@ -63,9 +63,11 @@ const removeHighlight = () => {
 const getIsHighlighted = (number: number) => highlightedVerseNumbers.value?.includes(number);
 const setIsHighlighted = (number: number, value: boolean) => {
     unwatchSelection();
-    value
-        ? (highlightedVerseNumbers.value = highlightedVerseNumbers.value?.concat(number))
-        : (highlightedVerseNumbers.value = highlightedVerseNumbers.value?.filter((n) => n !== number));
+    if (value) {
+        highlightedVerseNumbers.value = highlightedVerseNumbers.value?.concat(number);
+    } else {
+        highlightedVerseNumbers.value = highlightedVerseNumbers.value?.filter((n) => n !== number);
+    }
 };
 const getHiddenForPrint = (number: number) => highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
