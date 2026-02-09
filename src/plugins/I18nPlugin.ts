@@ -27,7 +27,9 @@ const I18nPlugin = createI18n({
                 more_actions: 'More Actions',
                 fullscreen_enter: 'Enter fullscreen',
                 fullscreen_exit: 'Exit fullscreen',
+                print: 'Print',
                 print_chapter: 'Print chapter',
+                read_in_context: 'Read in context',
             },
             bible: {
                 chapter: 'Chapter',
@@ -73,7 +75,9 @@ const I18nPlugin = createI18n({
                 more_actions: 'Weitere Aktionen',
                 fullscreen_enter: 'Vollbild',
                 fullscreen_exit: 'Vollbild verlassen',
+                print: 'Drucken',
                 print_chapter: 'Kapitel drucken',
+                read_in_context: 'Im Kontext lesen',
             },
             bible: {
                 chapter: 'Kapitel',

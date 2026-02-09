@@ -3,10 +3,14 @@ import Avatar from 'primevue/avatar';
 import { computed } from 'vue';
 import { Verse } from '@/types/bible/verse';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     verse: Verse;
     isHighlighted?: boolean;
-}>();
+    showNumber?: boolean
+}>(), {
+    showNumber: true,
+    isHighlighted: false,
+});
 
 const emit = defineEmits<(event: 'update:isHighlighted', value: boolean) => void>();
 
@@ -22,26 +26,18 @@ const backgroundColor = computed(() => (highlighted.value ? 'var(--highlight-bg)
 
 <template>
     <div class="flex flex-row flex-nowrap items-baseline gap-1.5">
-        <div class="opacity-50 text-sm flex-shrink-0">
-            <Avatar
-                class="bg-transparent text-sm transition-colors"
-                :label="verse.number?.toString()"
-                :style="{ backgroundColor, color }"
-                shape="circle"
-            />
+        <div v-if="showNumber" class="opacity-50 text-sm flex-shrink-0">
+            <Avatar class="bg-transparent text-sm transition-colors" :label="verse.number?.toString()"
+                :style="{ backgroundColor, color }" shape="circle" />
         </div>
-        <div
-            class="text-lg text-justify leading-loose px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
-            :style="{ borderColor }"
-        >
-            <span
-                class="py-0.5 rounded transition-colors"
-                :style="{ backgroundColor, color }"
-                @click="highlighted = !highlighted"
-            >
+        <div v-else class="opacity-50 w-8 flex-shrink-0"></div>
+        <div class="text-lg text-justify leading-loose px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
+            :style="{ borderColor }">
+            <span class="py-0.5 rounded transition-colors" :style="{ backgroundColor, color }"
+                @click="highlighted = !highlighted">
                 {{ verse.text }}
             </span>
         </div>
-        <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
+        <div class="opacity-50 w-8 flex-shrink-0"></div>
     </div>
 </template>
