@@ -21,5 +21,5 @@ const passThrough: ToastPassThroughOptions = {
 </script>
 
 <template>
-    <Toast position="bottom-right" :pt="passThrough" />
+    <Toast class="print:hidden" position="bottom-right" :pt="passThrough" />
 </template>
