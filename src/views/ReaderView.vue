@@ -91,15 +91,15 @@ const shareText = computed(() => `${highlightedVerses.value?.map((v) => v.text)?
 const shareTitle = computed(() =>
     highlightedVerses.value?.length > 0
         ? formatPassages(
-              selectedTranslation.value,
-              highlightedVerses.value?.map((v) => ({
-                  translationId: selectedTranslation.value?.id,
-                  bookType: selectedBook.value?.type,
-                  chapter: selectedChapter.value?.number,
-                  verse: v.number,
-              })),
-              formatPassageOptionsFromI18n('bible.passage_format_options', t),
-          )
+            selectedTranslation.value,
+            highlightedVerses.value?.map((v) => ({
+                translationId: selectedTranslation.value?.id,
+                bookType: selectedBook.value?.type,
+                chapter: selectedChapter.value?.number,
+                verse: v.number,
+            })),
+            formatPassageOptionsFromI18n('bible.passage_format_options', t),
+        )
         : undefined,
 );
 const shareButtonsVisible = computed(() => highlightedVerses.value?.length > 0);
@@ -127,44 +127,25 @@ const unwatchSelection = watchEffect(() => {
 </script>
 
 <template>
-    <ReaderNavbar
-        :translations="translationList"
-        :loading="translationListLoading"
-        v-model:translation="selectedTranslation"
-        v-model:book="selectedBook"
-        v-model:chapter="selectedChapter"
-        v-model:expanded="navigationExpanded"
-        @navigate="removeHighlight"
-        class="print:hidden"
-    >
+    <ReaderNavbar :translations="translationList" :loading="translationListLoading"
+        v-model:translation="selectedTranslation" v-model:book="selectedBook" v-model:chapter="selectedChapter"
+        v-model:expanded="navigationExpanded" @navigate="removeHighlight" class="print:hidden">
         <template #toast-stack>
-            <ShareButtons
-                :title="shareTitle"
-                :text="shareText"
-                :url="shareUrl"
-                :visible="shareButtonsVisible"
-                @update:visible="removeHighlight"
-            />
+            <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="shareButtonsVisible"
+                @update:visible="removeHighlight" />
         </template>
     </ReaderNavbar>
-    <div
-        class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen print:min-h-0"
-    >
+    <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen print:min-h-0">
         <div v-if="selectedChapter != null">
             <div class="relative w-full h-0">
-                <div
-                    class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center"
-                >
+                <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
                     {{ selectedBook?.verboseName ?? selectedBook?.name }}
                 </div>
             </div>
-            <div
-                class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden"
-            >
+            <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
                 <Divider class="flex-shrink" />
                 <span
-                    class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0"
-                >
+                    class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
                     {{
                         $t('bible.chapter', undefined, {
                             locale: selectedTranslation?.language?.toLowerCase(),
@@ -174,18 +155,11 @@ const unwatchSelection = watchEffect(() => {
                 </span>
                 <Divider class="flex-shrink" />
             </div>
-            <InlineVerse
-                v-for="(verse, i) of selectedChapter?.verses"
-                :id="`verse-${verse.number}`"
-                :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)"
-                :key="i"
-                :verse="verse"
-                :is-highlighted="getIsHighlighted(verse.number)"
-                @update:is-highlighted="
+            <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
+                :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
+                :verse="verse" :is-highlighted="getIsHighlighted(verse.number)" @update:is-highlighted="
                     (v) => setIsHighlighted(verse.number, v)
-                "
-                :class="{ 'print:hidden': getHiddenForPrint(verse.number) }"
-            />
+                " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
             <Divider class="py-6" />
         </div>
         <div class="flex-grow" />

@@ -21,8 +21,8 @@ const valuesPresent = computed(() => props.passages != null && props.translation
             <div class="flex flex-col gap-2">
                 <template v-if="valuesPresent">
                     <div>
-                        <span v-for="passage of passages">
-                            {{ getPassage(translation, passage).text + ' ' }}
+                        <span v-for="passage in passages">
+                            {{ getPassage(translation, passage).text }}
                         </span>
                     </div>
                     <div class="opacity-50">

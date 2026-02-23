@@ -47,7 +47,7 @@ const options: {
                     :path="slotProps.option.icon"
                 />
                 <span
-                    v-if="condensed != true"
+                    v-if="condensed !== true"
                     class="text-ellipsis overflow-hidden"
                 >
                     {{ $t(slotProps.option.messageCode) }}

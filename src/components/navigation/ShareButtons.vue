@@ -91,7 +91,7 @@ onKeyStroke(
         leave-to-class="-translate-y-10 opacity-0"
     >
         <div
-            v-if="visibleValue == true"
+            v-if="visibleValue === true"
             class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm bg-green-500 bg-opacity-5"
         >
             <Button rounded text @click="shareNow">
