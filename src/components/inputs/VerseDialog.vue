@@ -70,71 +70,37 @@ function confirm() {
 </script>
 
 <template>
-    <DialogueSelectButton
-        @click="open"
-        @keyup.enter="visible = true"
-        :disabled="disabled"
-    >
-        <div
-            v-if="selectedPassages?.length > 0 && !disabled"
-            class="flex align-items-center"
-        >
+    <DialogueSelectButton @click="open" @keyup.enter="visible = true" :disabled="disabled">
+        <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
             {{ formatPassages(translation, selectedPassages) }}
         </div>
         <div v-else>Select Verses...</div>
     </DialogueSelectButton>
-    <Dialog
-        v-if="!disabled"
-        v-model:visible="visible"
-        :closable="false"
-        :draggable="false"
-        :position="isOnMobile ? 'bottom' : 'top'"
-        dismissable-mask
-        modal
-        class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }"
-    >
+    <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
+        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container"
+        :pt="{ content: { class: 'overflow-hidden' } }">
         <template #header>
             <div class="flex flex-col w-full gap-4 -mb-5">
                 <span class="text-xl font-bold"> Select Verses </span>
                 <Accordion v-if="chapters">
                     <AccordionTab header="Chapters" :disabled="!chapters">
-                        <div
-                            id="verse-dialogue-index"
-                            class="flex gap-2 flex-wrap justify-start items-start"
-                        >
-                            <a
-                                v-for="chapter of chapters"
-                                :href="`#verse-dialogue-chapter-${chapter?.chapter}`"
-                            >
-                                <Avatar
-                                    :label="`${chapter?.chapter}`"
-                                    class="p-button p-button-outlined"
-                                />
-                            </a>
+                        <div id="verse-dialogue-index" class="flex gap-2 flex-wrap justify-start items-start">
+                            <div v-for="chapter in chapters" :href="`#verse-dialogue-chapter-${chapter?.chapter}`">
+                                <Avatar :label="`${chapter?.chapter}`" class="p-button p-button-outlined" />
+                            </div>
                         </div>
                     </AccordionTab>
                 </Accordion>
             </div>
         </template>
         <ScrollContainer class="max-h-bottom-sheet">
-            <Listbox
-                v-model="pendingSelectedPassages"
-                :options="chapters"
-                option-group-label="chapter"
-                option-group-children="passages"
-                class="w-full"
-                multiple
-                :meta-key-selection="false"
-                :pt="{
+            <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
+                option-group-children="passages" class="w-full" multiple :meta-key-selection="false" :pt="{
                     itemGroup: { class: 'bg-transparent' },
                     content: { class: 'overflow-hidden' },
-                }"
-            >
+                }">
                 <template #optiongroup="slotProps">
-                    <Divider
-                        :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`"
-                    >
+                    <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
                         <span class="text-xl font-bold">
                             {{ getBook(translation, book).name }}
                             {{ slotProps.option?.chapter }}
@@ -153,21 +119,9 @@ function confirm() {
         </ScrollContainer>
         <template #footer>
             <div class="flex align-items-center gap-2 mt-4">
-                <Button
-                    label="Cancel"
-                    @click="abort"
-                    severity="secondary"
-                    text
-                    class="w-full"
-                />
-                <Button
-                    label="Ok"
-                    @click="confirm"
-                    severity="primary"
-                    text
-                    class="w-full"
-                    :disabled="pendingSelectedPassages === selectedPassages"
-                />
+                <Button label="Cancel" @click="abort" severity="secondary" text class="w-full" />
+                <Button label="Ok" @click="confirm" severity="primary" text class="w-full"
+                    :disabled="pendingSelectedPassages === selectedPassages" />
             </div>
         </template>
     </Dialog>

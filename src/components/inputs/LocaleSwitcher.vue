@@ -25,7 +25,7 @@ const { settings } = useSettings();
                     slotProps.option
                 }}</span>
                 <span
-                    v-if="condensed != true"
+                    v-if="condensed !== true"
                     class="text-ellipsis overflow-hidden"
                 >
                     <span>{{ $t(`locales.${slotProps.option}`) }}</span>
