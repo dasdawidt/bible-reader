@@ -92,12 +92,12 @@ onKeyStroke(
     >
         <div
             v-if="visibleValue === true"
-            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm bg-green-500 bg-opacity-5"
+            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-xs bg-green-500 bg-opacity-5"
         >
             <Button rounded text @click="shareNow">
                 <template #icon>
                     <SvgIcon
-                        class="!scale-150"
+                        class="scale-150!"
                         type="mdi"
                         size="16"
                         :path="mdiShare"
@@ -107,7 +107,7 @@ onKeyStroke(
             <Button rounded text @click="copyLinkNow">
                 <template #icon>
                     <SvgIcon
-                        class="!scale-150"
+                        class="scale-150!"
                         type="mdi"
                         size="16"
                         :path="mdiLinkVariant"
@@ -117,7 +117,7 @@ onKeyStroke(
             <Button rounded text @click="copyNow">
                 <template #icon>
                     <SvgIcon
-                        class="!scale-150"
+                        class="scale-150!"
                         type="mdi"
                         size="16"
                         :path="mdiContentCopy"
@@ -127,7 +127,7 @@ onKeyStroke(
             <Button rounded text @click="printNow">
                 <template #icon>
                     <SvgIcon
-                        class="!scale-150"
+                        class="scale-150!"
                         type="mdi"
                         size="16"
                         :path="mdiPrinter"
@@ -143,7 +143,7 @@ onKeyStroke(
             >
                 <template #icon>
                     <SvgIcon
-                        class="!scale-[1.75]"
+                        class="scale-[1.75]!"
                         type="mdi"
                         size="16"
                         :path="mdiSelectionEllipseRemove"

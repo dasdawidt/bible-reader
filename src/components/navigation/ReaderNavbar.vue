@@ -104,7 +104,7 @@ const menuClass = computed(() => {
     classes += ` ${isOnMobile.value ? 'pb-0 bottom-0 border-b-0' : 'flex-col-reverse pt-0 top-0 border-t-0'}`;
     classes +=
         ' '
-        + (isOnMobile.value ? (showMenu.value ? 'rounded-t-[2rem]' : '') : showMenu.value ? 'rounded-b-[2rem]' : '');
+        + (isOnMobile.value ? (showMenu.value ? 'rounded-t-4xl' : '') : showMenu.value ? 'rounded-b-4xl' : '');
     return classes;
 });
 
@@ -184,7 +184,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
     >
         <div class="absolute w-full h-0 z-20">
             <div
-                class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
+                class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none *:pointer-events-auto"
                 :class="{ 'top-auto bottom-28': isOnMobile }"
             >
                 <slot name="toast-stack" />
@@ -194,7 +194,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         <!-- Navigation bar (always visible) -->
         <div
             class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
-            :class="{ '!max-w-container': showMenu }"
+            :class="{ 'max-w-container!': showMenu }"
         >
             <div class="w-full flex flex-row justify-start">
                 <Button
@@ -211,7 +211,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 >
                     <template #icon>
                         <SvgIcon
-                            class="!scale-125"
+                            class="scale-125!"
                             type="mdi"
                             size="16"
                             :path="mdiArrowLeft"
@@ -221,7 +221,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
             </div>
             <!-- Menu toggle button -->
             <Button
-                class="flex-shrink-0"
+                class="shrink-0"
                 rounded
                 @click="toggleMenu"
                 :text="!isOnMobile"
@@ -257,7 +257,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 >
                     <template #icon>
                         <SvgIcon
-                            class="!scale-125"
+                            class="scale-125!"
                             type="mdi"
                             size="16"
                             :path="mdiArrowRight"
