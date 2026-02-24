@@ -22,7 +22,7 @@ const backgroundColor = computed(() => (highlighted.value ? 'var(--highlight-bg)
 
 <template>
     <div class="flex flex-row flex-nowrap items-baseline gap-1.5">
-        <div class="opacity-50 text-sm flex-shrink-0">
+        <div class="opacity-50 text-sm shrink-0">
             <Avatar
                 class="bg-transparent text-sm transition-colors"
                 :label="verse.number?.toString()"
@@ -35,13 +35,13 @@ const backgroundColor = computed(() => (highlighted.value ? 'var(--highlight-bg)
             :style="{ borderColor }"
         >
             <span
-                class="py-0.5 rounded transition-colors"
+                class="py-0.5 rounded-sm transition-colors"
                 :style="{ backgroundColor, color }"
                 @click="highlighted = !highlighted"
             >
                 {{ verse.text }}
             </span>
         </div>
-        <span class="opacity-50 text-sm w-8 flex-shrink-0"></span>
+        <span class="opacity-50 text-sm w-8 shrink-0"></span>
     </div>
 </template>

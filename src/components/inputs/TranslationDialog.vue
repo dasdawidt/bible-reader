@@ -51,7 +51,7 @@ const visible = ref(false);
         v-bind="$attrs"
     >
         <div v-if="selectedTranslation" class="flex flex-row gap-2">
-            <div class="flex-shrink-0 opacity-50 text-left">
+            <div class="shrink-0 opacity-50 text-left">
                 {{ selectedTranslation?.id?.toUpperCase() }}
             </div>
             <div>{{ selectedTranslation?.name }}</div>
@@ -92,7 +92,7 @@ const visible = ref(false);
                         "
                     >
                         <div
-                            class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis"
+                            class="w-16 shrink-0 opacity-50 overflow-hidden text-ellipsis"
                         >
                             {{ option.id?.toUpperCase() }}
                         </div>

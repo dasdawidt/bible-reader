@@ -55,7 +55,7 @@ function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
     >
         <template #icon>
             <SvgIcon
-                class="!scale-150"
+                class="scale-150!"
                 size="16"
                 type="mdi"
                 :path="mdiDotsVertical"
@@ -82,7 +82,7 @@ function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
                         @click="runCommand(item.command)"
                     >
                         <SvgIcon
-                            class="!scale-150 opacity-75"
+                            class="scale-150! opacity-75"
                             size="16"
                             type="mdi"
                             :path="item.icon"

@@ -109,7 +109,7 @@ function confirm() {
                 </template>
                 <template #option="slotProps">
                     <div class="flex align-items-center">
-                        <div class="w-8 flex-shrink-0 opacity-50">
+                        <div class="w-8 shrink-0 opacity-50">
                             {{ slotProps.option?.verse }}
                         </div>
                         <div>{{ slotProps.option?.text }}</div>
