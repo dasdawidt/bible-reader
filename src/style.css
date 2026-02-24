@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+
 @theme {
     --container-container: 800px;
     --max-height-bottom-sheet: 65vh;
@@ -22,15 +25,6 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentcolor);
     }
-}
-
-@layer primevue, theme, base, components, utilities;
-
-@layer tailwind {
-    /* @import "tailwindcss"; */
-    @import "tailwindcss/theme.css" layer(theme);
-    @import "tailwindcss/preflight.css" layer(base);
-    @import "tailwindcss/utilities.css" layer(utilities);
 }
 
 :root {

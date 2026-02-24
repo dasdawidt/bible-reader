@@ -1,7 +1,7 @@
 import { type ColorSchemeType, usePreferredColorScheme, useStyleTag } from '@vueuse/core';
 import { computed, type Plugin, ref, watch } from 'vue';
-import darkTheme from '@/assets/themes/dark.css?inline';
-import lightTheme from '@/assets/themes/light.css?inline';
+// import darkTheme from '@/assets/themes/dark.css?inline';
+// import lightTheme from '@/assets/themes/light.css?inline';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { isOnMobile } = useOnMobile();
@@ -12,11 +12,11 @@ const colorScheme = computed(() =>
     colorSchemeOverride.value === 'no-preference' ? prefersColorScheme.value : colorSchemeOverride.value,
 );
 
-const { load: loadLightTheme, unload: unloadLightTheme } = useStyleTag(lightTheme, {
+const { load: loadLightTheme, unload: unloadLightTheme } = useStyleTag('', {
     id: 'theme-light',
     immediate: false,
 });
-const { load: loadDarkTheme, unload: unloadDarkTheme } = useStyleTag(darkTheme, { id: 'theme-dark', immediate: false });
+const { load: loadDarkTheme, unload: unloadDarkTheme } = useStyleTag('', { id: 'theme-dark', immediate: false });
 
 watch(colorScheme, (newValue, _oldValue) => {
     loadScheme(newValue);
