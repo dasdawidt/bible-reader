@@ -15,18 +15,9 @@ const props = defineProps<{
      * A list of `Book`s from which to choose one.
      */
     books?: Book[];
-    /**
-     * The selected `Book`.
-     */
-    modelValue?: Book;
 }>();
 
-const emits = defineEmits<(event: 'update:modelValue', value: Book) => void>();
-
-const selectedBook = computed({
-    get: () => props.modelValue,
-    set: (v) => emits('update:modelValue', v),
-});
+const book = defineModel<Book>()
 
 const groupedBooks = computed(() =>
     props.books.reduce<[{ messageCode: string; books: Book[] }, { messageCode: string; books: Book[] }]>(
@@ -47,7 +38,7 @@ const groupedBooks = computed(() =>
 
 const options = new Map<BookType, HTMLDivElement>();
 function scrollToSelection() {
-    options.get(selectedBook.value?.type)?.parentElement?.scrollIntoView({
+    options.get(book.value?.type)?.parentElement?.scrollIntoView({
         block: 'center',
     });
 }
@@ -58,56 +49,27 @@ const disabled = computed(() => props.books == null);
 </script>
 
 <template>
-    <DialogSelectButton
-        @click="visible = true"
-        @keyup.enter="visible = true"
-        :disabled="disabled"
-        v-bind="$attrs"
-    >
-        <div v-if="selectedBook && !disabled" class="flex flex-row gap-2">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled" v-bind="$attrs">
+        <div v-if="book && !disabled" class="flex flex-row gap-2">
             <div class="flex-shrink-0 opacity-50 text-left">
-                {{ selectedBook?.abbreviation.toUpperCase() }}
+                {{ book?.abbreviation.toUpperCase() }}
             </div>
-            <div>{{ selectedBook?.name }}</div>
+            <div>{{ book?.name }}</div>
         </div>
         <div v-else>{{ $t('prompts.select_book') }}...</div>
     </DialogSelectButton>
-    <Dialog
-        v-model:visible="visible"
-        :closable="false"
-        :draggable="false"
-        modal
-        dismissable-mask
-        :header="$t('prompts.select_book')"
-        :position="isOnMobile ? 'bottom' : 'top'"
-        class="w-full max-w-container"
-        @show="scrollToSelection"
-    >
-        <ScrollContainer
-            class="max-h-bottom-sheet mt-1"
-            pt:content:class="py-6"
-        >
-            <Listbox
-                v-model="selectedBook"
-                :options="groupedBooks"
-                optionLabel="name"
-                option-group-children="books"
-                option-group-label="name"
-                class="w-full h-min"
-                pt:item-group:class="bg-transparent"
-                @change="visible = false"
-            >
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
+        :header="$t('prompts.select_book')" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
+        @show="scrollToSelection">
+        <ScrollContainer class="max-h-bottom-sheet mt-1" pt:content:class="py-6">
+            <Listbox v-model="book" :options="groupedBooks" optionLabel="name" option-group-children="books"
+                option-group-label="name" class="w-full h-min" pt:item-group:class="bg-transparent"
+                @change="visible = false">
                 <template #option="{ option }">
-                    <div
-                        class="flex align-items-center gap-2"
-                        :ref="
-                            (el) =>
-                                options.set(option.type, el as HTMLDivElement)
-                        "
-                    >
-                        <div
-                            class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis"
-                        >
+                    <div class="flex align-items-center gap-2" :ref="(el) =>
+                        options.set(option.type, el as HTMLDivElement)
+                        ">
+                        <div class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">
                             {{ option.abbreviation?.toUpperCase() }}
                         </div>
                         <div>{{ option.name }}</div>
@@ -121,13 +83,7 @@ const disabled = computed(() => props.books == null);
             </Listbox>
         </ScrollContainer>
         <template #footer>
-            <Button
-                :label="$t('prompts.cancel')"
-                @click="visible = false"
-                severity="secondary"
-                text
-                class="w-full"
-            />
+            <Button :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>

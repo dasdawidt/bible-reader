@@ -15,25 +15,16 @@ const props = defineProps<{
      */
     translations?: TranslationList;
     /**
-     * The selected `Translation`.
-     */
-    modelValue?: Translation;
-    /**
      * Whether the element should show a loading state.
      */
     loading?: boolean;
 }>();
 
-const emits = defineEmits<(event: 'update:modelValue', value: Translation) => void>();
-
-const selectedTranslation = computed<Translation>({
-    get: () => props.modelValue,
-    set: (v) => emits('update:modelValue', v),
-});
+const translation = defineModel<Translation>()
 
 const options = new Map<string, HTMLDivElement>();
 function scrollToSelection() {
-    options.get(selectedTranslation.value?.id)?.parentElement?.scrollIntoView({
+    options.get(translation.value?.id)?.parentElement?.scrollIntoView({
         block: 'center',
     });
 }
@@ -43,57 +34,31 @@ const visible = ref(false);
 </script>
 
 <template>
-    <DialogSelectButton
-        @click="visible = true"
-        @keyup.enter="visible = true"
-        :disabled="loading === true"
-        :loading="loading === true"
-        v-bind="$attrs"
-    >
-        <div v-if="selectedTranslation" class="flex flex-row gap-2">
+    <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="loading === true"
+        :loading="loading === true" v-bind="$attrs">
+        <div v-if="translation" class="flex flex-row gap-2">
             <div class="flex-shrink-0 opacity-50 text-left">
-                {{ selectedTranslation?.id?.toUpperCase() }}
+                {{ translation?.id?.toUpperCase() }}
             </div>
-            <div>{{ selectedTranslation?.name }}</div>
+            <div>{{ translation?.name }}</div>
         </div>
         <div v-else-if="loading !== true">
             {{ $t('prompts.select_translation') }}...
         </div>
         <div v-else>{{ $t('prompts.loading_translations') }}...</div>
     </DialogSelectButton>
-    <Dialog
-        v-model:visible="visible"
-        :closable="false"
-        :draggable="false"
-        modal
-        dismissable-mask
-        :header="$t('prompts.select_translation')"
-        :position="isOnMobile ? 'bottom' : 'top'"
-        class="w-full max-w-container"
-        @show="scrollToSelection"
-    >
+    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
+        :header="$t('prompts.select_translation')" :position="isOnMobile ? 'bottom' : 'top'"
+        class="w-full max-w-container" @show="scrollToSelection">
         <ScrollContainer class="max-h-bottom-sheet" pt:content:class="py-6">
-            <Listbox
-                v-model="selectedTranslation"
-                :options="translations"
-                optionGroupLabel="name"
-                optionGroupChildren="translations"
-                optionLabel="name"
-                class="w-full h-min"
-                pt:item-group:class="bg-transparent"
-                @change="visible = false"
-            >
+            <Listbox v-model="translation" :options="translations" optionGroupLabel="name"
+                optionGroupChildren="translations" optionLabel="name" class="w-full h-min"
+                pt:item-group:class="bg-transparent" @change="visible = false">
                 <template #option="{ option }">
-                    <div
-                        class="flex align-items-center"
-                        :ref="
-                            (el) =>
-                                options.set(option.number, el as HTMLDivElement)
-                        "
-                    >
-                        <div
-                            class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis"
-                        >
+                    <div class="flex align-items-center" :ref="(el) =>
+                            options.set(option.number, el as HTMLDivElement)
+                        ">
+                        <div class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">
                             {{ option.id?.toUpperCase() }}
                         </div>
                         <div>{{ option.name }}</div>
@@ -107,13 +72,7 @@ const visible = ref(false);
             </Listbox>
         </ScrollContainer>
         <template #footer>
-            <Button
-                :label="$t('prompts.cancel')"
-                @click="visible = false"
-                severity="secondary"
-                text
-                class="w-full"
-            />
+            <Button :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>
