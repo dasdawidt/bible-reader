@@ -26,63 +26,41 @@ const { t } = useI18n();
 
 const props = defineProps<{
     translations?: TranslationList;
-    translation?: Translation;
-    book?: Book;
-    chapter?: Chapter;
     loading?: boolean;
-    expanded?: boolean;
 }>();
 
-const emits = defineEmits<{
-    (e: 'update:translation', v: Translation): void;
-    (e: 'update:book', v: Book): void;
-    (e: 'update:chapter', v: Chapter): void;
-    (e: 'update:expanded', v: boolean): void;
-    (e: 'navigate', v: NavigationTarget): void;
+const emit = defineEmits<{
+    'navigate': [NavigationTarget];
 }>();
 
-const selectedTranslation = computed({
-    get: () => props.translation,
-    set: (v) => emits('update:translation', v),
-});
-
-const selectedBook = computed({
-    get: () => props.book,
-    set: (v) => emits('update:book', v),
-});
-
-const selectedChapter = computed({
-    get: () => props.chapter,
-    set: (v) => emits('update:chapter', v),
-});
+const translation = defineModel<Translation>('translation')
+const book = defineModel<Book>('book')
+const chapter = defineModel<Chapter>('chapter')
 
 // Menu
 
-const showMenu = computed({
-    get: () => props.expanded,
-    set: (v) => emits('update:expanded', v),
-});
+const expanded = defineModel<boolean>('expanded')
 const menuTransition = ref(false);
 const toggleMenu = () => {
     // make sure the animation is played
     menuTransition.value = true;
-    showMenu.value = !showMenu.value;
+    expanded.value = !expanded.value;
 };
 
 // Open/close the menu
 const menuElement = ref<HTMLElement>(null);
 const menuStyle = computedWithControl(
-    () => [isOnMobile.value, showMenu.value],
+    () => [isOnMobile.value, expanded.value],
     () => ({
         transform:
             'translateY('
             + (isOnMobile.value
-                ? showMenu.value
+                ? expanded.value
                     ? '0px'
                     : `${menuElement.value?.clientHeight}px`
-                : showMenu.value
-                  ? '0px'
-                  : `-${menuElement.value?.clientHeight}px`)
+                : expanded.value
+                    ? '0px'
+                    : `-${menuElement.value?.clientHeight}px`)
             + ')',
     }),
 );
@@ -94,7 +72,7 @@ useResizeObserver(menuElement, () => {
 
 // Menu icon
 const menuIconUp = computed(() => {
-    return isOnMobile.value ? !showMenu.value : showMenu.value;
+    return isOnMobile.value ? !expanded.value : expanded.value;
 });
 
 // Menu style
@@ -104,7 +82,7 @@ const menuClass = computed(() => {
     classes += ` ${isOnMobile.value ? 'pb-0 bottom-0 border-b-0' : 'flex-col-reverse pt-0 top-0 border-t-0'}`;
     classes +=
         ' '
-        + (isOnMobile.value ? (showMenu.value ? 'rounded-t-[2rem]' : '') : showMenu.value ? 'rounded-b-[2rem]' : '');
+        + (isOnMobile.value ? (expanded.value ? 'rounded-t-[2rem]' : '') : expanded.value ? 'rounded-b-[2rem]' : '');
     return classes;
 });
 
@@ -120,13 +98,16 @@ const navigationTargetPrevious = computed(() => getNavigationTarget('previous'))
 const navigationTargetNext = computed(() => getNavigationTarget('next'));
 
 function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget | undefined {
-    if (selectedChapter.value == null || selectedBook.value == null || selectedTranslation.value == null)
+    if (chapter.value == null || book.value == null || translation.value == null) {
         return undefined;
+    }
     const diff = direction === 'next' ? 1 : -1;
-    const toChapter = selectedBook.value?.chapters?.find((c) => c.number === selectedChapter.value?.number + diff);
-    if (toChapter != null) return { direction, chapter: toChapter, book: selectedBook.value };
-    const toBook = selectedTranslation.value?.books?.find(
-        (b) => bookTypeToNumber(b.type) === bookTypeToNumber(selectedBook.value?.type) + diff,
+    const toChapter = book.value?.chapters?.find((c) => c.number === chapter.value?.number + diff);
+    if (toChapter != null) {
+        return { direction, chapter: toChapter, book: book.value };
+    }
+    const toBook = translation.value?.books?.find(
+        (b) => bookTypeToNumber(b.type) === bookTypeToNumber(book.value?.type) + diff,
     );
     if (toBook != null) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
@@ -151,10 +132,10 @@ function navButtonLabel(navigationTarget: NavigationTarget) {
     return navigationTarget == null
         ? t('bible.eternity')
         : menuWidth.value < 280
-          ? ''
-          : menuWidth.value < 500
-            ? `${navigationTarget.book?.abbreviation?.toUpperCase()} ${navigationTarget.chapter?.number}`
-            : `${navigationTarget.book?.name} ${navigationTarget.chapter?.number}`;
+            ? ''
+            : menuWidth.value < 500
+                ? `${navigationTarget.book?.abbreviation?.toUpperCase()} ${navigationTarget.chapter?.number}`
+                : `${navigationTarget.book?.name} ${navigationTarget.chapter?.number}`;
 }
 
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
@@ -162,9 +143,9 @@ const navigateNext = () => navigate(navigationTargetNext.value);
 
 function navigate(navigationTarget: NavigationTarget) {
     if (navigationTarget != null) {
-        selectedBook.value = navigationTarget.book;
-        selectedChapter.value = navigationTarget.chapter;
-        emits('navigate', navigationTarget);
+        book.value = navigationTarget.book;
+        chapter.value = navigationTarget.chapter;
+        emit('navigate', navigationTarget);
     }
 }
 
@@ -173,133 +154,65 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 </script>
 
 <template>
-    <div
-        class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
-        :class="menuClass"
-        style="
+    <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
+        :class="menuClass" style="
             background-color: var(--surface-ground);
             border-color: var(--surface-border);
-        "
-        :style="menuStyle"
-    >
+        " :style="menuStyle">
         <div class="absolute w-full h-0 z-20">
-            <div
-                class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
-                :class="{ 'top-auto bottom-28': isOnMobile }"
-            >
+            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
+                :class="{ 'top-auto bottom-28': isOnMobile }">
                 <slot name="toast-stack" />
             </div>
         </div>
 
         <!-- Navigation bar (always visible) -->
-        <div
-            class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
-            :class="{ '!max-w-container': showMenu }"
-        >
+        <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
+            :class="{ '!max-w-container': expanded }">
             <div class="w-full flex flex-row justify-start">
-                <Button
-                    class="whitespace-nowrap"
-                    :label="navigationLabelPrevious"
-                    :disabled="!canNavigatePrevious"
-                    @click="navigatePrevious"
-                    rounded
-                    text
-                    :pt="{
+                <Button class="whitespace-nowrap" :label="navigationLabelPrevious" :disabled="!canNavigatePrevious"
+                    @click="navigatePrevious" rounded text :pt="{
                         root: { class: 'flex flex-row gap-2.5' },
                         label: { class: 'text-ellipsis overflow-hidden' },
-                    }"
-                >
+                    }">
                     <template #icon>
-                        <SvgIcon
-                            class="!scale-125"
-                            type="mdi"
-                            size="16"
-                            :path="mdiArrowLeft"
-                        />
+                        <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiArrowLeft" />
                     </template>
                 </Button>
             </div>
             <!-- Menu toggle button -->
-            <Button
-                class="flex-shrink-0"
-                rounded
-                @click="toggleMenu"
-                :text="!isOnMobile"
-            >
+            <Button class="flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile">
                 <template #icon>
-                    <SvgIcon
-                        v-show="menuIconUp"
-                        type="mdi"
-                        size="30"
-                        :path="mdiChevronUp"
-                    />
-                    <SvgIcon
-                        v-show="!menuIconUp"
-                        type="mdi"
-                        size="30"
-                        :path="mdiChevronDown"
-                    />
+                    <SvgIcon v-show="menuIconUp" type="mdi" size="30" :path="mdiChevronUp" />
+                    <SvgIcon v-show="!menuIconUp" type="mdi" size="30" :path="mdiChevronDown" />
                 </template>
             </Button>
             <div class="w-full flex flex-row justify-end">
-                <Button
-                    class="whitespace-nowrap"
-                    icon-pos="right"
-                    :label="navigationLabelNext"
-                    :disabled="!canNavigateNext"
-                    @click="navigateNext"
-                    rounded
-                    text
-                    :pt="{
+                <Button class="whitespace-nowrap" icon-pos="right" :label="navigationLabelNext"
+                    :disabled="!canNavigateNext" @click="navigateNext" rounded text :pt="{
                         root: { class: 'flex flex-row-reverse gap-2.5' },
                         label: { class: 'text-ellipsis overflow-hidden' },
-                    }"
-                >
+                    }">
                     <template #icon>
-                        <SvgIcon
-                            class="!scale-125"
-                            type="mdi"
-                            size="16"
-                            :path="mdiArrowRight"
-                        />
+                        <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiArrowRight" />
                     </template>
                 </Button>
             </div>
         </div>
 
         <!-- Toggleable menu -->
-        <div
-            class="flex w-full gap-2 items-center max-w-container"
-            :class="
-                isOnMobile
-                    ? 'flex-col-reverse pb-2.5 pt-px'
-                    : 'flex-col pt-2.5 pb-px'
-            "
-            ref="menuElement"
-        >
-            <div
-                class="w-full flex flex-row-reverse justify-between items-center"
-            >
+        <div class="flex w-full gap-2 items-center max-w-container" :class="isOnMobile
+            ? 'flex-col-reverse pb-2.5 pt-px'
+            : 'flex-col pt-2.5 pb-px'
+            " ref="menuElement">
+            <div class="w-full flex flex-row-reverse justify-between items-center">
                 <MoreActions />
                 <SettingsDialog />
             </div>
-            <div
-                class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full"
-            >
-                <TranslationDialog
-                    v-model="selectedTranslation"
-                    :translations="translations"
-                    :loading="loading === true"
-                />
-                <BookDialog
-                    v-model="selectedBook"
-                    :books="selectedTranslation?.books"
-                />
-                <ChapterDialog
-                    v-model="selectedChapter"
-                    :chapters="selectedBook?.chapters"
-                    :book-name="selectedBook?.name"
-                />
+            <div class="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-2 w-full">
+                <TranslationDialog v-model="translation" :translations="translations" :loading="loading === true" />
+                <BookDialog v-model="book" :books="translation?.books" />
+                <ChapterDialog v-model="chapter" :chapters="book?.chapters" :book-name="book?.name" />
             </div>
         </div>
     </div>

@@ -21,10 +21,6 @@ const props = defineProps<{
      */
     translation?: Translation;
     /**
-     * The selected `Passage`s.
-     */
-    modelValue?: Passage[];
-    /**
      * The `BookType` of the `Book` from which to select `Passage`s.
      */
     book?: BookType;
@@ -32,20 +28,7 @@ const props = defineProps<{
 
 const chapters = computed(() => toPassageVerseList(props.translation, props.book));
 
-const emits = defineEmits<(event: 'update:modelValue', value: Passage[]) => void>();
-
-const selectedPassages = computed<Passage[]>({
-    get: () => props.modelValue,
-    set: (v) =>
-        emits(
-            'update:modelValue',
-            v.map((v2) => ({
-                translationId: props.translation?.id,
-                bookType: props.book,
-                ...v2,
-            })),
-        ),
-});
+const passages = defineModel<Passage[]>()
 const pendingSelectedPassages = ref<Passage[]>([]);
 
 const { isOnMobile } = useOnMobile();
@@ -53,7 +36,7 @@ const visible = ref(false);
 const disabled = computed(() => props.translation == null || props.book == null);
 
 function open() {
-    pendingSelectedPassages.value = selectedPassages.value;
+    pendingSelectedPassages.value = passages.value;
     visible.value = true;
 }
 
@@ -63,7 +46,7 @@ function abort() {
 }
 
 function confirm() {
-    selectedPassages.value = pendingSelectedPassages.value;
+    passages.value = pendingSelectedPassages.value;
     pendingSelectedPassages.value = [];
     visible.value = false;
 }
@@ -71,8 +54,8 @@ function confirm() {
 
 <template>
     <DialogueSelectButton @click="open" @keyup.enter="visible = true" :disabled="disabled">
-        <div v-if="selectedPassages?.length > 0 && !disabled" class="flex align-items-center">
-            {{ formatPassages(translation, selectedPassages) }}
+        <div v-if="passages?.length > 0 && !disabled" class="flex align-items-center">
+            {{ formatPassages(translation, passages) }}
         </div>
         <div v-else>Select Verses...</div>
     </DialogueSelectButton>
@@ -121,7 +104,7 @@ function confirm() {
             <div class="flex align-items-center gap-2 mt-4">
                 <Button label="Cancel" @click="abort" severity="secondary" text class="w-full" />
                 <Button label="Ok" @click="confirm" severity="primary" text class="w-full"
-                    :disabled="pendingSelectedPassages === selectedPassages" />
+                    :disabled="pendingSelectedPassages === passages" />
             </div>
         </template>
     </Dialog>
