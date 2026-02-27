@@ -1,0 +1,43 @@
+{
+    "prompts": {
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "confirm": "Ja",
+        "deny": "Nein",
+        "settings": "Einstellungen",
+        "loading_translations": "Lade Übersetzungen",
+        "select_translation": "Übersetzung auswählen",
+        "select_book": "Buch auswählen",
+        "select_chapter": "Kapitel auswählen",
+        "dark_theme": "Dunkel",
+        "light_theme": "Hell",
+        "device_theme": "Gerät",
+        "persistence_enabled": "Einstellungen speichern",
+        "persistence_disabled": "Einstellungen nicht speichern",
+        "copy_url_success": "URL kopiert!",
+        "copy_text_success": "Text kopiert!",
+        "more_actions": "Weitere Aktionen",
+        "fullscreen_enter": "Vollbild",
+        "fullscreen_exit": "Vollbild verlassen",
+        "print_chapter": "Kapitel drucken"
+    },
+    "bible": {
+        "chapter": "Kapitel",
+        "eternity": "Ewigkeit",
+        "old_testament": "Altes Testament",
+        "new_testament": "Neues Testament",
+        "passage_format_options": {
+            "books_delimiter": "; ",
+            "chapters_delimiter": "; ",
+            "chapter_verse_delimiter": ",",
+            "verse_span": "–",
+            "verse_gap": "."
+        }
+    },
+    "legal": {
+        "imprint": "Impressum",
+        "created_by": "Ein Projekt von {creator}.",
+        "cookie_policy": "Diese Website sammelt keinerlei personenbezogene Daten und nutzt ausschließlich technisch notwendige Cookies."
+    },
+    "locales": { "en": "Englisch", "de": "Deutsch" }
+}
