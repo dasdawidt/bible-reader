@@ -1,104 +1,20 @@
-import { createI18n } from 'vue-i18n';
+import { createI18n, type DefaultLocaleMessageSchema } from 'vue-i18n';
+
+const localeFiles = import.meta.glob<DefaultLocaleMessageSchema>('@/assets/locales/*.json', { eager: true });
+const locales = Object.fromEntries(
+    Object.entries(localeFiles).map(([path, locale]) => [
+        path.replace(/^.*[\\/]/gm, '').replace(/\.json$/gim, ''),
+        locale,
+    ]),
+);
+const availableLocales = Object.keys(locales);
+const defaultLocale = (availableLocales.includes('en') && 'en') || availableLocales.at(0);
 
 const I18nPlugin = createI18n({
     legacy: false,
-    availableLocales: ['en', 'de'],
-    locale: 'en',
-    fallbackLocale: 'en',
-    messages: {
-        en: {
-            prompts: {
-                cancel: 'Cancel',
-                close: 'Close',
-                confirm: 'Yes',
-                deny: 'No',
-                settings: 'Settings',
-                loading_translations: 'Loading Translations',
-                select_translation: 'Select Translation',
-                select_book: 'Select Book',
-                select_chapter: 'Select Chapter',
-                dark_theme: 'Dark',
-                light_theme: 'Light',
-                device_theme: 'Device',
-                persistence_enabled: 'Save settings',
-                persistence_disabled: "Don't save settings",
-                copy_url_success: 'URL copied!',
-                copy_text_success: 'Text copied!',
-                more_actions: 'More Actions',
-                fullscreen_enter: 'Enter fullscreen',
-                fullscreen_exit: 'Exit fullscreen',
-                print_chapter: 'Print chapter',
-            },
-            bible: {
-                chapter: 'Chapter',
-                eternity: 'Eternity',
-                old_testament: 'Old Testament',
-                new_testament: 'New Testament',
-                passage_format_options: {
-                    books_delimiter: '; ',
-                    chapters_delimiter: '; ',
-                    chapter_verse_delimiter: ':',
-                    verse_span: '–',
-                    verse_gap: ', ',
-                },
-            },
-            legal: {
-                imprint: 'Imprint',
-                created_by: 'A project by {creator}.',
-                cookie_policy: 'This website does not collect any personal data and only uses technical cookies.',
-            },
-            locales: {
-                en: 'English',
-                de: 'German',
-            },
-        },
-        de: {
-            prompts: {
-                cancel: 'Abbrechen',
-                close: 'Schließen',
-                confirm: 'Ja',
-                deny: 'Nein',
-                settings: 'Einstellungen',
-                loading_translations: 'Lade Übersetzungen',
-                select_translation: 'Übersetzung auswählen',
-                select_book: 'Buch auswählen',
-                select_chapter: 'Kapitel auswählen',
-                dark_theme: 'Dunkel',
-                light_theme: 'Hell',
-                device_theme: 'Gerät',
-                persistence_enabled: 'Einstellungen speichern',
-                persistence_disabled: 'Einstellungen nicht speichern',
-                copy_url_success: 'URL kopiert!',
-                copy_text_success: 'Text kopiert!',
-                more_actions: 'Weitere Aktionen',
-                fullscreen_enter: 'Vollbild',
-                fullscreen_exit: 'Vollbild verlassen',
-                print_chapter: 'Kapitel drucken',
-            },
-            bible: {
-                chapter: 'Kapitel',
-                eternity: 'Ewigkeit',
-                old_testament: 'Altes Testament',
-                new_testament: 'Neues Testament',
-                passage_format_options: {
-                    books_delimiter: '; ',
-                    chapters_delimiter: '; ',
-                    chapter_verse_delimiter: ',',
-                    verse_span: '–',
-                    verse_gap: '.',
-                },
-            },
-            legal: {
-                imprint: 'Impressum',
-                created_by: 'Ein Projekt von {creator}.',
-                cookie_policy:
-                    'Diese Website sammelt keinerlei personenbezogene Daten und nutzt ausschließlich technisch notwendige Cookies.',
-            },
-            locales: {
-                en: 'Englisch',
-                de: 'Deutsch',
-            },
-        },
-    },
+    availableLocales,
+    locale: defaultLocale,
+    fallbackLocale: defaultLocale,
+    messages: locales,
 });
 export default I18nPlugin;
