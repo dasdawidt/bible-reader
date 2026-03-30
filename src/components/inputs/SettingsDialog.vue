@@ -32,7 +32,7 @@ const buildDate = import.meta.env.BUILD_DATE;
         text
     >
         <template #icon>
-            <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiCog" />
+            <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiCog" />
         </template>
     </Button>
     <Dialog

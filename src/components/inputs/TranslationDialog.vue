@@ -37,7 +37,7 @@ const visible = ref(false);
     <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="loading === true"
         :loading="loading === true" v-bind="$attrs">
         <div v-if="translation" class="flex flex-row gap-2">
-            <div class="flex-shrink-0 opacity-50 text-left">
+            <div class="shrink-0 opacity-50 text-left">
                 {{ translation?.id?.toUpperCase() }}
             </div>
             <div>{{ translation?.name }}</div>
@@ -58,7 +58,7 @@ const visible = ref(false);
                     <div class="flex align-items-center" :ref="(el) =>
                             options.set(option.number, el as HTMLDivElement)
                         ">
-                        <div class="w-16 flex-shrink-0 opacity-50 overflow-hidden text-ellipsis">
+                        <div class="w-16 shrink-0 opacity-50 overflow-hidden text-ellipsis">
                             {{ option.id?.toUpperCase() }}
                         </div>
                         <div>{{ option.name }}</div>
