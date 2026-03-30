@@ -82,7 +82,7 @@ const menuClass = computed(() => {
     classes += ` ${isOnMobile.value ? 'pb-0 bottom-0 border-b-0' : 'flex-col-reverse pt-0 top-0 border-t-0'}`;
     classes +=
         ' '
-        + (isOnMobile.value ? (expanded.value ? 'rounded-t-[2rem]' : '') : expanded.value ? 'rounded-b-[2rem]' : '');
+        + (isOnMobile.value ? (expanded.value ? 'rounded-t-4xl' : '') : expanded.value ? 'rounded-b-4xl' : '');
     return classes;
 });
 
@@ -160,7 +160,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
             border-color: var(--surface-border);
         " :style="menuStyle">
         <div class="absolute w-full h-0 z-20">
-            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none [&>*]:pointer-events-auto"
+            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none *:pointer-events-auto"
                 :class="{ 'top-auto bottom-28': isOnMobile }">
                 <slot name="toast-stack" />
             </div>
@@ -168,7 +168,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 
         <!-- Navigation bar (always visible) -->
         <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
-            :class="{ '!max-w-container': expanded }">
+            :class="{ 'max-w-container!': expanded }">
             <div class="w-full flex flex-row justify-start">
                 <Button class="whitespace-nowrap" :label="navigationLabelPrevious" :disabled="!canNavigatePrevious"
                     @click="navigatePrevious" rounded text :pt="{
@@ -176,12 +176,12 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                         label: { class: 'text-ellipsis overflow-hidden' },
                     }">
                     <template #icon>
-                        <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiArrowLeft" />
+                        <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiArrowLeft" />
                     </template>
                 </Button>
             </div>
             <!-- Menu toggle button -->
-            <Button class="flex-shrink-0" rounded @click="toggleMenu" :text="!isOnMobile">
+            <Button class="shrink-0" rounded @click="toggleMenu" :text="!isOnMobile">
                 <template #icon>
                     <SvgIcon v-show="menuIconUp" type="mdi" size="30" :path="mdiChevronUp" />
                     <SvgIcon v-show="!menuIconUp" type="mdi" size="30" :path="mdiChevronDown" />
@@ -194,7 +194,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                         label: { class: 'text-ellipsis overflow-hidden' },
                     }">
                     <template #icon>
-                        <SvgIcon class="!scale-125" type="mdi" size="16" :path="mdiArrowRight" />
+                        <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiArrowRight" />
                     </template>
                 </Button>
             </div>

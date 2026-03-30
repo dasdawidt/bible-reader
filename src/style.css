@@ -1,9 +1,15 @@
-@layer primevue, tailwind;
+@layer primevue, theme, base, components, utilities;
 
-@layer tailwind {
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+    --container-container: 800px;
+
+    --max-height-bottom-sheet: 65vh;
+
+    --transition-property-max-width: max-width;
+    --transition-property-max-height: max-height;
 }
 
 :root {

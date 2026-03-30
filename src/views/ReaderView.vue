@@ -143,9 +143,9 @@ const unwatchSelection = watchEffect(() => {
                 </div>
             </div>
             <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
-                <Divider class="flex-shrink" />
+                <Divider class="shrink" />
                 <span
-                    class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
+                    class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
                     {{
                         $t('bible.chapter', undefined, {
                             locale: selectedTranslation?.language?.toLowerCase(),
@@ -153,7 +153,7 @@ const unwatchSelection = watchEffect(() => {
                     }}
                     {{ selectedChapter?.number }}
                 </span>
-                <Divider class="flex-shrink" />
+                <Divider class="shrink" />
             </div>
             <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
                 :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
@@ -162,7 +162,7 @@ const unwatchSelection = watchEffect(() => {
                 " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
             <Divider class="py-6" />
         </div>
-        <div class="flex-grow" />
+        <div class="grow" />
         <Footer class="print:hidden" />
     </div>
 </template>

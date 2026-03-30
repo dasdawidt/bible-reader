@@ -81,30 +81,30 @@ onKeyStroke(
 <template>
     <Transition enter-from-class="translate-y-10 opacity-0" leave-to-class="-translate-y-10 opacity-0">
         <div v-if="visible === true"
-            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-sm bg-green-500 bg-opacity-5">
+            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-xs bg-green-500/5">
             <Button rounded text @click="shareNow">
                 <template #icon>
-                    <SvgIcon class="!scale-150" type="mdi" size="16" :path="mdiShare" />
+                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiShare" />
                 </template>
             </Button>
             <Button rounded text @click="copyLinkNow">
                 <template #icon>
-                    <SvgIcon class="!scale-150" type="mdi" size="16" :path="mdiLinkVariant" />
+                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiLinkVariant" />
                 </template>
             </Button>
             <Button rounded text @click="copyNow">
                 <template #icon>
-                    <SvgIcon class="!scale-150" type="mdi" size="16" :path="mdiContentCopy" />
+                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiContentCopy" />
                 </template>
             </Button>
             <Button rounded text @click="printNow">
                 <template #icon>
-                    <SvgIcon class="!scale-150" type="mdi" size="16" :path="mdiPrinter" />
+                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiPrinter" />
                 </template>
             </Button>
             <Button severity="secondary" rounded text @click="visible = false" class="opacity-35">
                 <template #icon>
-                    <SvgIcon class="!scale-[1.75]" type="mdi" size="16" :path="mdiSelectionEllipseRemove" />
+                    <SvgIcon class="scale-[1.75]!" type="mdi" size="16" :path="mdiSelectionEllipseRemove" />
                 </template>
             </Button>
         </div>

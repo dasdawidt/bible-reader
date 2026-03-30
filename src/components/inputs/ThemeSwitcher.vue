@@ -49,7 +49,7 @@ const options: {
                 class="flex flex-row justify-center items-center flex-nowrap w-full gap-3"
             >
                 <SvgIcon
-                    class="!scale-125 opacity-75"
+                    class="scale-125! opacity-75"
                     type="mdi"
                     size="16"
                     :path="slotProps.option.icon"
