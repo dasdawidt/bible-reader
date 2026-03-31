@@ -111,8 +111,12 @@ function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget |
     if (toChapter != null) {
         return { direction, chapter: toChapter, book: b };
     }
+    const bookType = bookTypeToNumber(b.type)
+    if (bookType === undefined) {
+        return undefined;
+    }
     const toBook = translation.value?.books?.find(
-        (b) => bookTypeToNumber(b.type) === (bookTypeToNumber(b.type) ?? NaN) + diff,
+        (b) => bookTypeToNumber(b.type) === bookType + diff,
     );
     if (toBook !== undefined) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;

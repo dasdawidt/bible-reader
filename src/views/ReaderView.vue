@@ -56,8 +56,12 @@ const selectedChapter = fromQuery(
 
 const highlightedVerseNumbers = fromQuery(
     HIGHLIGHT_QUERY_KEY,
-    (string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)) ?? [],
-    (numbers: number[]) => (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')),
+    (string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)).filter(v => !Number.isNaN(v)) ?? [],
+    (numbers: number[]) => {
+        console.log(numbers)
+        console.log((numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')))
+        return (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(','))
+    },
 );
 
 const removeHighlight = () => {
@@ -99,7 +103,7 @@ const shareTitle = computed(() => {
         selectedChapter.value,
         highlightedVerses.value,
     ];
-    if (tr !== undefined&& b !== undefined&& c !== undefined&& vs !== undefined&& vs.length > 0) {
+    if (tr !== undefined && b !== undefined && c !== undefined && vs !== undefined && vs.length > 0) {
         return formatPassages(tr,
             vs.map((v) => ({
                 translationId: tr.id,
@@ -167,7 +171,7 @@ const unwatchSelection = watchEffect(() => {
             <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
                 :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
                 :verse="verse" :is-highlighted="getIsHighlighted(verse.number)" @update:is-highlighted="
-                    (v) => v && setIsHighlighted(verse.number, v)
+                    (v) => setIsHighlighted(verse.number, v)
                 " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
             <Divider class="py-6" />
         </div>

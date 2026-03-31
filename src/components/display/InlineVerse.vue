@@ -7,7 +7,7 @@ const props = defineProps<{
     verse: Verse;
 }>();
 
-const isHighlighted = defineModel<boolean>('isHighlighted')
+const isHighlighted = defineModel<boolean>('isHighlighted', { default: false })
 
 const borderColor = computed(() => (isHighlighted.value ? 'var(--primary-color)' : ''));
 const color = computed(() => (isHighlighted.value ? 'var(--highlight-text-color)' : ''));
