@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss",
+        "lukas-tr.materialdesignicons-intellisense",
+        "redhat.vscode-xml",
+        "Vue.volar"
+    ]
+}

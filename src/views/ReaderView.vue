@@ -57,11 +57,7 @@ const selectedChapter = fromQuery(
 const highlightedVerseNumbers = fromQuery(
     HIGHLIGHT_QUERY_KEY,
     (string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)).filter(v => !Number.isNaN(v)) ?? [],
-    (numbers: number[]) => {
-        console.log(numbers)
-        console.log((numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')))
-        return (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(','))
-    },
+    (numbers: number[]) => (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')),
 );
 
 const removeHighlight = () => {
