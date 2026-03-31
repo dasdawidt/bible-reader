@@ -4,8 +4,8 @@ import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Book } from '@/types/bible/book';
-import { BookType } from '@/types/bible/bookType';
+import type { Book } from '@/types/bible/book';
+import type { BookType } from '@/types/bible/bookType';
 import { BookTypeOldTestament } from '@/types/bible/bookTypeOldTestament';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogSelectButton from './DialogSelectButton.vue';
@@ -20,7 +20,7 @@ const props = defineProps<{
 const book = defineModel<Book>()
 
 const groupedBooks = computed(() =>
-    props.books.reduce<[{ messageCode: string; books: Book[] }, { messageCode: string; books: Book[] }]>(
+    props.books?.reduce<[{ messageCode: string; books: Book[] }, { messageCode: string; books: Book[] }]>(
         (obj, b) => {
             if (Object.keys(BookTypeOldTestament).includes(b.type)) {
                 obj[0].books = [...obj[0].books, b];
@@ -38,9 +38,11 @@ const groupedBooks = computed(() =>
 
 const options = new Map<BookType, HTMLDivElement>();
 function scrollToSelection() {
-    options.get(book.value?.type)?.parentElement?.scrollIntoView({
-        block: 'center',
-    });
+    if (book.value) {
+        options.get(book.value.type)?.parentElement?.scrollIntoView({
+            block: 'center',
+        });
+    }
 }
 
 const { isOnMobile } = useOnMobile();

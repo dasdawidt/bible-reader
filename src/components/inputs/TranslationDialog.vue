@@ -2,10 +2,10 @@
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Translation } from '@/types/bible/translation';
-import { TranslationList } from '@/types/bible/translationList';
+import type { Translation } from '@/types/bible/translation';
+import type { TranslationList } from '@/types/bible/translationList';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogSelectButton from './DialogSelectButton.vue';
 
@@ -24,9 +24,11 @@ const translation = defineModel<Translation>()
 
 const options = new Map<string, HTMLDivElement>();
 function scrollToSelection() {
-    options.get(translation.value?.id)?.parentElement?.scrollIntoView({
-        block: 'center',
-    });
+    if (translation.value) {
+        options.get(translation.value.id)?.parentElement?.scrollIntoView({
+            block: 'center',
+        });
+    }
 }
 
 const { isOnMobile } = useOnMobile();

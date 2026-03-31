@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiBrightness2, mdiCellphone, mdiLaptop, mdiWhiteBalanceSunny } from '@mdi/js';
-import { ColorSchemeType } from '@vueuse/core';
+import type { ColorSchemeType } from '@vueuse/core';
 import SelectButton from 'primevue/selectbutton';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { useSettings } from '@/plugins/SettingsPlugin';
+import MdiIconInline from '../icons/MdiIconInline.vue';
 
 defineProps<{
     condensed?: boolean;
@@ -48,12 +48,7 @@ const options: {
             <div
                 class="flex flex-row justify-center items-center flex-nowrap w-full gap-3"
             >
-                <SvgIcon
-                    class="scale-125! opacity-75"
-                    type="mdi"
-                    size="16"
-                    :path="slotProps.option.icon"
-                />
+                <MdiIconInline :icon="slotProps.option.icon" />
                 <span
                     v-if="condensed !== true"
                     class="text-ellipsis overflow-hidden"

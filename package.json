@@ -9,16 +9,15 @@
         "preview": "vite preview",
         "check": "biome check --write .",
         "ci": "biome ci .",
-        "typecheck": "vue-tsc"
+        "typecheck": "vue-tsc --noEmit"
     },
     "dependencies": {
-        "@jamescoyle/vue-icon": "^0.1.2",
         "@mdi/js": "^7.4.47",
         "@tailwindcss/vite": "^4.2.2",
         "@vueuse/core": "^14.2.1",
         "@vueuse/router": "^14.2.1",
         "primevue": "^3.53.1",
-        "vue": "^3.5.30",
+        "vue": "^3.5.31",
         "vue-i18n": "^11.3.0",
         "vue-query": "^1.26.0",
         "vue-router": "^5.0.4"
@@ -27,11 +26,11 @@
         "@biomejs/biome": "^2.4.10",
         "@types/node": "^22.19.15",
         "@vitejs/plugin-vue": "^6.0.5",
-        "postcss": "^8.5.8",
+        "@vue/tsconfig": "^0.9.1",
         "sass": "^1.98.0",
         "tailwindcss": "^4.2.2",
         "typescript": "^6.0.2",
-        "vite": "^8.0.2",
+        "vite": "^8.0.3",
         "vue-tsc": "^3.2.6"
     }
 }

@@ -6,7 +6,7 @@ import type { FormatPassageOptions } from './BibleUtils';
  * @param t the i18n translation function
  * @returns a `FormatPassageOptions`object
  */
-export function formatPassageOptionsFromI18n(prefixKey: string, t: (string) => string): FormatPassageOptions {
+export function formatPassageOptionsFromI18n(prefixKey: string, t: (string: string) => string): FormatPassageOptions {
     return {
         booksDelimiter: t(`${prefixKey}.books_delimiter`),
         chaptersDelimiter: t(`${prefixKey}.chapters_delimiter`),

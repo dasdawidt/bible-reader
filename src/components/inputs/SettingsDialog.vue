@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiCog } from '@mdi/js';
 import { useWindowSize } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { computed, ref } from 'vue';
+import MdiIcon from '@/components/icons/MdiIcon.vue';
 import ThemeSwitcher from '@/components/inputs/ThemeSwitcher.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import LocaleSwitcher from './LocaleSwitcher.vue';
@@ -17,7 +17,7 @@ const props = defineProps<{
     showLabel?: boolean;
 }>();
 
-const label = computed(() => (props.showLabel ? 'Settings' : null));
+const label = computed(() => (props.showLabel ? 'Settings' : undefined));
 const condensed = computed(() => screenWidth.value < 400);
 const buildDate = import.meta.env.BUILD_DATE;
 </script>
@@ -32,7 +32,7 @@ const buildDate = import.meta.env.BUILD_DATE;
         text
     >
         <template #icon>
-            <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiCog" />
+            <MdiIcon class="size-5.75!" :icon="mdiCog" />
         </template>
     </Button>
     <Dialog

@@ -13,9 +13,6 @@ import { findTranslation, formatPassages, getBook, getChapter } from '@/logic/ut
 import { bookTypeToString, stringToBookType } from '@/logic/util/BookTypeUtils';
 import { formatPassageOptionsFromI18n } from '@/logic/util/I18nUtils';
 import { fromQuery } from '@/logic/util/QueryUtils';
-import { Book } from '@/types/bible/book';
-import { Chapter } from '@/types/bible/chapter';
-import { Translation } from '@/types/bible/translation';
 
 const TRANSLATION_QUERY_KEY = 't';
 const BOOK_QUERY_KEY = 'b';
@@ -25,34 +22,41 @@ const HIGHLIGHT_QUERY_KEY = 'v';
 const { t } = useI18n();
 
 const { translationList, loading: translationListLoading } = useTranslationList();
-const selectedTranslation = fromQuery<Translation>(
+const selectedTranslation = fromQuery(
     TRANSLATION_QUERY_KEY,
-    (id: string) => {
-        return findTranslation(translationList.value, id);
+    (id) => {
+        if (id !== undefined) {
+            return findTranslation(translationList.value, id);
+        }
     },
-    (translation: Translation) => translation?.id?.toLowerCase(),
+    (translation) => translation?.id?.toLowerCase(),
 );
 
-const selectedBook = fromQuery<Book>(
+const selectedBook = fromQuery(
     BOOK_QUERY_KEY,
-    (id: string) => {
-        if (selectedTranslation.value != null) return getBook(selectedTranslation.value, stringToBookType(id));
+    (id) => {
+        if (selectedTranslation.value !== undefined && id !== undefined) {
+            return getBook(selectedTranslation.value, stringToBookType(id));
+        }
     },
-    (book: Book) => bookTypeToString(book?.type)?.toLowerCase(),
+    (book) => {
+            return bookTypeToString(book?.type)?.toLowerCase();
+    }
 );
 
-const selectedChapter = fromQuery<Chapter>(
+const selectedChapter = fromQuery(
     CHAPTER_QUERY_KEY,
-    (id: string) => {
-        if (selectedTranslation.value != null && selectedBook.value != null)
+    (id) => {
+        if (selectedTranslation.value !== undefined && selectedBook.value !== undefined && id !== undefined) {
             return getChapter(selectedTranslation.value, selectedBook.value?.type, Number.parseInt(id, 10));
+        }
     },
-    (chapter: Chapter) => chapter?.number?.toString(),
+    (chapter) => chapter?.number?.toString(),
 );
 
-const highlightedVerseNumbers = fromQuery<number[]>(
+const highlightedVerseNumbers = fromQuery(
     HIGHLIGHT_QUERY_KEY,
-    (string: string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)) ?? [],
+    (string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)) ?? [],
     (numbers: number[]) => (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')),
 );
 
@@ -88,21 +92,26 @@ const router = useRouter();
 const browserLocation = useBrowserLocation();
 const shareUrl = computed(() => new URL(router.resolve(route).href, browserLocation.value.href).href);
 const shareText = computed(() => `${highlightedVerses.value?.map((v) => v.text)?.join(' ')}\n${shareTitle.value}\n`);
-const shareTitle = computed(() =>
-    highlightedVerses.value?.length > 0
-        ? formatPassages(
-            selectedTranslation.value,
-            highlightedVerses.value?.map((v) => ({
-                translationId: selectedTranslation.value?.id,
-                bookType: selectedBook.value?.type,
-                chapter: selectedChapter.value?.number,
+const shareTitle = computed(() => {
+    const [tr, b, c, vs] = [
+        selectedTranslation.value,
+        selectedBook.value,
+        selectedChapter.value,
+        highlightedVerses.value,
+    ];
+    if (tr !== undefined&& b !== undefined&& c !== undefined&& vs !== undefined&& vs.length > 0) {
+        return formatPassages(tr,
+            vs.map((v) => ({
+                translationId: tr.id,
+                bookType: b.type,
+                chapter: c.number,
                 verse: v.number,
             })),
-            formatPassageOptionsFromI18n('bible.passage_format_options', t),
+            formatPassageOptionsFromI18n('bible.passage_format_options', t)
         )
-        : undefined,
-);
-const shareButtonsVisible = computed(() => highlightedVerses.value?.length > 0);
+    }
+});
+const shareButtonsVisible = computed(() => highlightedVerses.value && highlightedVerses.value?.length > 0);
 
 const initialTitle = document.title;
 useTitle(
@@ -147,7 +156,7 @@ const unwatchSelection = watchEffect(() => {
                 <span
                     class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
                     {{
-                        $t('bible.chapter', undefined, {
+                        t('bible.chapter', {
                             locale: selectedTranslation?.language?.toLowerCase(),
                         })
                     }}
@@ -158,7 +167,7 @@ const unwatchSelection = watchEffect(() => {
             <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
                 :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
                 :verse="verse" :is-highlighted="getIsHighlighted(verse.number)" @update:is-highlighted="
-                    (v) => setIsHighlighted(verse.number, v)
+                    (v) => v && setIsHighlighted(verse.number, v)
                 " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
             <Divider class="py-6" />
         </div>

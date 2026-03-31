@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
-import { Verse } from '@/types/bible/verse';
+import type { Verse } from '@/types/bible/verse';
 
 const props = defineProps<{
     verses: Verse[];

@@ -7,7 +7,7 @@ defineProps<{
     condensed?: boolean;
 }>();
 
-const { availableLocales } = useI18n();
+const { t, availableLocales } = useI18n();
 const { settings } = useSettings();
 </script>
 
@@ -21,14 +21,14 @@ const { settings } = useSettings();
     >
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">
-                <span class="uppercase opacity-75 font-semibold">{{
-                    slotProps.option
-                }}</span>
+                <span class="uppercase opacity-75 font-semibold">
+                    {{ slotProps.option }}
+                </span>
                 <span
                     v-if="condensed !== true"
                     class="text-ellipsis overflow-hidden"
                 >
-                    <span>{{ $t(`locales.${slotProps.option}`) }}</span>
+                    <span>{{ t(`locales.${slotProps.option}`) }}</span>
                 </span>
             </div>
         </template>
