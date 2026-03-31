@@ -3,14 +3,12 @@ import { computed } from 'vue';
 
 export function fromQuery<Y>(
     queryName: string,
-    stringToType: (v: string) => Y,
-    typeToString: (v: Y) => string,
-    fallbackValue?: Y,
+    stringToType: (v: string | undefined) => Y,
+    typeToString: (v: Y) => string | undefined,
 ) {
-    const fallbackValueString = typeToString(fallbackValue);
-    const query = useRouteQuery(queryName, fallbackValueString);
+    const query = useRouteQuery(queryName);
     const reference = computed({
-        get: () => stringToType(query.value),
+        get: () => stringToType(`${query.value}`),
         set: (v) => {
             query.value = typeToString(v);
         },

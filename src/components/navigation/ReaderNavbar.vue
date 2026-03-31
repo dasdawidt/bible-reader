@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiArrowLeft, mdiArrowRight, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
 import Button from 'primevue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import SvgIcon from '@/components/icons/MdiIcon.vue';
 import BookDialog from '@/components/inputs/BookDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
 import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
 import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
 import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Book } from '@/types/bible/book';
-import { Chapter } from '@/types/bible/chapter';
-import { Translation } from '@/types/bible/translation';
-import { TranslationList } from '@/types/bible/translationList';
+import type { Book } from '@/types/bible/book';
+import type { Chapter } from '@/types/bible/chapter';
+import type { Translation } from '@/types/bible/translation';
+import type { TranslationList } from '@/types/bible/translationList';
 import MoreActions from './MoreActions.vue';
 
 // General variables
@@ -48,7 +48,7 @@ const toggleMenu = () => {
 };
 
 // Open/close the menu
-const menuElement = ref<HTMLElement>(null);
+const menuElement = ref<HTMLElement>();
 const menuStyle = computedWithControl(
     () => [isOnMobile.value, expanded.value],
     () => ({
@@ -98,18 +98,23 @@ const navigationTargetPrevious = computed(() => getNavigationTarget('previous'))
 const navigationTargetNext = computed(() => getNavigationTarget('next'));
 
 function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget | undefined {
-    if (chapter.value == null || book.value == null || translation.value == null) {
+    const [t, c, b] = [
+        translation.value,
+        chapter.value,
+        book.value
+    ]
+    if (t === undefined || b === undefined || c === undefined) {
         return undefined;
     }
     const diff = direction === 'next' ? 1 : -1;
-    const toChapter = book.value?.chapters?.find((c) => c.number === chapter.value?.number + diff);
+    const toChapter = book.value?.chapters?.find((c) => c.number === c.number + diff);
     if (toChapter != null) {
-        return { direction, chapter: toChapter, book: book.value };
+        return { direction, chapter: toChapter, book: b };
     }
     const toBook = translation.value?.books?.find(
-        (b) => bookTypeToNumber(b.type) === bookTypeToNumber(book.value?.type) + diff,
+        (b) => bookTypeToNumber(b.type) === (bookTypeToNumber(b.type) ?? NaN) + diff,
     );
-    if (toBook != null) {
+    if (toBook !== undefined) {
         const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
         return {
             direction,
@@ -128,8 +133,8 @@ const navigationLabelNext = computed(() => navButtonLabel(navigationTargetNext.v
 
 const { width: menuWidth } = useElementSize(menuElement);
 
-function navButtonLabel(navigationTarget: NavigationTarget) {
-    return navigationTarget == null
+function navButtonLabel(navigationTarget: NavigationTarget | undefined) {
+    return navigationTarget === undefined
         ? t('bible.eternity')
         : menuWidth.value < 280
             ? ''
@@ -141,8 +146,8 @@ function navButtonLabel(navigationTarget: NavigationTarget) {
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
 const navigateNext = () => navigate(navigationTargetNext.value);
 
-function navigate(navigationTarget: NavigationTarget) {
-    if (navigationTarget != null) {
+function navigate(navigationTarget: NavigationTarget | undefined) {
+    if (navigationTarget !== undefined) {
         book.value = navigationTarget.book;
         chapter.value = navigationTarget.chapter;
         emit('navigate', navigationTarget);
@@ -176,15 +181,15 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                         label: { class: 'text-ellipsis overflow-hidden' },
                     }">
                     <template #icon>
-                        <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiArrowLeft" />
+                        <SvgIcon class="size-4! scale-150" :icon="mdiArrowLeft" />
                     </template>
                 </Button>
             </div>
             <!-- Menu toggle button -->
             <Button class="shrink-0" rounded @click="toggleMenu" :text="!isOnMobile">
                 <template #icon>
-                    <SvgIcon v-show="menuIconUp" type="mdi" size="30" :path="mdiChevronUp" />
-                    <SvgIcon v-show="!menuIconUp" type="mdi" size="30" :path="mdiChevronDown" />
+                    <SvgIcon v-show="menuIconUp" class="size-6! scale-150" :icon="mdiChevronUp" />
+                    <SvgIcon v-show="!menuIconUp" class="size-6! scale-150" :icon="mdiChevronDown" />
                 </template>
             </Button>
             <div class="w-full flex flex-row justify-end">
@@ -194,17 +199,18 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                         label: { class: 'text-ellipsis overflow-hidden' },
                     }">
                     <template #icon>
-                        <SvgIcon class="scale-125!" type="mdi" size="16" :path="mdiArrowRight" />
+                        <SvgIcon class="size-4! scale-150" :icon="mdiArrowRight" />
                     </template>
                 </Button>
             </div>
         </div>
 
         <!-- Toggleable menu -->
-        <div class="flex w-full gap-2 items-center max-w-container" :class="isOnMobile
-            ? 'flex-col-reverse pb-2.5 pt-px'
-            : 'flex-col pt-2.5 pb-px'
-            " ref="menuElement">
+        <div
+            class="flex w-full gap-2 items-center max-w-container"
+            :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'"
+            ref="menuElement"
+        >
             <div class="w-full flex flex-row-reverse justify-between items-center">
                 <MoreActions />
                 <SettingsDialog />

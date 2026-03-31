@@ -36,8 +36,14 @@ watch(
 );
 
 function read(key: string) {
+    const value = localStorage.getItem(key);
+
+    if (value === null) {
+        return undefined;
+    }
+
     try {
-        return JSON.parse(localStorage.getItem(key));
+        return JSON.parse(value);
     } catch (e) {
         console.error(e);
         return undefined;

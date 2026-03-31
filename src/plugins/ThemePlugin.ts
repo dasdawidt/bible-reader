@@ -5,9 +5,9 @@ import lightTheme from '@/assets/themes/light.css?inline';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { isOnMobile } = useOnMobile();
-const themeColorMetaTag = ref<HTMLMetaElement>(undefined);
+const themeColorMetaTag = ref<HTMLMetaElement>();
 const prefersColorScheme = usePreferredColorScheme();
-const colorSchemeOverride = ref<ColorSchemeType>(undefined);
+const colorSchemeOverride = ref<ColorSchemeType>();
 const colorScheme = computed(() =>
     colorSchemeOverride.value === 'no-preference' ? prefersColorScheme.value : colorSchemeOverride.value,
 );
@@ -22,7 +22,7 @@ watch(colorScheme, (newValue, _oldValue) => {
     loadScheme(newValue);
 });
 
-function loadScheme(scheme: ColorSchemeType) {
+function loadScheme(scheme: ColorSchemeType | undefined) {
     if (scheme === 'dark') {
         unloadLightTheme();
         loadDarkTheme();
@@ -35,7 +35,9 @@ function loadScheme(scheme: ColorSchemeType) {
 }
 
 function setThemeColor(color: string) {
-    themeColorMetaTag.value.content = color;
+    if (themeColorMetaTag.value !== undefined) {
+        themeColorMetaTag.value.content = color;
+    }
 }
 
 const ThemePlugin: Plugin = {

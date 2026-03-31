@@ -2,8 +2,8 @@
 import Card from 'primevue/card';
 import { computed } from 'vue';
 import { formatPassages, getPassage } from '@/logic/util/BibleUtils';
-import { Translation } from '@/types/bible/translation';
-import { Passage } from '@/types/plans/passage';
+import type { Translation } from '@/types/bible/translation';
+import type { Passage } from '@/types/plans/passage';
 
 const props = defineProps<{
     passages?: Passage[];
@@ -11,8 +11,8 @@ const props = defineProps<{
     placeholder?: string;
 }>();
 
-const visible = computed(() => props.placeholder != null || valuesPresent.value);
 const valuesPresent = computed(() => props.passages != null && props.translation != null && props.passages.length > 0);
+const visible = computed(() => props.placeholder != null || valuesPresent.value);
 </script>
 
 <template>
@@ -22,11 +22,17 @@ const valuesPresent = computed(() => props.passages != null && props.translation
                 <template v-if="valuesPresent">
                     <div>
                         <span v-for="passage in passages">
-                            {{ getPassage(translation, passage).text }}
+                            {{
+                                // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
+                                getPassage(translation!, passage!)?.text
+                            }}
                         </span>
                     </div>
                     <div class="opacity-50">
-                        {{ formatPassages(translation, passages) }}
+                        {{
+                            // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
+                            formatPassages(translation!, passages!)
+                        }}
                     </div>
                 </template>
                 <span v-else class="opacity-50">

@@ -4,7 +4,7 @@ import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { Chapter } from '@/types/bible/chapter';
+import type { Chapter } from '@/types/bible/chapter';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogSelectButton from './DialogSelectButton.vue';
 
@@ -23,9 +23,11 @@ const chapter = defineModel<Chapter>()
 
 const options = new Map<number, HTMLDivElement>();
 function scrollToSelection() {
-    options.get(chapter.value?.number)?.parentElement?.scrollIntoView({
-        block: 'center',
-    });
+    if (chapter.value) {
+        options.get(chapter.value.number)?.parentElement?.scrollIntoView({
+            block: 'center',
+        });
+    }
 }
 
 const { isOnMobile } = useOnMobile();

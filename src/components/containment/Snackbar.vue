@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Toast, { ToastPassThroughOptions } from 'primevue/toast';
+import Toast, { type ToastPassThroughOptions } from 'primevue/toast';
 
 const passThrough: ToastPassThroughOptions = {
     root: {

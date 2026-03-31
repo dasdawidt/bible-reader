@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Avatar from 'primevue/avatar';
 import { computed } from 'vue';
-import { Verse } from '@/types/bible/verse';
+import type { Verse } from '@/types/bible/verse';
 
 const props = defineProps<{
     verse: Verse;

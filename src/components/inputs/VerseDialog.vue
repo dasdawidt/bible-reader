@@ -9,9 +9,9 @@ import Listbox from 'primevue/listbox';
 import { computed, ref } from 'vue';
 import { formatPassages, getBook, toPassageVerseList } from '@/logic/util/BibleUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
-import { BookType } from '@/types/bible/bookType';
-import { Translation } from '@/types/bible/translation';
-import { Passage } from '@/types/plans/passage';
+import type { BookType } from '@/types/bible/bookType';
+import type { Translation } from '@/types/bible/translation';
+import type { Passage } from '@/types/plans/passage';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 import DialogueSelectButton from './DialogSelectButton.vue';
 
@@ -26,18 +26,24 @@ const props = defineProps<{
     book?: BookType;
 }>();
 
-const chapters = computed(() => toPassageVerseList(props.translation, props.book));
+const chapters = computed(() => {
+    if (props.translation && props.book) {
+        return toPassageVerseList(props.translation, props.book)
+    }
+});
 
 const passages = defineModel<Passage[]>()
 const pendingSelectedPassages = ref<Passage[]>([]);
 
 const { isOnMobile } = useOnMobile();
 const visible = ref(false);
-const disabled = computed(() => props.translation == null || props.book == null);
+const disabled = computed(() => props.translation === undefined || props.book === undefined);
 
 function open() {
-    pendingSelectedPassages.value = passages.value;
-    visible.value = true;
+    if (passages.value !== undefined) {
+        pendingSelectedPassages.value = passages.value;
+        visible.value = true;
+    }
 }
 
 function abort() {
@@ -54,7 +60,10 @@ function confirm() {
 
 <template>
     <DialogueSelectButton @click="open" @keyup.enter="visible = true" :disabled="disabled">
-        <div v-if="passages?.length > 0 && !disabled" class="flex align-items-center">
+        <div
+            v-if="translation !== undefined && passages !== undefined && passages?.length > 0 && !disabled"
+            class="flex align-items-center"
+        >
             {{ formatPassages(translation, passages) }}
         </div>
         <div v-else>Select Verses...</div>
@@ -85,7 +94,7 @@ function confirm() {
                 <template #optiongroup="slotProps">
                     <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
                         <span class="text-xl font-bold">
-                            {{ getBook(translation, book).name }}
+                            {{ getBook(translation, book)?.name }}
                             {{ slotProps.option?.chapter }}
                         </span>
                     </Divider>

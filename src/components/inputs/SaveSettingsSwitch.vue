@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiCookie, mdiCookieOff } from '@mdi/js';
 import SelectButton from 'primevue/selectbutton';
+import { useI18n } from 'vue-i18n';
 import { useSettings } from '@/plugins/SettingsPlugin';
+import MdiIconInline from '../icons/MdiIconInline.vue';
 
 defineProps<{
     condensed?: boolean;
 }>();
 
+const { t } = useI18n();
 const { persistenceEnabled } = useSettings();
 const options: {
     messageCode: string;
@@ -40,17 +42,14 @@ const options: {
             <div
                 class="flex flex-row justify-center items-center flex-nowrap w-full gap-3"
             >
-                <SvgIcon
-                    class="scale-[1.35]! opacity-75"
-                    type="mdi"
-                    size="16"
-                    :path="slotProps.option.icon"
+                <MdiIconInline
+                    :icon="slotProps.option.icon"
                 />
                 <span
                     v-if="condensed !== true"
                     class="text-ellipsis overflow-hidden"
                 >
-                    {{ $t(slotProps.option.messageCode) }}
+                    {{ t(slotProps.option.messageCode) }}
                 </span>
             </div>
         </template>

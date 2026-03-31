@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiContentCopy, mdiLinkVariant, mdiPrinter, mdiSelectionEllipseRemove, mdiShare } from '@mdi/js';
 import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
+import SvgIcon from '@/components/icons/MdiIcon.vue';
 
 const { t } = useI18n();
 
@@ -33,23 +33,27 @@ function shareNow() {
 // Copy Link
 
 function copyLinkNow() {
-    copyToClipboard(props.url);
-    pushToast({
-        severity: 'success',
-        summary: t('prompts.copy_url_success'),
-        life: 3000,
-    });
+    if (props.url) {
+        copyToClipboard(props.url);
+        pushToast({
+            severity: 'success',
+            summary: t('prompts.copy_url_success'),
+            life: 3000,
+        });
+    }
 }
 
 // Copy Text
 
 function copyNow() {
-    copyToClipboard(props.text);
-    pushToast({
-        severity: 'success',
-        summary: t('prompts.copy_text_success'),
-        life: 3000,
-    });
+    if (props.text) {
+        copyToClipboard(props.text);
+        pushToast({
+            severity: 'success',
+            summary: t('prompts.copy_text_success'),
+            life: 3000,
+        });
+    }
 }
 
 // Print
@@ -84,27 +88,27 @@ onKeyStroke(
             class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-xs bg-green-500/5">
             <Button rounded text @click="shareNow">
                 <template #icon>
-                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiShare" />
+                    <SvgIcon :icon="mdiShare" />
                 </template>
             </Button>
             <Button rounded text @click="copyLinkNow">
                 <template #icon>
-                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiLinkVariant" />
+                    <SvgIcon :icon="mdiLinkVariant" />
                 </template>
             </Button>
             <Button rounded text @click="copyNow">
                 <template #icon>
-                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiContentCopy" />
+                    <SvgIcon :icon="mdiContentCopy" />
                 </template>
             </Button>
             <Button rounded text @click="printNow">
                 <template #icon>
-                    <SvgIcon class="scale-150!" type="mdi" size="16" :path="mdiPrinter" />
+                    <SvgIcon :icon="mdiPrinter" />
                 </template>
             </Button>
             <Button severity="secondary" rounded text @click="visible = false" class="opacity-35">
                 <template #icon>
-                    <SvgIcon class="scale-[1.75]!" type="mdi" size="16" :path="mdiSelectionEllipseRemove" />
+                    <SvgIcon class="scale-125" :icon="mdiSelectionEllipseRemove" />
                 </template>
             </Button>
         </div>

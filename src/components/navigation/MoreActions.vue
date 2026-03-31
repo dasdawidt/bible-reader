@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
 import {
     mdiDotsVertical,
-    mdiDotsVerticalCircle,
-    mdiDotsVerticalCircleOutline,
     mdiFullscreen,
     mdiFullscreenExit,
     mdiPrinter,
@@ -12,8 +9,9 @@ import { useFullscreen } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Menu from 'primevue/menu';
-import { MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import { computed, ref } from 'vue';
+import SvgIcon from '@/components/icons/MdiIcon.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import ScrollContainer from '../containment/ScrollContainer.vue';
 
@@ -25,7 +23,7 @@ const items = computed<MenuItem[]>(() => [
     {
         messageCode: 'prompts.print_chapter',
         icon: mdiPrinter,
-        command: () => window.print(),
+        command: window.print,
     },
     {
         messageCode: isFullscreen.value ? 'prompts.fullscreen_exit' : 'prompts.fullscreen_enter',
@@ -35,13 +33,19 @@ const items = computed<MenuItem[]>(() => [
     },
 ]);
 
-const selectedCommand = ref<() => unknown>();
-function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
-    selectedCommand.value = () => {
-        command();
-        selectedCommand.value = () => {};
-    };
-    visible.value = false;
+let selectedCommand: (() => void) | undefined;
+function runSelectedCommand() {
+    if (selectedCommand !== undefined) {
+        selectedCommand();
+        selectedCommand = undefined;
+    }
+}
+function selectCommand(originalEvent: Event, item: MenuItem) {
+    const command = item.command;
+    if (command !== undefined) {
+        selectedCommand = () => command({ originalEvent, item });
+        visible.value = false;
+    }
 }
 </script>
 
@@ -55,15 +59,12 @@ function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
     >
         <template #icon>
             <SvgIcon
-                class="scale-150!"
-                size="16"
-                type="mdi"
-                :path="mdiDotsVertical"
+                :icon="mdiDotsVertical"
             />
         </template>
     </Button>
     <Dialog
-        @after-hide="selectedCommand"
+        @after-hide="runSelectedCommand"
         v-model:visible="visible"
         :closable="false"
         :draggable="false"
@@ -79,13 +80,11 @@ function runCommand(command: (...args: unknown[]) => unknown = () => {}) {
                 <template #item="{ item }">
                     <div
                         class="p-menuitem-link flex flex-row gap-4"
-                        @click="runCommand(item.command)"
+                        @click="e => selectCommand(e, item)"
                     >
                         <SvgIcon
-                            class="scale-150! opacity-75"
-                            size="16"
-                            type="mdi"
-                            :path="item.icon"
+                            class="opacity-75"
+                            :icon="item.icon"
                         />
                         {{ $t(item.messageCode) }}
                     </div>
