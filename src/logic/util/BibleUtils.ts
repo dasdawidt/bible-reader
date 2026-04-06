@@ -1,9 +1,12 @@
+import type { Book } from '@/types/bible/book';
 import type { BookInfo } from '@/types/bible/bookInfo';
 import type { BookType } from '@/types/bible/bookType';
+import type { Chapter } from '@/types/bible/chapter';
 import type { Translation } from '@/types/bible/translation';
 import type { TranslationList } from '@/types/bible/translationList';
 import type { Verse } from '@/types/bible/verse';
 import type { Passage } from '@/types/plans/passage';
+import { bookTypeToNumber } from './BookTypeUtils';
 
 export function findTranslation(list: TranslationList, id: string) {
     return list.flatMap((l) => l.translations).find((t) => t.id.toLowerCase() === id?.toLowerCase());
@@ -193,4 +196,54 @@ function formatPassagesSameChapter(passages: Passage[], verseSpan: string, verse
         .filter((r) => r.length === 2)
         .map((r) => (r[0] === r[1] ? `${r[0]}` : r[0] + verseSpan + r[1]))
         .join(verseGap);
+}
+
+export type TargetChapter = {
+    direction: 'previous' | 'next';
+    book: Book;
+    chapter: Chapter;
+};
+
+/**
+ * Get the previous/next chapter based on the current chapter.
+ * This function works across book boundaries, e.g. navigating from
+ * Genesis 50 using 'next' returns Exodus 1.
+ * If no target was found, `undefined` is returned, e.g. for 'previous'
+ * in Genesis 1.
+ *
+ * @param current the current translation, book and chapter
+ * @param direction the direction in which to navigate
+ * @returns the target chapter, if found, or `undefined` otherwise
+ */
+export function getTargetChapter(
+    current: {
+        translation?: Translation;
+        book?: Book;
+        chapter?: Chapter;
+    },
+    direction: TargetChapter['direction'],
+): TargetChapter | undefined {
+    const { translation, book, chapter } = current;
+    if (translation === undefined || book === undefined || chapter === undefined) {
+        return undefined;
+    }
+    const diff = direction === 'next' ? 1 : -1;
+    const targetChapter = book.chapters.find((c) => c.number === chapter.number + diff);
+    if (targetChapter !== undefined) {
+        return { direction, chapter: targetChapter, book };
+    }
+    const bookType = bookTypeToNumber(book.type);
+    if (bookType === undefined) {
+        return undefined;
+    }
+    const targetBook = translation?.books.find((b) => bookTypeToNumber(b.type) === bookType + diff);
+    if (targetBook !== undefined) {
+        const targetChapterIndex = direction === 'next' ? 0 : targetBook.chapters?.length - 1;
+        return {
+            direction,
+            chapter: targetBook.chapters?.[targetChapterIndex],
+            book: targetBook,
+        };
+    }
+    return undefined;
 }

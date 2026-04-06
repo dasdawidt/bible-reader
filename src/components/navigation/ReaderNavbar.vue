@@ -9,7 +9,7 @@ import BookDialog from '@/components/inputs/BookDialog.vue';
 import ChapterDialog from '@/components/inputs/ChapterDialog.vue';
 import SettingsDialog from '@/components/inputs/SettingsDialog.vue';
 import TranslationDialog from '@/components/inputs/TranslationDialog.vue';
-import { bookTypeToNumber } from '@/logic/util/BookTypeUtils';
+import { getTargetChapter, type TargetChapter } from '@/logic/util/BibleUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import type { Book } from '@/types/bible/book';
 import type { Chapter } from '@/types/bible/chapter';
@@ -30,7 +30,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    'navigate': [NavigationTarget];
+    'navigate': [TargetChapter];
 }>();
 
 const translation = defineModel<Translation>('translation')
@@ -88,56 +88,26 @@ const menuClass = computed(() => {
 
 // Navigation
 
-type NavigationTarget = {
-    direction: 'previous' | 'next';
-    book: Book;
-    chapter: Chapter;
-};
+const navigationTargetPrevious = computed(() => getTargetChapter({
+        translation: translation.value,
+        book: book.value,
+        chapter: chapter.value,
+    }, 'previous'));
+const navigationTargetNext = computed(() => getTargetChapter({
+        translation: translation.value,
+        book: book.value,
+        chapter: chapter.value,
+    }, 'next'));
 
-const navigationTargetPrevious = computed(() => getNavigationTarget('previous'));
-const navigationTargetNext = computed(() => getNavigationTarget('next'));
-
-function getNavigationTarget(direction: 'next' | 'previous'): NavigationTarget | undefined {
-    const [t, c, b] = [
-        translation.value,
-        chapter.value,
-        book.value
-    ]
-    if (t === undefined || b === undefined || c === undefined) {
-        return undefined;
-    }
-    const diff = direction === 'next' ? 1 : -1;
-    const toChapter = book.value?.chapters?.find((c) => c.number === c.number + diff);
-    if (toChapter != null) {
-        return { direction, chapter: toChapter, book: b };
-    }
-    const bookType = bookTypeToNumber(b.type)
-    if (bookType === undefined) {
-        return undefined;
-    }
-    const toBook = translation.value?.books?.find(
-        (b) => bookTypeToNumber(b.type) === bookType + diff,
-    );
-    if (toBook !== undefined) {
-        const toChapterIndex = direction === 'next' ? 0 : toBook.chapters?.length - 1;
-        return {
-            direction,
-            chapter: toBook.chapters?.[toChapterIndex],
-            book: toBook,
-        };
-    }
-    return undefined;
-}
-
-const canNavigatePrevious = computed(() => navigationTargetPrevious.value != null);
-const canNavigateNext = computed(() => navigationTargetNext.value != null);
+const canNavigatePrevious = computed(() => navigationTargetPrevious.value !== undefined);
+const canNavigateNext = computed(() => navigationTargetNext.value !== undefined);
 
 const navigationLabelPrevious = computed(() => navButtonLabel(navigationTargetPrevious.value));
 const navigationLabelNext = computed(() => navButtonLabel(navigationTargetNext.value));
 
 const { width: menuWidth } = useElementSize(menuElement);
 
-function navButtonLabel(navigationTarget: NavigationTarget | undefined) {
+function navButtonLabel(navigationTarget: TargetChapter | undefined) {
     return navigationTarget === undefined
         ? t('bible.eternity')
         : menuWidth.value < 280
@@ -150,7 +120,7 @@ function navButtonLabel(navigationTarget: NavigationTarget | undefined) {
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
 const navigateNext = () => navigate(navigationTargetNext.value);
 
-function navigate(navigationTarget: NavigationTarget | undefined) {
+function navigate(navigationTarget: TargetChapter | undefined) {
     if (navigationTarget !== undefined) {
         book.value = navigationTarget.book;
         chapter.value = navigationTarget.chapter;
