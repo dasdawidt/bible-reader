@@ -1,17 +1,20 @@
 import { useRouteQuery } from '@vueuse/router';
-import { computed } from 'vue';
 
 export function fromQuery<Y>(
     queryName: string,
     stringToType: (v: string | undefined) => Y,
     typeToString: (v: Y) => string | undefined,
+    defaultValue?: Y,
 ) {
-    const query = useRouteQuery(queryName);
-    const reference = computed({
-        get: () => stringToType(`${query.value}`),
-        set: (v) => {
-            query.value = typeToString(v);
+    const defaultVal = defaultValue === undefined ? undefined : typeToString(defaultValue);
+    return useRouteQuery(queryName, defaultVal ?? null, {
+        transform: {
+            get: (v) => {
+                return stringToType(v ?? undefined);
+            },
+            set: (v) => {
+                return typeToString(v) ?? defaultVal ?? null;
+            },
         },
     });
-    return reference;
 }
