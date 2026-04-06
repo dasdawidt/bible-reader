@@ -28,6 +28,7 @@ const selectedTranslation = fromQuery(
         if (id !== undefined) {
             return findTranslation(translationList.value, id);
         }
+        return undefined;
     },
     (translation) => translation?.id?.toLowerCase(),
 );
@@ -38,10 +39,9 @@ const selectedBook = fromQuery(
         if (selectedTranslation.value !== undefined && id !== undefined) {
             return getBook(selectedTranslation.value, stringToBookType(id));
         }
+        return undefined;
     },
-    (book) => {
-            return bookTypeToString(book?.type)?.toLowerCase();
-    }
+    (book) =>  bookTypeToString(book?.type)?.toLowerCase(),
 );
 
 const selectedChapter = fromQuery(
@@ -50,6 +50,7 @@ const selectedChapter = fromQuery(
         if (selectedTranslation.value !== undefined && selectedBook.value !== undefined && id !== undefined) {
             return getChapter(selectedTranslation.value, selectedBook.value?.type, Number.parseInt(id, 10));
         }
+        return undefined;
     },
     (chapter) => chapter?.number?.toString(),
 );
