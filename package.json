@@ -9,7 +9,8 @@
         "preview": "vite preview",
         "check": "biome check --write .",
         "ci": "biome ci .",
-        "typecheck": "vue-tsc --noEmit"
+        "typecheck": "vue-tsc --noEmit",
+        "test:unit": "vitest run"
     },
     "dependencies": {
         "@mdi/js": "^7.4.47",
@@ -30,6 +31,7 @@
         "tailwindcss": "^4.2.2",
         "typescript": "^6.0.2",
         "vite": "^8.0.5",
+        "vitest": "^4.1.2",
         "vue-tsc": "^3.2.6"
     }
 }
