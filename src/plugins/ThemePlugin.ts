@@ -1,4 +1,4 @@
-import { type ColorSchemeType, usePreferredColorScheme, useStyleTag } from '@vueuse/core';
+import { type ColorSchemeType, useEventListener, usePreferredColorScheme, useStyleTag } from '@vueuse/core';
 import { computed, type Plugin, ref, watch } from 'vue';
 import darkTheme from '@/assets/themes/dark.css?inline';
 import lightTheme from '@/assets/themes/light.css?inline';
@@ -18,9 +18,9 @@ const { load: loadLightTheme, unload: unloadLightTheme } = useStyleTag(lightThem
 });
 const { load: loadDarkTheme, unload: unloadDarkTheme } = useStyleTag(darkTheme, { id: 'theme-dark', immediate: false });
 
-watch(colorScheme, (newValue, _oldValue) => {
-    loadScheme(newValue);
-});
+watch(colorScheme, (newValue, _oldValue) => loadScheme(newValue));
+useEventListener('beforeprint', () => loadScheme('light'));
+useEventListener('afterprint', () => loadScheme(colorScheme.value));
 
 function loadScheme(scheme: ColorSchemeType | undefined) {
     if (scheme === 'dark') {

@@ -4,8 +4,8 @@ import Snackbar from '@/components/containment/Snackbar.vue';
 </script>
 
 <template>
-    <Snackbar />
-    <ScrollContainer class="w-full h-screen print:contents">
+    <Snackbar class="print:hidden" />
+    <ScrollContainer class="w-full h-dvh print:contents">
         <main class="max-w-container m-auto">
             <RouterView />
         </main>
