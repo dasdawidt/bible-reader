@@ -171,9 +171,11 @@ const unwatchSelection = watchEffect(() => {
                 :verse="verse" :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)" @update:is-highlighted="
                     (v) => setIsHighlighted(verse.number, v)
                 " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
-            <Divider class="py-6" />
+            <Divider class="py-10" />
+            <div class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center">
+                {{ selectedTranslation?.localizedName ?? selectedTranslation?.name }}
+            </div>
         </div>
-        <div class="grow" />
         <Footer class="print:hidden" />
     </div>
 </template>
