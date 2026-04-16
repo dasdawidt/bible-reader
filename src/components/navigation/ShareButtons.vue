@@ -3,6 +3,7 @@ import { mdiContentCopy, mdiLinkVariant, mdiPrinter, mdiSelectionEllipseRemove, 
 import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
+import { nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
 
@@ -14,7 +15,10 @@ const props = defineProps<{
     url?: string;
 }>();
 
-const visible = defineModel<boolean>('visible')
+const visible = defineModel<boolean>('visible');
+const hideUnselected = defineModel<boolean>('hideUnselected', {
+    default: false,
+});
 
 const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
@@ -59,7 +63,9 @@ function copyNow() {
 // Print
 
 function printNow() {
-    window.print();
+    hideUnselected.value = true;
+    window.addEventListener('afterprint', () => hideUnselected.value = false, { once: true });
+    nextTick(window.print);
 }
 
 // Keybindings

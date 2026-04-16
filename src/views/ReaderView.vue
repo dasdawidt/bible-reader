@@ -74,7 +74,8 @@ const setIsHighlighted = (number: number, value: boolean) => {
         highlightedVerseNumbers.value = highlightedVerseNumbers.value?.filter((n) => n !== number);
     }
 };
-const getHiddenForPrint = (number: number) => highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
+const hideUnselected = ref(false);
+const getHiddenForPrint = (number: number) => hideUnselected.value && highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
 const highlightedVerses = computed(() =>
     selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
@@ -142,11 +143,11 @@ const unwatchSelection = watchEffect(() => {
         v-model:expanded="navigationExpanded" @navigate="removeHighlight" class="print:hidden">
         <template #toast-stack>
             <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="shareButtonsVisible"
-                @update:visible="removeHighlight" />
+                @update:visible="removeHighlight" v-model:hide-unselected="hideUnselected" />
         </template>
     </ReaderNavbar>
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen print:min-h-0">
-        <div v-if="selectedChapter != null">
+        <div v-if="selectedChapter">
             <div class="relative w-full h-0">
                 <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
                     {{ selectedBook?.verboseName ?? selectedBook?.name }}
@@ -167,12 +168,14 @@ const unwatchSelection = watchEffect(() => {
             </div>
             <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
                 :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
-                :verse="verse" :is-highlighted="getIsHighlighted(verse.number)" @update:is-highlighted="
+                :verse="verse" :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)" @update:is-highlighted="
                     (v) => setIsHighlighted(verse.number, v)
                 " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
-            <Divider class="py-6" />
+            <Divider class="py-10" />
+            <div class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center">
+                {{ selectedTranslation?.localizedName ?? selectedTranslation?.name }}
+            </div>
         </div>
-        <div class="grow" />
         <Footer class="print:hidden" />
     </div>
 </template>
