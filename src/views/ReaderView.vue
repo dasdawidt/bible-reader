@@ -146,7 +146,7 @@ const unwatchSelection = watchEffect(() => {
                 @update:visible="removeHighlight" v-model:hide-unselected="hideUnselected" />
         </template>
     </ReaderNavbar>
-    <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-screen print:min-h-0">
+    <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-dvh print:min-h-0">
         <div v-if="selectedChapter">
             <div class="relative w-full h-0">
                 <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
@@ -176,6 +176,7 @@ const unwatchSelection = watchEffect(() => {
                 {{ selectedTranslation?.localizedName ?? selectedTranslation?.name }}
             </div>
         </div>
+        <div class="grow" />
         <Footer class="print:hidden" />
     </div>
 </template>
