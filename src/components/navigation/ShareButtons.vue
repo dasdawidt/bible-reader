@@ -90,8 +90,8 @@ onKeyStroke(
 
 <template>
     <Transition enter-from-class="translate-y-10 opacity-0" leave-to-class="-translate-y-10 opacity-0">
-        <div v-if="visible === true"
-            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-xs bg-green-500/5">
+        <div v-if="visible"
+            class="flex flex-row w-fit rounded-full p-2 gap-2 shadow-md transition-all backdrop-blur-xs bg-green-500/5 border border-green-500/5">
             <Button rounded text @click="shareNow">
                 <template #icon>
                     <SvgIcon :icon="mdiShare" />
