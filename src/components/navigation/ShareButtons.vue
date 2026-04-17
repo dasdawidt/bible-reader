@@ -6,7 +6,6 @@ import { useToast } from 'primevue/usetoast';
 import { nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
-import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { t } = useI18n();
 
@@ -21,7 +20,6 @@ const hideUnselected = defineModel<boolean>('hideUnselected', {
     default: false,
 });
 
-const { isOnMobile } = useOnMobile();
 const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
 const { share: pushShare } = useShare();
@@ -66,7 +64,8 @@ function copyNow() {
 
 async function printNow() {
     hideUnselected.value = true;
-    const event = isOnMobile.value ? 'focus' : 'afterprint';
+    const isAndroidChrome = /Android/i.test(navigator.userAgent) && /Chrome/i.test(navigator.userAgent);
+    const event = isAndroidChrome ? 'focus' : 'afterprint';
     useEventListener(event, () => hideUnselected.value = false, { once: true });
     await nextTick();
     window.print();

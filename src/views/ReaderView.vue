@@ -68,6 +68,7 @@ const removeHighlight = () => {
 const getIsHighlighted = (number: number) => highlightedVerseNumbers.value?.includes(number);
 const setIsHighlighted = (number: number, value: boolean) => {
     unwatchSelection();
+    hideUnselected.value = false;
     if (value) {
         highlightedVerseNumbers.value = highlightedVerseNumbers.value?.concat(number);
     } else {
