@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { mdiContentCopy, mdiLinkVariant, mdiPrinter, mdiSelectionEllipseRemove, mdiShare } from '@mdi/js';
-import { onKeyStroke, useClipboard, useShare } from '@vueuse/core';
+import { onKeyStroke, useClipboard, useEventListener, useShare } from '@vueuse/core';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import { nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
+import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { t } = useI18n();
 
@@ -20,6 +21,7 @@ const hideUnselected = defineModel<boolean>('hideUnselected', {
     default: false,
 });
 
+const { isOnMobile } = useOnMobile();
 const { copy: copyToClipboard } = useClipboard({ legacy: true });
 const { add: pushToast } = useToast();
 const { share: pushShare } = useShare();
@@ -62,10 +64,12 @@ function copyNow() {
 
 // Print
 
-function printNow() {
+async function printNow() {
     hideUnselected.value = true;
-    window.addEventListener('afterprint', () => hideUnselected.value = false, { once: true });
-    nextTick(window.print);
+    const event = isOnMobile.value ? 'focus' : 'afterprint';
+    useEventListener(event, () => hideUnselected.value = false, { once: true });
+    await nextTick();
+    window.print();
 }
 
 // Keybindings
