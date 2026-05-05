@@ -133,7 +133,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 </script>
 
 <template>
-    <div class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
+    <aside class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
         :class="menuClass" style="
             background-color: var(--surface-ground);
             border-color: var(--surface-border);
@@ -146,7 +146,7 @@ onKeyStroke('ArrowLeft', navigatePrevious);
         </div>
 
         <!-- Navigation bar (always visible) -->
-        <div class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
+        <nav class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
             :class="{ 'max-w-container!': expanded }">
             <div class="w-full flex flex-row justify-start">
                 <Button class="whitespace-nowrap" :label="navigationLabelPrevious" :disabled="!canNavigatePrevious"
@@ -177,11 +177,11 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                     </template>
                 </Button>
             </div>
-        </div>
+        </nav>
 
         <!-- Toggleable menu -->
-        <div
-            class="flex w-full gap-2 items-center max-w-container"
+        <menu
+            class="m-0 p-0 list-none flex w-full gap-2 items-center max-w-container"
             :class="isOnMobile ? 'flex-col-reverse pb-2.5 pt-px' : 'flex-col pt-2.5 pb-px'"
             ref="menuElement"
         >
@@ -194,6 +194,6 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 <BookDialog v-model="book" :books="translation?.books" />
                 <ChapterDialog v-model="chapter" :chapters="book?.chapters" :book-name="book?.name" />
             </div>
-        </div>
-    </div>
+        </menu>
+    </aside>
 </template>

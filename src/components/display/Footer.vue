@@ -15,7 +15,7 @@ const createdByHtml = computed(() =>
 </script>
 
 <template>
-    <div
+    <footer
         class="flex flex-row flex-wrap mx-auto justify-center items-center w-full opacity-25 gap-1 py-2 text-xs text-center"
         style="color: var(--text-color)"
     >
@@ -31,5 +31,5 @@ const createdByHtml = computed(() =>
                 {{ $t('legal.imprint') }} </a
             >.
         </span>
-    </div>
+    </footer>
 </template>
