@@ -148,7 +148,7 @@ const unwatchSelection = watchEffect(() => {
         </template>
     </ReaderNavbar>
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-dvh print:min-h-0">
-        <div v-if="selectedChapter">
+        <div v-if="selectedChapter" :lang="selectedTranslation?.language">
             <div class="relative w-full h-0">
                 <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
                     {{ selectedBook?.verboseName ?? selectedBook?.name }}
