@@ -20,7 +20,7 @@ const backgroundColor = computed(() => (isHighlighted.value ? 'var(--highlight-b
             <Avatar class="bg-transparent text-sm transition-colors" :label="verse.number?.toString()"
                 :style="{ backgroundColor, color }" shape="circle" />
         </div>
-        <div class="text-lg text-justify leading-loose px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
+        <div class="text-lg text-justify leading-loose hyphens-auto px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
             :style="{ borderColor }">
             <span class="py-0.5 rounded-sm transition-colors" :style="{ backgroundColor, color }"
                 @click="isHighlighted = !isHighlighted">

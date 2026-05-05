@@ -148,35 +148,39 @@ const unwatchSelection = watchEffect(() => {
         </template>
     </ReaderNavbar>
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-dvh print:min-h-0">
-        <div v-if="selectedChapter">
-            <div class="relative w-full h-0">
-                <div class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
-                    {{ selectedBook?.verboseName ?? selectedBook?.name }}
+        <article v-if="selectedChapter" :lang="selectedTranslation?.language">
+            <header class="contents">
+                <div class="relative w-full h-0">
+                    <span class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
+                        {{ selectedBook?.verboseName ?? selectedBook?.name }}
+                    </span>
                 </div>
-            </div>
-            <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
-                <Divider class="shrink" />
-                <span
-                    class="text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
-                    {{
-                        t('bible.chapter', {
-                            locale: selectedTranslation?.language?.toLowerCase(),
-                        })
-                    }}
-                    {{ selectedChapter?.number }}
-                </span>
-                <Divider class="shrink" />
-            </div>
-            <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
-                :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
-                :verse="verse" :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)" @update:is-highlighted="
-                    (v) => setIsHighlighted(verse.number, v)
-                " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
+                <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
+                    <Divider class="shrink" />
+                    <h1
+                        class="m-0 text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
+                        {{
+                            t('bible.chapter', {
+                                locale: selectedTranslation?.language?.toLowerCase(),
+                            })
+                        }}
+                        {{ selectedChapter?.number }}
+                    </h1>
+                    <Divider class="shrink" />
+                </div>
+            </header>
+            <section class="contents">
+                <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
+                    :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
+                    :verse="verse" :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)" @update:is-highlighted="
+                        (v) => setIsHighlighted(verse.number, v)
+                    " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
+            </section>
             <Divider class="py-10" />
-            <div class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center">
+            <footer class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center">
                 {{ selectedTranslation?.localizedName ?? selectedTranslation?.name }}
-            </div>
-        </div>
+            </footer>
+        </article>
         <div class="grow" />
         <Footer class="print:hidden" />
     </div>
