@@ -1,7 +1,7 @@
 {
     "id": "LUT",
     "name": "Lutherübersetzung 1545",
-    "language": "DE",
+    "language": "de",
     "books": [
         {
             "abbreviation": "Gen",
