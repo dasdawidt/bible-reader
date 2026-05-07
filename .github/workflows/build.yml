@@ -33,7 +33,7 @@ jobs:
                   version: latest
 
             - name: Install dependencies
-              run: pnpm install
+              run: pnpm install --frozen-lockfile
 
             - name: Run check
               run: pnpm run ci
