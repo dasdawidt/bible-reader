@@ -53,7 +53,7 @@ const disabled = computed(() => props.books == null);
 <template>
     <DialogSelectButton @click="visible = true" @keyup.enter="visible = true" :disabled="disabled" v-bind="$attrs">
         <div v-if="book && !disabled" class="flex flex-row gap-2">
-            <div class="shrink-0 opacity-50 text-left">
+            <div class="shrink-0 opacity-40 text-left font-medium">
                 {{ book?.abbreviation.toUpperCase() }}
             </div>
             <div>{{ book?.name }}</div>
@@ -71,7 +71,7 @@ const disabled = computed(() => props.books == null);
                     <div class="flex align-items-center gap-2" :ref="(el) =>
                         options.set(option.type, el as HTMLDivElement)
                         ">
-                        <div class="w-16 shrink-0 opacity-50 overflow-hidden text-ellipsis">
+                        <div class="w-16 shrink-0 opacity-40 overflow-hidden text-ellipsis font-medium">
                             {{ option.abbreviation?.toUpperCase() }}
                         </div>
                         <div>{{ option.name }}</div>
