@@ -45,14 +45,9 @@ const options: {
         :pt="{ button: { class: 'w-full' } }"
     >
         <template #option="slotProps">
-            <div
-                class="flex flex-row justify-center items-center flex-nowrap w-full gap-3"
-            >
+            <div class="flex flex-row justify-center items-center flex-nowrap w-full gap-3">
                 <MdiIconInline :icon="slotProps.option.icon" />
-                <span
-                    v-if="condensed !== true"
-                    class="text-ellipsis overflow-hidden"
-                >
+                <span v-if="condensed !== true" class="text-ellipsis overflow-hidden">
                     {{ $t(slotProps.option.messageCode) }}
                 </span>
             </div>

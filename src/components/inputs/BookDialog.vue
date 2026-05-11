@@ -17,7 +17,7 @@ const props = defineProps<{
     books?: Book[];
 }>();
 
-const book = defineModel<Book>()
+const book = defineModel<Book>();
 
 const groupedBooks = computed(() =>
     props.books?.reduce<[{ messageCode: string; books: Book[] }, { messageCode: string; books: Book[] }]>(
@@ -60,17 +60,33 @@ const disabled = computed(() => props.books == null);
         </div>
         <div v-else>{{ $t('prompts.select_book') }}...</div>
     </DialogSelectButton>
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
-        :header="$t('prompts.select_book')" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
-        @show="scrollToSelection">
+    <Dialog
+        v-model:visible="visible"
+        :closable="false"
+        :draggable="false"
+        modal
+        dismissable-mask
+        :header="$t('prompts.select_book')"
+        :position="isOnMobile ? 'bottom' : 'top'"
+        class="w-full max-w-container"
+        @show="scrollToSelection"
+    >
         <ScrollContainer class="max-h-bottom-sheet mt-1" pt:content:class="py-6">
-            <Listbox v-model="book" :options="groupedBooks" optionLabel="name" option-group-children="books"
-                option-group-label="name" class="w-full h-min" pt:item-group:class="bg-transparent"
-                @change="visible = false">
+            <Listbox
+                v-model="book"
+                :options="groupedBooks"
+                optionLabel="name"
+                option-group-children="books"
+                option-group-label="name"
+                class="w-full h-min"
+                pt:item-group:class="bg-transparent"
+                @change="visible = false"
+            >
                 <template #option="{ option }">
-                    <div class="flex align-items-center gap-2" :ref="(el) =>
-                        options.set(option.type, el as HTMLDivElement)
-                        ">
+                    <div
+                        class="flex align-items-center gap-2"
+                        :ref="(el) => options.set(option.type, el as HTMLDivElement)"
+                    >
                         <div class="w-16 shrink-0 opacity-40 overflow-hidden text-ellipsis font-medium">
                             {{ option.abbreviation?.toUpperCase() }}
                         </div>

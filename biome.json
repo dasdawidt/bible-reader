@@ -10,14 +10,6 @@
         "useIgnoreFile": true,
         "defaultBranch": "main"
     },
-    "linter": {
-        "rules": {
-            "suspicious": {
-                "noAssignInExpressions": "info",
-                "noUnknownAtRules": "off"
-            }
-        }
-    },
     "formatter": {
         "indentStyle": "space",
         "indentWidth": 4,
@@ -30,7 +22,10 @@
         }
     },
     "html": {
-        "experimentalFullSupportEnabled": true
+        "experimentalFullSupportEnabled": true,
+        "formatter": {
+            "enabled": true
+        }
     },
     "css": {
         "parser": {
@@ -42,21 +37,6 @@
             "includes": ["src/assets/translations/**"],
             "files": {
                 "maxSize": 26214400
-            }
-        },
-        {
-            "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
-            "linter": {
-                "rules": {
-                    "style": {
-                        "useConst": "off",
-                        "useImportType": "off"
-                    },
-                    "correctness": {
-                        "noUnusedVariables": "off",
-                        "noUnusedImports": "off"
-                    }
-                }
             }
         }
     ]
