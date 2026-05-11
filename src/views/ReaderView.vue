@@ -41,7 +41,7 @@ const selectedBook = fromQuery(
         }
         return undefined;
     },
-    (book) =>  bookTypeToString(book?.type)?.toLowerCase(),
+    (book) => bookTypeToString(book?.type)?.toLowerCase(),
 );
 
 const selectedChapter = fromQuery(
@@ -57,7 +57,11 @@ const selectedChapter = fromQuery(
 
 const highlightedVerseNumbers = fromQuery(
     HIGHLIGHT_QUERY_KEY,
-    (string) => string?.split(',')?.map((s) => Number.parseInt(s, 10)).filter(v => !Number.isNaN(v)) ?? [],
+    (string) =>
+        string
+            ?.split(',')
+            ?.map((s) => Number.parseInt(s, 10))
+            .filter((v) => !Number.isNaN(v)) ?? [],
     (numbers: number[]) => (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')),
 );
 
@@ -76,7 +80,8 @@ const setIsHighlighted = (number: number, value: boolean) => {
     }
 };
 const hideUnselected = ref(false);
-const getHiddenForPrint = (number: number) => hideUnselected.value && highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
+const getHiddenForPrint = (number: number) =>
+    hideUnselected.value && highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
 
 const highlightedVerses = computed(() =>
     selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
@@ -103,15 +108,16 @@ const shareTitle = computed(() => {
         highlightedVerses.value,
     ];
     if (tr !== undefined && b !== undefined && c !== undefined && vs !== undefined && vs.length > 0) {
-        return formatPassages(tr,
+        return formatPassages(
+            tr,
             vs.map((v) => ({
                 translationId: tr.id,
                 bookType: b.type,
                 chapter: c.number,
                 verse: v.number,
             })),
-            formatPassageOptionsFromI18n('bible.passage_format_options', t)
-        )
+            formatPassageOptionsFromI18n('bible.passage_format_options', t),
+        );
     }
 });
 const shareButtonsVisible = computed(() => highlightedVerses.value && highlightedVerses.value?.length > 0);
@@ -139,45 +145,66 @@ const unwatchSelection = watchEffect(() => {
 </script>
 
 <template>
-    <ReaderNavbar :translations="translationList" :loading="translationListLoading"
-        v-model:translation="selectedTranslation" v-model:book="selectedBook" v-model:chapter="selectedChapter"
-        v-model:expanded="navigationExpanded" @navigate="removeHighlight" class="print:hidden">
+    <ReaderNavbar
+        class="print:hidden"
+        :translations="translationList"
+        :loading="translationListLoading"
+        v-model:translation="selectedTranslation"
+        v-model:book="selectedBook"
+        v-model:chapter="selectedChapter"
+        v-model:expanded="navigationExpanded"
+        @navigate="removeHighlight"
+    >
         <template #toast-stack>
-            <ShareButtons :title="shareTitle" :text="shareText" :url="shareUrl" :visible="shareButtonsVisible"
-                @update:visible="removeHighlight" v-model:hide-unselected="hideUnselected" />
+            <ShareButtons
+                v-model:hide-unselected="hideUnselected"
+                :title="shareTitle"
+                :text="shareText"
+                :url="shareUrl"
+                :visible="shareButtonsVisible"
+                @update:visible="removeHighlight"
+            />
         </template>
     </ReaderNavbar>
     <div class="px-4 pb-[40vh] pt-[20vh] print:p-0 flex flex-col min-h-dvh print:min-h-0">
         <article v-if="selectedChapter" :lang="selectedTranslation?.language">
             <header class="contents">
                 <div class="relative w-full h-0">
-                    <span class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center">
+                    <span
+                        class="absolute -bottom-12 px-4 tracking-wider text-lg opacity-25 font-medium w-full text-center"
+                    >
                         {{ selectedBook?.verboseName ?? selectedBook?.name }}
                     </span>
                 </div>
                 <div class="flex flex-row w-full items-center justify-center gap-3 py-12 overflow-hidden">
                     <Divider class="shrink" />
                     <h1
-                        class="m-0 text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
-                        {{
-                            t('bible.chapter', {
+                        class="m-0 text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0"
+                    >
+                        {{ t('bible.chapter', {
                                 locale: selectedTranslation?.language?.toLowerCase(),
-                            })
-                        }}
+                            }) }}
                         {{ selectedChapter?.number }}
                     </h1>
                     <Divider class="shrink" />
                 </div>
             </header>
             <section class="contents">
-                <InlineVerse v-for="(verse, i) in (selectedChapter?.verses ?? [])" :id="`verse-${verse.number}`"
-                    :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)" :key="i"
-                    :verse="verse" :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)" @update:is-highlighted="
-                        (v) => setIsHighlighted(verse.number, v)
-                    " :class="{ 'print:hidden': getHiddenForPrint(verse.number) }" />
+                <InlineVerse
+                    v-for="(verse, i) in (selectedChapter?.verses ?? [])"
+                    :id="`verse-${verse.number}`"
+                    :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)"
+                    :key="i"
+                    :verse="verse"
+                    :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)"
+                    @update:is-highlighted=" (v) => setIsHighlighted(verse.number, v)"
+                    :class="{ 'print:hidden': getHiddenForPrint(verse.number) }"
+                />
             </section>
             <Divider class="py-10" />
-            <footer class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center">
+            <footer
+                class="not-print:hidden -translate-y-6 px-4 tracking-widest font-medium text-xs opacity-25 w-full text-center"
+            >
                 {{ selectedTranslation?.localizedName ?? selectedTranslation?.name }}
             </footer>
         </article>

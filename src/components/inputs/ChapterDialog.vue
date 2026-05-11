@@ -19,7 +19,7 @@ const props = defineProps<{
     bookName?: string;
 }>();
 
-const chapter = defineModel<Chapter>()
+const chapter = defineModel<Chapter>();
 
 const options = new Map<number, HTMLDivElement>();
 function scrollToSelection() {
@@ -45,15 +45,24 @@ const disabled = computed(() => props.chapters == null);
         </div>
         <div v-else>{{ $t('prompts.select_chapter') }}...</div>
     </DialogSelectButton>
-    <Dialog v-model:visible="visible" :closable="false" :draggable="false" modal dismissable-mask
-        :header="$t('prompts.select_chapter')" :position="isOnMobile ? 'bottom' : 'top'" class="w-full max-w-container"
-        @show="scrollToSelection">
+    <Dialog
+        v-model:visible="visible"
+        :closable="false"
+        :draggable="false"
+        modal
+        dismissable-mask
+        :header="$t('prompts.select_chapter')"
+        :position="isOnMobile ? 'bottom' : 'top'"
+        class="w-full max-w-container"
+        @show="scrollToSelection"
+    >
         <ScrollContainer class="max-h-bottom-sheet" pt:content:class="py-6">
             <Listbox v-model="chapter" :options="chapters" class="w-full" @change="visible = false">
                 <template #option="{ option }">
-                    <div class="flex align-items-center" :ref="(el) =>
-                        options.set(option.number, el as HTMLDivElement)
-                        ">
+                    <div
+                        class="flex align-items-center"
+                        :ref="(el) => options.set(option.number, el as HTMLDivElement)"
+                    >
                         <div>
                             {{ bookName ?? $t('prompts.select_chapter') }}
                             {{ option.number }}

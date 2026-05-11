@@ -30,16 +30,16 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    'navigate': [TargetChapter];
+    navigate: [TargetChapter];
 }>();
 
-const translation = defineModel<Translation>('translation')
-const book = defineModel<Book>('book')
-const chapter = defineModel<Chapter>('chapter')
+const translation = defineModel<Translation>('translation');
+const book = defineModel<Book>('book');
+const chapter = defineModel<Chapter>('chapter');
 
 // Menu
 
-const expanded = defineModel<boolean>('expanded')
+const expanded = defineModel<boolean>('expanded');
 const menuTransition = ref(false);
 const toggleMenu = () => {
     // make sure the animation is played
@@ -59,8 +59,8 @@ const menuStyle = computedWithControl(
                     ? '0px'
                     : `${menuElement.value?.clientHeight}px`
                 : expanded.value
-                    ? '0px'
-                    : `-${menuElement.value?.clientHeight}px`)
+                  ? '0px'
+                  : `-${menuElement.value?.clientHeight}px`)
             + ')',
     }),
 );
@@ -80,24 +80,32 @@ const menuClass = computed(() => {
     let classes = '';
     classes += ` ${menuTransition.value ? 'transition-all duration-300' : ''}`;
     classes += ` ${isOnMobile.value ? 'pb-0 bottom-0 border-b-0' : 'flex-col-reverse pt-0 top-0 border-t-0'}`;
-    classes +=
-        ' '
-        + (isOnMobile.value ? (expanded.value ? 'rounded-t-4xl' : '') : expanded.value ? 'rounded-b-4xl' : '');
+    classes += ` ${isOnMobile.value ? (expanded.value ? 'rounded-t-4xl' : '') : expanded.value ? 'rounded-b-4xl' : ''}`;
     return classes;
 });
 
 // Navigation
 
-const navigationTargetPrevious = computed(() => getTargetChapter({
-        translation: translation.value,
-        book: book.value,
-        chapter: chapter.value,
-    }, 'previous'));
-const navigationTargetNext = computed(() => getTargetChapter({
-        translation: translation.value,
-        book: book.value,
-        chapter: chapter.value,
-    }, 'next'));
+const navigationTargetPrevious = computed(() =>
+    getTargetChapter(
+        {
+            translation: translation.value,
+            book: book.value,
+            chapter: chapter.value,
+        },
+        'previous',
+    ),
+);
+const navigationTargetNext = computed(() =>
+    getTargetChapter(
+        {
+            translation: translation.value,
+            book: book.value,
+            chapter: chapter.value,
+        },
+        'next',
+    ),
+);
 
 const canNavigatePrevious = computed(() => navigationTargetPrevious.value !== undefined);
 const canNavigateNext = computed(() => navigationTargetNext.value !== undefined);
@@ -111,10 +119,10 @@ function navButtonLabel(navigationTarget: TargetChapter | undefined) {
     return navigationTarget === undefined
         ? t('bible.eternity')
         : menuWidth.value < 280
-            ? ''
-            : menuWidth.value < 500
-                ? `${navigationTarget.book?.abbreviation?.toUpperCase()} ${navigationTarget.chapter?.number}`
-                : `${navigationTarget.book?.name} ${navigationTarget.chapter?.number}`;
+          ? ''
+          : menuWidth.value < 500
+            ? `${navigationTarget.book?.abbreviation?.toUpperCase()} ${navigationTarget.chapter?.number}`
+            : `${navigationTarget.book?.name} ${navigationTarget.chapter?.number}`;
 }
 
 const navigatePrevious = () => navigate(navigationTargetPrevious.value);
@@ -133,27 +141,42 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 </script>
 
 <template>
-    <aside class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
-        :class="menuClass" style="
+    <aside
+        class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
+        :class="menuClass"
+        style="
             background-color: var(--surface-ground);
             border-color: var(--surface-border);
-        " :style="menuStyle">
+        "
+        :style="menuStyle"
+    >
         <div class="absolute w-full h-0 z-20">
-            <div class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none *:pointer-events-auto"
-                :class="{ 'top-auto bottom-28': isOnMobile }">
+            <div
+                class="relative top-2.5 w-full flex flex-col gap-2 justify-start items-center p-4 pointer-events-none *:pointer-events-auto"
+                :class="{ 'top-auto bottom-28': isOnMobile }"
+            >
                 <slot name="toast-stack" />
             </div>
         </div>
 
         <!-- Navigation bar (always visible) -->
-        <nav class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
-            :class="{ 'max-w-container!': expanded }">
+        <nav
+            class="flex flex-row justify-between gap-2 w-full max-w-full transition-max-width"
+            :class="{ 'max-w-container!': expanded }"
+        >
             <div class="w-full flex flex-row justify-start">
-                <Button class="whitespace-nowrap" :label="navigationLabelPrevious" :disabled="!canNavigatePrevious"
-                    @click="navigatePrevious" rounded text :pt="{
+                <Button
+                    class="whitespace-nowrap"
+                    :label="navigationLabelPrevious"
+                    :disabled="!canNavigatePrevious"
+                    @click="navigatePrevious"
+                    rounded
+                    text
+                    :pt="{
                         root: { class: 'flex flex-row gap-2.5' },
                         label: { class: 'text-ellipsis overflow-hidden' },
-                    }">
+                    }"
+                >
                     <template #icon>
                         <SvgIcon class="size-4! scale-150" :icon="mdiArrowLeft" />
                     </template>
@@ -167,11 +190,19 @@ onKeyStroke('ArrowLeft', navigatePrevious);
                 </template>
             </Button>
             <div class="w-full flex flex-row justify-end">
-                <Button class="whitespace-nowrap" icon-pos="right" :label="navigationLabelNext"
-                    :disabled="!canNavigateNext" @click="navigateNext" rounded text :pt="{
+                <Button
+                    class="whitespace-nowrap"
+                    icon-pos="right"
+                    :label="navigationLabelNext"
+                    :disabled="!canNavigateNext"
+                    @click="navigateNext"
+                    rounded
+                    text
+                    :pt="{
                         root: { class: 'flex flex-row-reverse gap-2.5' },
                         label: { class: 'text-ellipsis overflow-hidden' },
-                    }">
+                    }"
+                >
                     <template #icon>
                         <SvgIcon class="size-4! scale-150" :icon="mdiArrowRight" />
                     </template>

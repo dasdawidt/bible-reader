@@ -28,11 +28,11 @@ const props = defineProps<{
 
 const chapters = computed(() => {
     if (props.translation && props.book) {
-        return toPassageVerseList(props.translation, props.book)
+        return toPassageVerseList(props.translation, props.book);
     }
 });
 
-const passages = defineModel<Passage[]>()
+const passages = defineModel<Passage[]>();
 const pendingSelectedPassages = ref<Passage[]>([]);
 
 const { isOnMobile } = useOnMobile();
@@ -68,9 +68,17 @@ function confirm() {
         </div>
         <div v-else>Select Verses...</div>
     </DialogueSelectButton>
-    <Dialog v-if="!disabled" v-model:visible="visible" :closable="false" :draggable="false"
-        :position="isOnMobile ? 'bottom' : 'top'" dismissable-mask modal class="w-full max-w-container"
-        :pt="{ content: { class: 'overflow-hidden' } }">
+    <Dialog
+        v-if="!disabled"
+        v-model:visible="visible"
+        :closable="false"
+        :draggable="false"
+        :position="isOnMobile ? 'bottom' : 'top'"
+        dismissable-mask
+        modal
+        class="w-full max-w-container"
+        :pt="{ content: { class: 'overflow-hidden' } }"
+    >
         <template #header>
             <div class="flex flex-col w-full gap-4 -mb-5">
                 <span class="text-xl font-bold"> Select Verses </span>
@@ -86,11 +94,19 @@ function confirm() {
             </div>
         </template>
         <ScrollContainer class="max-h-bottom-sheet">
-            <Listbox v-model="pendingSelectedPassages" :options="chapters" option-group-label="chapter"
-                option-group-children="passages" class="w-full" multiple :meta-key-selection="false" :pt="{
+            <Listbox
+                v-model="pendingSelectedPassages"
+                :options="chapters"
+                option-group-label="chapter"
+                option-group-children="passages"
+                class="w-full"
+                multiple
+                :meta-key-selection="false"
+                :pt="{
                     itemGroup: { class: 'bg-transparent' },
                     content: { class: 'overflow-hidden' },
-                }">
+                }"
+            >
                 <template #optiongroup="slotProps">
                     <Divider :id="`verse-dialogue-chapter-${slotProps.option?.chapter}`">
                         <span class="text-xl font-bold">
@@ -112,8 +128,14 @@ function confirm() {
         <template #footer>
             <div class="flex align-items-center gap-2 mt-4">
                 <Button label="Cancel" @click="abort" severity="secondary" text class="w-full" />
-                <Button label="Ok" @click="confirm" severity="primary" text class="w-full"
-                    :disabled="pendingSelectedPassages === passages" />
+                <Button
+                    label="Ok"
+                    @click="confirm"
+                    severity="primary"
+                    text
+                    class="w-full"
+                    :disabled="pendingSelectedPassages === passages"
+                />
             </div>
         </template>
     </Dialog>

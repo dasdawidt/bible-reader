@@ -22,22 +22,16 @@ const visible = computed(() => props.placeholder != null || valuesPresent.value)
                 <template v-if="valuesPresent">
                     <div>
                         <span v-for="passage in passages">
-                            {{
-                                // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
-                                getPassage(translation!, passage!)?.text
-                            }}
+                            {{ // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
+                                getPassage(translation!, passage!)?.text }}
                         </span>
                     </div>
                     <div class="opacity-50">
-                        {{
-                            // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
-                            formatPassages(translation!, passages!)
-                        }}
+                        {{ // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
+                            formatPassages(translation!, passages!) }}
                     </div>
                 </template>
-                <span v-else class="opacity-50">
-                    {{ props.placeholder }}
-                </span>
+                <span v-else class="opacity-50"> {{ props.placeholder }} </span>
             </div>
         </template>
     </Card>

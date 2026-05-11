@@ -23,14 +23,7 @@ const buildDate = import.meta.env.BUILD_DATE;
 </script>
 
 <template>
-    <Button
-        severity="secondary"
-        @click="visible = true"
-        v-bind="$attrs"
-        :label="label"
-        rounded
-        text
-    >
+    <Button severity="secondary" @click="visible = true" v-bind="$attrs" :label rounded text>
         <template #icon>
             <MdiIcon class="size-5.75!" :icon="mdiCog" />
         </template>
@@ -52,18 +45,10 @@ const buildDate = import.meta.env.BUILD_DATE;
                 <ThemeSwitcher :condensed="condensed" />
                 <LocaleSwitcher :condensed="condensed" />
             </div>
-            <div class="w-full text-center text-sm uppercase opacity-5 p-4">
-                Build {{ buildDate }}
-            </div>
+            <div class="w-full text-center text-sm uppercase opacity-5 p-4">Build {{ buildDate }}</div>
         </template>
         <template #footer>
-            <Button
-                :label="$t('prompts.close')"
-                @click="visible = false"
-                severity="secondary"
-                text
-                class="w-full"
-            />
+            <Button :label="$t('prompts.close')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>

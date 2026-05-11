@@ -14,12 +14,8 @@ const props = defineProps<{
         </template>
         <template #content>
             <div v-for="verse in verses" class="flex flex-row">
-                <span class="w-6 shrink-0 opacity-50">
-                    {{ verse.number }}
-                </span>
-                <span>
-                    {{ verse.text }}
-                </span>
+                <span class="w-6 shrink-0 opacity-50"> {{ verse.number }} </span>
+                <span> {{ verse.text }} </span>
             </div>
         </template>
     </Card>

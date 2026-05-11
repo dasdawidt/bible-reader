@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-    mdiDotsVertical,
-    mdiFullscreen,
-    mdiFullscreenExit,
-    mdiPrinter,
-} from '@mdi/js';
+import { mdiDotsVertical, mdiFullscreen, mdiFullscreenExit, mdiPrinter } from '@mdi/js';
 import { useFullscreen } from '@vueuse/core';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -50,17 +45,9 @@ function selectCommand(originalEvent: Event, item: MenuItem) {
 </script>
 
 <template>
-    <Button
-        severity="secondary"
-        v-bind="$attrs"
-        rounded
-        text
-        @click="visible = true"
-    >
+    <Button severity="secondary" v-bind="$attrs" rounded text @click="visible = true">
         <template #icon>
-            <SvgIcon
-                :icon="mdiDotsVertical"
-            />
+            <SvgIcon :icon="mdiDotsVertical" />
         </template>
     </Button>
     <Dialog
@@ -78,27 +65,15 @@ function selectCommand(originalEvent: Event, item: MenuItem) {
         <ScrollContainer class="max-h-bottom-sheet">
             <Menu :model="items" pt:root:class="bg-transparent">
                 <template #item="{ item }">
-                    <div
-                        class="p-menuitem-link flex flex-row gap-4"
-                        @click="e => selectCommand(e, item)"
-                    >
-                        <SvgIcon
-                            class="opacity-75"
-                            :icon="item.icon"
-                        />
+                    <div class="p-menuitem-link flex flex-row gap-4" @click="e => selectCommand(e, item)">
+                        <SvgIcon class="opacity-75" :icon="item.icon" />
                         {{ $t(item.messageCode) }}
                     </div>
                 </template>
             </Menu>
         </ScrollContainer>
         <template #footer>
-            <Button
-                :label="$t('prompts.cancel')"
-                @click="visible = false"
-                severity="secondary"
-                text
-                class="w-full"
-            />
+            <Button class="w-full" :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text />
         </template>
     </Dialog>
 </template>
