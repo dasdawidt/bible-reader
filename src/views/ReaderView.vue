@@ -20,6 +20,13 @@ const CHAPTER_QUERY_KEY = 'c';
 const HIGHLIGHT_QUERY_KEY = 'v';
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+const browserLocation = useBrowserLocation();
+
+const allParamsPresent = [TRANSLATION_QUERY_KEY, BOOK_QUERY_KEY, CHAPTER_QUERY_KEY].every((v) =>
+    Object.keys(route.query).includes(v),
+);
 
 const { translationList, loading: translationListLoading } = useTranslationList();
 const selectedTranslation = fromQuery(
@@ -65,6 +72,15 @@ const highlightedVerseNumbers = fromQuery(
     (numbers: number[]) => (numbers?.length === 0 ? undefined : numbers?.sort((a, b) => a - b)?.join(',')),
 );
 
+// Don't expand navigation if all parameters are already set in the URL.
+const navigationExpanded = ref(!allParamsPresent);
+// But then still expand it if there is no selected chapter after loading (e.g. invalid selection).
+watch(translationListLoading, (value, oldValue) => {
+    if (oldValue === true && value === false) {
+        navigationExpanded.value = selectedChapter.value === undefined;
+    }
+});
+
 const removeHighlight = () => {
     unwatchSelection();
     highlightedVerseNumbers.value = [];
@@ -86,18 +102,8 @@ const getHiddenForPrint = (number: number) =>
 const highlightedVerses = computed(() =>
     selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
 );
-const navigationExpanded = ref(
-    ![TRANSLATION_QUERY_KEY, BOOK_QUERY_KEY, CHAPTER_QUERY_KEY].every((v) => Object.keys(useRoute().query).includes(v)),
-);
-watch(translationListLoading, (value, oldValue) => {
-    if (oldValue === true && value === false) {
-        navigationExpanded.value = selectedChapter.value == null;
-    }
-});
 
-const route = useRoute();
-const router = useRouter();
-const browserLocation = useBrowserLocation();
+const shareButtonsVisible = computed(() => highlightedVerses.value && highlightedVerses.value?.length > 0);
 const shareUrl = computed(() => new URL(router.resolve(route).href, browserLocation.value.href).href);
 const shareText = computed(() => `${highlightedVerses.value?.map((v) => v.text)?.join(' ')}\n${shareTitle.value}\n`);
 const shareTitle = computed(() => {
@@ -120,7 +126,6 @@ const shareTitle = computed(() => {
         );
     }
 });
-const shareButtonsVisible = computed(() => highlightedVerses.value && highlightedVerses.value?.length > 0);
 
 const initialTitle = document.title;
 useTitle(

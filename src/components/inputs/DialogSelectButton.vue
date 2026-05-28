@@ -3,8 +3,7 @@ import { mdiChevronRight } from '@mdi/js';
 import Dropdown, { type DropdownProps } from 'primevue/dropdown';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
 
-// The @vue-ignore is needed because vue is not able to resolve the base type at the moment.
-export interface Props extends /* @vue-ignore */ DropdownProps {}
+export interface Props extends DropdownProps {}
 
 const props = defineProps<Props & { disabled?: boolean }>();
 </script>
