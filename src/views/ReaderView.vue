@@ -81,6 +81,11 @@ watch(translationListLoading, (value, oldValue) => {
     }
 });
 
+const verseRefs = ref(new Map<number, InstanceType<typeof InlineVerse>>());
+function scrollToVerse(number: number) {
+    verseRefs.value.get(number)?.$el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
 const removeHighlight = () => {
     unwatchSelection();
     highlightedVerseNumbers.value = [];
@@ -158,7 +163,7 @@ const unwatchSelection = watchEffect(() => {
         v-model:book="selectedBook"
         v-model:chapter="selectedChapter"
         v-model:expanded="navigationExpanded"
-        @navigate="removeHighlight"
+        @navigate="scrollToVerse(1)"
     >
         <template #toast-stack>
             <ShareButtons
