@@ -86,12 +86,42 @@ function scrollToVerse(number: number) {
     verseRefs.value.get(number)?.$el.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
 
-const removeHighlight = () => {
+watch(
+    () => ({
+        chapter: selectedChapter.value,
+        translation: selectedTranslation.value,
+    }),
+    (current, previous) => {
+        // When a chapter was selected without one having been selected before, hide the navigation.
+        if (current.chapter !== undefined && previous.chapter === undefined) {
+            navigationExpanded.value = false;
+        }
+        // Remove highlight when chapter was changed.
+        if (current.chapter !== previous.chapter && current.translation === previous.translation) {
+            removeHighlight();
+        }
+    },
+);
+
+const hideUnselected = ref(false);
+const highlightedVerses = computed(() =>
+    selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
+);
+const unwatchSelection = watchEffect(() => {
+    const firstHighlightedVerseNumber = highlightedVerseNumbers.value?.at(0);
+    if (firstHighlightedVerseNumber !== undefined) {
+        scrollToVerse(firstHighlightedVerseNumber);
+        nextTick(() => unwatchSelection());
+    }
+});
+function removeHighlight() {
     unwatchSelection();
     highlightedVerseNumbers.value = [];
-};
-const getIsHighlighted = (number: number) => highlightedVerseNumbers.value?.includes(number);
-const setIsHighlighted = (number: number, value: boolean) => {
+}
+function getIsHighlighted(number: number) {
+    return highlightedVerseNumbers.value?.includes(number);
+}
+function setIsHighlighted(number: number, value: boolean) {
     unwatchSelection();
     hideUnselected.value = false;
     if (value) {
@@ -99,14 +129,10 @@ const setIsHighlighted = (number: number, value: boolean) => {
     } else {
         highlightedVerseNumbers.value = highlightedVerseNumbers.value?.filter((n) => n !== number);
     }
-};
-const hideUnselected = ref(false);
-const getHiddenForPrint = (number: number) =>
-    hideUnselected.value && highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
-
-const highlightedVerses = computed(() =>
-    selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
-);
+}
+function getHiddenForPrint(number: number) {
+    return hideUnselected.value && highlightedVerseNumbers.value?.length > 0 && !getIsHighlighted(number);
+}
 
 const shareButtonsVisible = computed(() => highlightedVerses.value && highlightedVerses.value?.length > 0);
 const shareUrl = computed(() => new URL(router.resolve(route).href, browserLocation.value.href).href);
@@ -140,18 +166,6 @@ useTitle(
             : initialTitle,
     ),
 );
-
-const verseRefs = ref(new Map<number, InstanceType<typeof InlineVerse>>());
-const unwatchSelection = watchEffect(() => {
-    const firstHighlightedVerseNumber = highlightedVerseNumbers.value?.at(0);
-    if (firstHighlightedVerseNumber !== undefined) {
-        const verseRef = verseRefs.value.get(firstHighlightedVerseNumber);
-        if (verseRef !== undefined) {
-            (verseRef.$el as HTMLElement).scrollIntoView({ block: 'center', behavior: 'smooth' });
-            nextTick(unwatchSelection);
-        }
-    }
-});
 </script>
 
 <template>
