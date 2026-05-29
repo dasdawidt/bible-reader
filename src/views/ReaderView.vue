@@ -186,7 +186,7 @@ const unwatchSelection = watchEffect(() => {
                     <h1
                         class="m-0 text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0"
                     >
-                        {{ t('bible.chapter', {
+                        {{ t('bible.chapter', {}, {
                                 locale: selectedTranslation?.language?.toLowerCase(),
                             }) }}
                         {{ selectedChapter?.number }}
