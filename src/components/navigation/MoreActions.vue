@@ -65,7 +65,14 @@ function selectCommand(originalEvent: Event, item: MenuItem) {
         <ScrollContainer class="max-h-bottom-sheet">
             <Menu :model="items" pt:root:class="bg-transparent">
                 <template #item="{ item }">
-                    <div class="p-menuitem-link flex flex-row gap-4" @click="e => selectCommand(e, item)">
+                    <!-- biome-ignore lint/a11y/useSemanticElements: button is styled and resetting the style is too complex -->
+                    <div
+                        role="button"
+                        tabindex="0"
+                        class="p-menuitem-link flex flex-row gap-4 border-0 bg-transparent"
+                        @click="e => selectCommand(e, item)"
+                        @keydown.enter="e => selectCommand(e, item)"
+                    >
                         <SvgIcon class="opacity-75" :icon="item.icon" />
                         {{ $t(item.messageCode) }}
                     </div>

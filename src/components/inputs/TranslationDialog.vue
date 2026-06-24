@@ -71,9 +71,9 @@ const visible = ref(false);
             <Listbox
                 v-model="translation"
                 :options="translations"
-                optionGroupLabel="name"
-                optionGroupChildren="translations"
-                optionLabel="name"
+                option-group-label="name"
+                option-group-children="translations"
+                option-label="name"
                 class="w-full h-min"
                 pt:item-group:class="bg-transparent"
                 @change="visible = false"
