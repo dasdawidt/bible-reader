@@ -75,7 +75,7 @@ const disabled = computed(() => props.books == null);
             <Listbox
                 v-model="book"
                 :options="groupedBooks"
-                optionLabel="name"
+                option-label="name"
                 option-group-children="books"
                 option-group-label="name"
                 class="w-full h-min"

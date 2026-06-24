@@ -12,6 +12,10 @@ const isHighlighted = defineModel<boolean>('isHighlighted', { default: false });
 const borderColor = computed(() => (isHighlighted.value ? 'var(--primary-color)' : ''));
 const color = computed(() => (isHighlighted.value ? 'var(--highlight-text-color)' : ''));
 const backgroundColor = computed(() => (isHighlighted.value ? 'var(--highlight-bg)' : ''));
+
+function toggleHighlight() {
+    isHighlighted.value = !isHighlighted.value;
+}
 </script>
 
 <template>
@@ -28,10 +32,14 @@ const backgroundColor = computed(() => (isHighlighted.value ? 'var(--highlight-b
             class="text-lg text-justify leading-loose hyphens-auto px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
             :style="{ borderColor }"
         >
+            <!-- biome-ignore lint/a11y/useSemanticElements: button is styled and resetting the style is too complex -->
             <span
+                role="button"
+                tabindex="0"
                 class="py-0.5 rounded-sm transition-colors"
                 :style="{ backgroundColor, color }"
-                @click="isHighlighted = !isHighlighted"
+                @click="toggleHighlight()"
+                @keydown.enter="toggleHighlight()"
             >
                 {{ verse.text }}
             </span>
