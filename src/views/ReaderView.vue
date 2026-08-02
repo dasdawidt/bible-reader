@@ -107,11 +107,15 @@ const hideUnselected = ref(false);
 const highlightedVerses = computed(() =>
     selectedChapter.value?.verses?.filter((v) => highlightedVerseNumbers.value?.includes(v.number)),
 );
-const unwatchSelection = watchEffect(() => {
+const unwatchSelection = watchEffect(async () => {
+    if (translationListLoading.value) {
+        return;
+    }
     const firstHighlightedVerseNumber = highlightedVerseNumbers.value?.at(0);
     if (firstHighlightedVerseNumber !== undefined) {
         scrollToVerse(firstHighlightedVerseNumber);
-        nextTick(() => unwatchSelection());
+        await nextTick();
+        unwatchSelection();
     }
 });
 function removeHighlight() {
