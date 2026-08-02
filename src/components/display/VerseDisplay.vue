@@ -2,7 +2,7 @@
 import Card from 'primevue/card';
 import type { Verse } from '@/types/bible/verse';
 
-const props = defineProps<{
+defineProps<{
     verses: Verse[];
 }>();
 </script>

@@ -24,7 +24,7 @@ const { t } = useI18n();
 
 // Props and emits
 
-const props = defineProps<{
+defineProps<{
     translations?: TranslationList;
     loading?: boolean;
 }>();

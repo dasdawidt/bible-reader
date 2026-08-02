@@ -4,6 +4,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import type { Translation } from '@/types/bible/translation';
 import type { TranslationList } from '@/types/bible/translationList';
@@ -13,7 +14,7 @@ import DialogSelectButton from './DialogSelectButton.vue';
 
 const HIGHLIGHTED_TRANSLATION_IDS = ['LUT', 'KJV'];
 
-const props = defineProps<{
+defineProps<{
     /**
      * A `TranslationList` which groups the translations based on their language.
      */
@@ -36,6 +37,7 @@ function scrollToSelection() {
 }
 
 const { isOnMobile } = useOnMobile();
+const { t } = useI18n();
 const visible = ref(false);
 </script>
 
@@ -53,8 +55,8 @@ const visible = ref(false);
             </div>
             <div>{{ translation?.name }}</div>
         </div>
-        <div v-else-if="loading !== true">{{ $t('prompts.select_translation') }}...</div>
-        <div v-else>{{ $t('prompts.loading_translations') }}...</div>
+        <div v-else-if="loading !== true">{{ t('prompts.select_translation') }}...</div>
+        <div v-else>{{ t('prompts.loading_translations') }}...</div>
     </DialogSelectButton>
     <Dialog
         v-model:visible="visible"
@@ -62,7 +64,7 @@ const visible = ref(false);
         :draggable="false"
         modal
         dismissable-mask
-        :header="$t('prompts.select_translation')"
+        :header="t('prompts.select_translation')"
         :position="isOnMobile ? 'bottom' : 'top'"
         class="w-full max-w-container"
         @show="scrollToSelection"
@@ -93,13 +95,13 @@ const visible = ref(false);
                 </template>
                 <template #optiongroup="{ option }">
                     <div class="flex items-center">
-                        <div>{{ $t(`locales.${option.id}`) }}</div>
+                        <div>{{ t(`locales.${option.id}`) }}</div>
                     </div>
                 </template>
             </Listbox>
         </ScrollContainer>
         <template #footer>
-            <Button :label="$t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
+            <Button :label="t('prompts.cancel')" @click="visible = false" severity="secondary" text class="w-full" />
         </template>
     </Dialog>
 </template>
