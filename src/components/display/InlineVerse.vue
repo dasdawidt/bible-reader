@@ -3,7 +3,7 @@ import Avatar from 'primevue/avatar';
 import { computed } from 'vue';
 import type { Verse } from '@/types/bible/verse';
 
-const props = defineProps<{
+defineProps<{
     verse: Verse;
 }>();
 
