@@ -219,7 +219,7 @@ useTitle(
             </header>
             <section class="contents">
                 <InlineVerse
-                    v-for="(verse, i) in (selectedChapter?.verses ?? [])"
+                    v-for="(verse, i) of (selectedChapter?.verses ?? [])"
                     :id="`verse-${verse.number}`"
                     :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)"
                     :key="i"

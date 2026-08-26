@@ -85,8 +85,12 @@ function confirm() {
                 <Accordion v-if="chapters">
                     <AccordionTab header="Chapters" :disabled="!chapters">
                         <div id="verse-dialogue-index" class="flex gap-2 flex-wrap justify-start items-start">
-                            <div v-for="chapter in chapters" :href="`#verse-dialogue-chapter-${chapter?.chapter}`">
-                                <Avatar :label="`${chapter?.chapter}`" class="p-button p-button-outlined" />
+                            <div
+                                v-for="chapter of chapters"
+                                :key="chapter.chapter"
+                                :href="`#verse-dialogue-chapter-${chapter.chapter}`"
+                            >
+                                <Avatar :label="`${chapter.chapter}`" class="p-button p-button-outlined" />
                             </div>
                         </div>
                     </AccordionTab>

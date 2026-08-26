@@ -11,24 +11,21 @@ const props = defineProps<{
     placeholder?: string;
 }>();
 
-const valuesPresent = computed(() => props.passages != null && props.translation != null && props.passages.length > 0);
-const visible = computed(() => props.placeholder != null || valuesPresent.value);
+const visible = computed(() => props.placeholder != null || (props.translation && props.passages?.length));
 </script>
 
 <template>
     <Card v-if="visible" :pt="{ content: { class: 'p-0' } }">
         <template #content>
             <div class="flex flex-col gap-2">
-                <template v-if="valuesPresent">
+                <template v-if="translation && passages?.length">
                     <div>
-                        <span v-for="passage in passages">
-                            {{ // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
-                                getPassage(translation!, passage!)?.text }}
+                        <span v-for="passage of passages" :key="formatPassages(translation, passages)">
+                            {{ getPassage(translation, passage)?.text }}
                         </span>
                     </div>
                     <div class="opacity-50">
-                        {{ // biome-ignore lint/style/noNonNullAssertion: ensured by valuesPresent
-                            formatPassages(translation!, passages!) }}
+                        {{ formatPassages(translation, passages) }}
                     </div>
                 </template>
                 <span v-else class="opacity-50"> {{ props.placeholder }} </span>

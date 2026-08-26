@@ -20,7 +20,6 @@ const { isOnMobile } = useOnMobile();
 const { width: screenWidth } = useWindowSize();
 const { t } = useI18n();
 
-// biome-ignore lint/correctness/noUnusedVariables: Is used in template via shorthand.
 const label = computed(() => (props.showLabel ? 'Settings' : undefined));
 const condensed = computed(() => screenWidth.value < 400);
 const buildDate = import.meta.env.BUILD_DATE;
