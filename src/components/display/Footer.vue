@@ -29,7 +29,8 @@ const createdByHtml = computed(() =>
                 class="underline underline-offset-4 hover:opacity-50 transition-opacity ease-in-out"
             >
                 {{ $t('legal.imprint') }}
-            </a>.
+            </a
+            >.
         </span>
     </footer>
 </template>

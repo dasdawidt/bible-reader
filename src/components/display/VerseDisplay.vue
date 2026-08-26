@@ -13,7 +13,7 @@ defineProps<{
             <span class="text-xl font-bold">Preview</span>
         </template>
         <template #content>
-            <div v-for="verse in verses" class="flex flex-row">
+            <div v-for="verse of verses" :key="verse.number" class="flex flex-row">
                 <span class="w-6 shrink-0 opacity-50"> {{ verse.number }} </span>
                 <span> {{ verse.text }} </span>
             </div>
