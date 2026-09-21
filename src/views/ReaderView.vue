@@ -210,9 +210,13 @@ useTitle(
                         class="m-0 text-3xl text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis shrink-0"
                     >
                         {{
-                            t('bible.chapter', {}, {
-                                locale: selectedTranslation?.language?.toLowerCase(),
-                            })
+                            t(
+                                'bible.chapter',
+                                {},
+                                {
+                                    locale: selectedTranslation?.language?.toLowerCase(),
+                                },
+                            )
                         }}
                         {{ selectedChapter?.number }}
                     </h1>
@@ -221,7 +225,7 @@ useTitle(
             </header>
             <section class="contents">
                 <InlineVerse
-                    v-for="(verse, i) of (selectedChapter?.verses ?? [])"
+                    v-for="(verse, i) of selectedChapter?.verses ?? []"
                     :id="`verse-${verse.number}`"
                     :ref="(el) => verseRefs.set(verse.number, el as InstanceType<typeof InlineVerse>)"
                     :key="i"
