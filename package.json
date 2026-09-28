@@ -30,8 +30,8 @@
         "@vitejs/plugin-vue": "^6.0.9",
         "@vue/tsconfig": "^0.9.1",
         "typescript": "^6.0.3",
-        "vite": "^8.3.0",
-        "vitest": "^5.0.1",
+        "vite": "^8.3.1",
+        "vitest": "^5.0.2",
         "vue-tsc": "^3.3.11"
     },
     "engines": {
@@ -40,7 +40,7 @@
     },
     "pnpm": {
         "overrides": {
-            "typescript": "npm:typescript-native-bridge@v6.0.3-bridge.17.tsgo.7.0.2"
+            "typescript": "npm:typescript-native-bridge@v6.0.3-bridge.18.tsgo.7.0.2"
         }
     },
     "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e"
