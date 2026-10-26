@@ -231,7 +231,7 @@ useTitle(
                     :key="i"
                     :verse="verse"
                     :is-highlighted="!hideUnselected && getIsHighlighted(verse.number)"
-                    @update:is-highlighted=" (v) => setIsHighlighted(verse.number, v)"
+                    @update:is-highlighted="(v) => setIsHighlighted(verse.number, v)"
                     :class="{ 'print:hidden': getHiddenForPrint(verse.number) }"
                 />
             </section>

@@ -35,10 +35,10 @@ jobs:
 
             - name: Run check
               run: pnpm run ci
-              
+
             - name: Run typecheck
               run: pnpm run typecheck
-              
+
             - name: Run unit tests
               run: pnpm run test:unit
 

@@ -70,8 +70,8 @@ function selectCommand(originalEvent: Event, item: MenuItem) {
                         role="button"
                         tabindex="0"
                         class="p-menuitem-link flex flex-row gap-4 border-0 bg-transparent"
-                        @click="e => selectCommand(e, item)"
-                        @keydown.enter="e => selectCommand(e, item)"
+                        @click="(e) => selectCommand(e, item)"
+                        @keydown.enter="(e) => selectCommand(e, item)"
                     >
                         <SvgIcon class="opacity-75" :icon="item.icon" />
                         {{ $t(item.messageCode) }}

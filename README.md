@@ -7,13 +7,13 @@
 
 ## Key Features
 
-* Multiple translations, multiple languages
-* Minimalistic and responsive design
-* Especially convenient usage on phones
-* Dark and light mode
-* Pleasant reading experience
-* Sharable links
-* Installable as Progressive Web App (PWA)
+- Multiple translations, multiple languages
+- Minimalistic and responsive design
+- Especially convenient usage on phones
+- Dark and light mode
+- Pleasant reading experience
+- Sharable links
+- Installable as Progressive Web App (PWA)
 
 ## Live Version
 
