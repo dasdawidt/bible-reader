@@ -1,7 +1,7 @@
-@layer primevue, theme, base, components, utilities;
+@layer primevue;
 
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+/* @import "tailwindcss/theme.css" layer(theme); */
+/* @import "tailwindcss/utilities.css" layer(utilities); */
 
 @theme {
     --container-container: 800px;

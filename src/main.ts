@@ -8,6 +8,7 @@ import ThemePlugin from './plugins/ThemePlugin';
 import Router from './router';
 
 import './style.css';
+import 'virtual:uno.css';
 
 createApp(App)
     .use(I18nPlugin)
