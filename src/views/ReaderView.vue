@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBrowserLocation, useTitle } from '@vueuse/core';
-import Divider from 'primevue/divider';
+import Divider from 'openvue/divider';
 import { computed, nextTick, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

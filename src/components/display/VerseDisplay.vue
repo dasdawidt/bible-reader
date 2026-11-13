@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Card from 'primevue/card';
+import Card from 'openvue/card';
 import type { Verse } from '@/types/bible/verse';
 
 defineProps<{

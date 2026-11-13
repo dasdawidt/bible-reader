@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SelectButton from 'primevue/selectbutton';
+import SelectButton from 'openvue/selectbutton';
 import { useI18n } from 'vue-i18n';
 import { useSettings } from '@/plugins/SettingsPlugin';
 
@@ -13,11 +13,10 @@ const { settings } = useSettings();
 
 <template>
     <SelectButton
-        class="flex w-full flex-row"
+        class="flex w-full flex-row justify-stretch *:grow"
         v-model="settings.language"
         :options="availableLocales"
         :allow-empty="false"
-        :pt="{ button: { class: 'w-full' } }"
     >
         <template #option="slotProps">
             <div class="flex flex-row justify-center flex-nowrap w-full gap-3">

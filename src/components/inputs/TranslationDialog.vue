@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mdiCheckDecagram } from '@mdi/js';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Listbox from 'primevue/listbox';
+import Button from 'openvue/button';
+import Dialog from 'openvue/dialog';
+import Listbox from 'openvue/listbox';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useOnMobile } from '@/logic/util/MobileDetection';

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { mdiChevronRight } from '@mdi/js';
-import Dropdown, { type DropdownProps } from 'primevue/dropdown';
+import Select, { type SelectProps } from 'openvue/select';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
 
-export interface Props extends DropdownProps {}
+export interface Props extends SelectProps {}
 
 const props = defineProps<Props & { disabled?: boolean }>();
 </script>
 
 <template>
-    <Dropdown
+    <Select
         v-bind="props"
         readonly
         class="w-full"
@@ -25,5 +25,5 @@ const props = defineProps<Props & { disabled?: boolean }>();
                 <slot />
             </div>
         </template>
-    </Dropdown>
+    </Select>
 </template>

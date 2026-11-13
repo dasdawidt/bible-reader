@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiBrightness2, mdiCellphone, mdiLaptop, mdiWhiteBalanceSunny } from '@mdi/js';
 import type { ColorSchemeType } from '@vueuse/core';
-import SelectButton from 'primevue/selectbutton';
+import SelectButton from 'openvue/selectbutton';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import { useSettings } from '@/plugins/SettingsPlugin';
 import MdiIconInline from '../icons/MdiIconInline.vue';
@@ -37,12 +37,11 @@ const options: {
 
 <template>
     <SelectButton
-        class="flex w-full flex-row"
+        class="flex w-full flex-row justify-stretch *:grow"
         v-model="settings.theme"
         :options="options"
         :option-value="(o) => o.value"
         :allow-empty="false"
-        :pt="{ button: { class: 'w-full' } }"
     >
         <template #option="slotProps">
             <div class="flex flex-row justify-center items-center flex-nowrap w-full gap-3">

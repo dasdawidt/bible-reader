@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ScrollPanel from 'primevue/scrollpanel';
+import ScrollPanel from 'openvue/scrollpanel';
 </script>
 
 <template>

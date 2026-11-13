@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mdiCog } from '@mdi/js';
 import { useWindowSize } from '@vueuse/core';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
+import Button from 'openvue/button';
+import Dialog from 'openvue/dialog';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import MdiIcon from '@/components/icons/MdiIcon.vue';

@@ -1,5 +1,6 @@
-import PrimeVue from 'primevue/config';
-import ToastService from 'primevue/toastservice';
+import Aura from '@openvue/themes/aura';
+import OpenVue from 'openvue/config';
+import ToastService from 'openvue/toastservice';
 import { createApp } from 'vue';
 import App from './App.vue';
 import I18nPlugin from './plugins/I18nPlugin';
@@ -15,7 +16,17 @@ createApp(App)
     .use(Router)
     .use(SettingsPlugin)
     .use(ThemePlugin)
-    .use(PrimeVue, {
+    .use(OpenVue, {
         ripple: true,
+        theme: {
+            preset: Aura,
+            options: {
+                darkModeSelector: '.dark',
+                cssLayer: {
+                    name: 'openvue',
+                    order: 'theme, base, openvue'
+                }
+            }
+        }
     })
     .mount('#app');

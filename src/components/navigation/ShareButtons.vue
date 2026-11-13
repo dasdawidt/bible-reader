@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mdiContentCopy, mdiLinkVariant, mdiPrinter, mdiSelectionEllipseRemove, mdiShare } from '@mdi/js';
 import { onKeyStroke, useClipboard, useEventListener, useShare } from '@vueuse/core';
-import Button from 'primevue/button';
-import { useToast } from 'primevue/usetoast';
+import Button from 'openvue/button';
+import { useToast } from 'openvue/usetoast';
 import { nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SvgIcon from '@/components/icons/MdiIcon.vue';

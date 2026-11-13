@@ -1,7 +1,6 @@
-@layer primevue, theme, base, components, utilities;
-
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --container-container: 800px;
@@ -17,6 +16,13 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    background-color: var(--p-surface-0);
+    &.dark {
+        background-color: var(--p-surface-950);
+    }
+}
+
 body {
     margin: 0;
 }
@@ -25,3 +31,9 @@ body {
     outline: 0;
     box-shadow: none;
 }
+
+.p-divider.p-divider-horizontal:before {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+

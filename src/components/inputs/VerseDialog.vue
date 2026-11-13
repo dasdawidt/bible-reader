@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
-import Avatar from 'primevue/avatar';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Divider from 'primevue/divider';
-import Listbox from 'primevue/listbox';
+import Accordion from 'openvue/accordion';
+import AccordionTab from 'openvue/accordiontab';
+import Avatar from 'openvue/avatar';
+import Button from 'openvue/button';
+import Dialog from 'openvue/dialog';
+import Divider from 'openvue/divider';
+import Listbox from 'openvue/listbox';
 import { computed, ref } from 'vue';
 import { formatPassages, getBook, toPassageVerseList } from '@/logic/util/BibleUtils';
 import { useOnMobile } from '@/logic/util/MobileDetection';

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { mdiDotsVertical, mdiFullscreen, mdiFullscreenExit, mdiPrinter } from '@mdi/js';
 import { useFullscreen } from '@vueuse/core';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Menu from 'primevue/menu';
-import type { MenuItem } from 'primevue/menuitem';
+import Button from 'openvue/button';
+import Dialog from 'openvue/dialog';
+import Menu from 'openvue/menu';
+import type { MenuItem } from 'openvue/menuitem';
 import { computed, ref } from 'vue';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';

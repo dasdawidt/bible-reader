@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Listbox from 'primevue/listbox';
+import Button from 'openvue/button';
+import Dialog from 'openvue/dialog';
+import Listbox from 'openvue/listbox';
 import { computed, ref } from 'vue';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 import type { Chapter } from '@/types/bible/chapter';

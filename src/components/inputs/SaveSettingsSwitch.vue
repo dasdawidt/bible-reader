@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiCookie, mdiCookieOff } from '@mdi/js';
-import SelectButton from 'primevue/selectbutton';
+import SelectButton from 'openvue/selectbutton';
 import { useI18n } from 'vue-i18n';
 import { useSettings } from '@/plugins/SettingsPlugin';
 import MdiIconInline from '../icons/MdiIconInline.vue';
@@ -31,12 +31,11 @@ const options: {
 
 <template>
     <SelectButton
-        class="flex w-full flex-row"
+        class="flex w-full flex-row justify-stretch *:grow"
         v-model="persistenceEnabled"
         :options="options"
         :option-value="(o) => o.value"
         :allow-empty="false"
-        :pt="{ button: { class: 'w-full' } }"
     >
         <template #option="slotProps">
             <div class="flex flex-row justify-center items-center flex-nowrap w-full gap-3">

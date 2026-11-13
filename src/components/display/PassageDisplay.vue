@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Card from 'primevue/card';
+import Card from 'openvue/card';
 import { computed } from 'vue';
 import { formatPassages, getPassage } from '@/logic/util/BibleUtils';
 import type { Translation } from '@/types/bible/translation';

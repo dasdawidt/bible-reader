@@ -1,7 +1,5 @@
-import { type ColorSchemeType, useEventListener, usePreferredColorScheme, useStyleTag } from '@vueuse/core';
+import { type ColorSchemeType, useEventListener, usePreferredColorScheme } from '@vueuse/core';
 import { computed, type Plugin, ref, watch } from 'vue';
-import darkTheme from '@/assets/themes/dark.css?inline';
-import lightTheme from '@/assets/themes/light.css?inline';
 import { useOnMobile } from '@/logic/util/MobileDetection';
 
 const { isOnMobile } = useOnMobile();
@@ -12,24 +10,16 @@ const colorScheme = computed(() =>
     colorSchemeOverride.value === 'no-preference' ? prefersColorScheme.value : colorSchemeOverride.value,
 );
 
-const { load: loadLightTheme, unload: unloadLightTheme } = useStyleTag(lightTheme, {
-    id: 'theme-light',
-    immediate: false,
-});
-const { load: loadDarkTheme, unload: unloadDarkTheme } = useStyleTag(darkTheme, { id: 'theme-dark', immediate: false });
-
 watch(colorScheme, (newValue, _oldValue) => loadScheme(newValue));
 useEventListener('beforeprint', () => loadScheme('light'));
 useEventListener('afterprint', () => loadScheme(colorScheme.value));
 
 function loadScheme(scheme: ColorSchemeType | undefined) {
     if (scheme === 'dark') {
-        unloadLightTheme();
-        loadDarkTheme();
+        document.documentElement.classList.toggle('dark', true);
         setThemeColor(isOnMobile.value ? '#090d15' : '#111827');
     } else {
-        unloadDarkTheme();
-        loadLightTheme();
+        document.documentElement.classList.toggle('dark', false);
         setThemeColor(isOnMobile.value ? '#ffffff' : '#f9fafb');
     }
 }

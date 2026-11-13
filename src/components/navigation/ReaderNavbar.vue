@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiArrowLeft, mdiArrowRight, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import { computedWithControl, onKeyStroke, useElementSize, useResizeObserver } from '@vueuse/core';
-import Button from 'primevue/button';
+import Button from 'openvue/button';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SvgIcon from '@/components/icons/MdiIcon.vue';
@@ -142,12 +142,8 @@ onKeyStroke('ArrowLeft', navigatePrevious);
 
 <template>
     <aside
-        class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid"
+        class="flex flex-col items-center z-10 p-2 gap-2 fixed shadow-md -left-px -right-px border border-solid border-surface bg-(--p-overlay-modal-background)"
         :class="menuClass"
-        style="
-            background-color: var(--surface-ground);
-            border-color: var(--surface-border);
-        "
         :style="menuStyle"
     >
         <div class="absolute w-full h-0 z-20">

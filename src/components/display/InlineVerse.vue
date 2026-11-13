@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import Avatar from 'primevue/avatar';
-import { computed } from 'vue';
+import Avatar from 'openvue/avatar';
 import type { Verse } from '@/types/bible/verse';
 
 defineProps<{
@@ -8,10 +7,6 @@ defineProps<{
 }>();
 
 const isHighlighted = defineModel<boolean>('isHighlighted', { default: false });
-
-const borderColor = computed(() => (isHighlighted.value ? 'var(--primary-color)' : ''));
-const color = computed(() => (isHighlighted.value ? 'var(--highlight-text-color)' : ''));
-const backgroundColor = computed(() => (isHighlighted.value ? 'var(--highlight-bg)' : ''));
 
 function toggleHighlight() {
     isHighlighted.value = !isHighlighted.value;
@@ -23,21 +18,21 @@ function toggleHighlight() {
         <div class="opacity-50 text-sm shrink-0">
             <Avatar
                 class="bg-transparent text-sm transition-colors"
+                :class="{ 'bg-highlight text-primary': isHighlighted }"
                 :label="verse.number?.toString()"
-                :style="{ backgroundColor, color }"
                 shape="circle"
             />
         </div>
         <div
-            class="text-lg text-justify leading-loose hyphens-auto px-2 border-0 border-l-2 border-solid border-transparent transition-colors"
-            :style="{ borderColor }"
+            class="text-lg text-justify leading-loose hyphens-auto px-2 border-0 border-l-2 border-solid transition-colors"
+            :class="isHighlighted ? 'border-primary': 'border-transparent'"
         >
             <!-- biome-ignore lint/a11y/useSemanticElements: button is styled and resetting the style is too complex -->
             <span
                 role="button"
                 tabindex="0"
                 class="py-0.5 rounded-sm transition-colors"
-                :style="{ backgroundColor, color }"
+                :class="{ 'bg-primary/10 text-primary-emphasis': isHighlighted }"
                 @click="toggleHighlight()"
                 @keydown.enter="toggleHighlight()"
             >
